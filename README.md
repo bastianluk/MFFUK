@@ -4,9 +4,9 @@ Most of them are in Czech.
 
 ## \[CURRENT\] Summer Semester 2018/2019
 - Advanced C# and .NET platform I
-- Automatons and Grammars
+- Automata and Grammars
 - Combinatorics and Graphs
-- Database structures
+- Database systems
 - Introduction to UNIX
 ## Winter Semester 2018/2019
 - Algorithms and Data structures II
