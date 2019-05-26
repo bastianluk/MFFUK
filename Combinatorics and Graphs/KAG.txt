@@ -1,0 +1,19 @@
+20. 2.: Odhady na dùležité kombinatorické funkce [MN: kapitoly 2.4 a 2.5].
+27. 2.: Vytvoøující funkce, zobecnìná binomická vìta, odvození vytvoøující funkce pro posloupnost zadanou pomocí rekurence s konstantními koeficienty [MN: kapitoly 10.1-10.3].
+6. 3.: Poèítání koeficientù vytvoøujících funkcí pomocí rozkladu na parciální zlomky [MN: kapitola 10.3]. Catalanova èísla, definovná jako poèet binárních zakoøenìných stromù, odvození jejich vytvoøující funkce a vzoreèku [MN: kapitola 10.4].
+13. 3.: Vlastnosti koneèných projektivních rovin [MN: kap. 8.1]. Definice latinských ètvercù a jejich ortogonality, horní odhad na poèet navzájem ortogonálních lat. ètvercù, souvislost s projektivními rovinami [MN: kap. 8.3].
+20. 3.: Toky v sítích: základní pojmy, souvislost mezi velikostí max. toku a kapacitou minimálního øezu [VM: kapitola 2].
+27. 3.: Königova-Egerváryho vìta o velikosti nejvìtšího párování a nejmenšího vrcholového pokrytí v bipartitních grafech [M: kap. 1]. Hallova vìta (ve verzi pro systém rùzných reprezentantù v hypergrafu a ve verzi pro párování v bipartitním grafu) [VM: kap. 4].
+3. 4.: Vrcholová a hranová souvislost grafu. Mengerovy vìty charakterizující hranovì a vrcholovì k-souvislé grafy [VM: kap. 3].
+10. 4.: Lemma o uších [MN: kap. 3.8]. Poèítání dvìma zpùsoby: poèet koster úplného grafu a úplného grafu bez jedné hrany [MN: kap 7.6 a kap. 7.1 cv. 2].
+17. 4.: Spernerova vìta o nezávislém systému množin [MN: kap. 6.2]. Ramseyova vìta o existenci velké kliky nebo velké nezávislé množiny v grafu, její ekvivalentní formulace pomocí barvení hran úplného grafu dvìma barvami, zobecnìní na více barev [VM: kap. 1, M2].
+24. 4.: Ramseyova vìta pro barvení p-tic, zformulovaná v koneèné a nekoneèné verzi, dùkaz nekoneèné verze pro p=1,2 [M2]. Königovo lemma [M3], náznak dùkazu koneèné Ramseyovy vìty z nekoneèné pomocí Königova lemmatu [M2].
+15. 5.: Opravné kódy - základní pojmy: Hammingova vzdálenost, kódování, dekódování, lineární kód, generující matice a její použití ke kódování lineárního kódu, ortogonální doplnìk, kontrolní matice [T].
+22. 5.: Souvislost mezi minimální vzdáleností lineárního kódu a sloupci kontrolní matice. Hammingovy kódy: jejich parametry a dekódováni pomócí kontrolní matice. Singletonùv, Hammingùv a Gilbertùv-Varshamovùv odhad na parametry kódù [T].
+
+[MN] J. Matoušek a J. Nešetøil: Kapitoly z Diskrétní matematiky, Karolinum 2003. V nìkterých vydáních knihy je nìkolik chyb, pozor na nì.
+[VM] Skriptíèka T. Vally a J. Matouška, ke stažení zde.
+[T] Uèební text T. Kaisera k pøednášce o samoopravných kódech, ke stažení zde.
+[M] M. Mareš: Krajinou grafových algoritmù, ke stažení zde.
+[M2] M. Mareš: Ramseyovy vìty, ke stažení zde.
+[M3] M. Mareš: Kombinatorické drobnosti, ke stažení zde.
