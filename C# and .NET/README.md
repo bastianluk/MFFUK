@@ -1,16 +1,16 @@
-# Jazyk C# a platforma .NET  
-## P¯edn·öka  
-- Pavel Jeûek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)  
-## CviËenÌ  
-- Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)  
-> Moc nevyuûÌv· web  
-  
-# PokroËilÈ programov·nÌ pro .NET I  
-## P¯edn·öka  
-- Pavel Jeûek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)  
-## CviËenÌ  
-- Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)  
-> Moc nevyuûÌv· web  
-  
 # C# and .NET platform  
-Empty for now - using separate private repositories for solution to tasks and photos/materials from lectures.
+Empty for now - using separate private repositories for solution to tasks and photos/materials from lectures.  
+  
+# Jazyk C# a platforma .NET  
+## P≈ôedn√°≈°ka  
+- Pavel Je≈æek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)  
+## Cviƒçen√≠  
+- Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)  
+> Moc nevyu≈æ√≠v√° web  
+  
+# Pokroƒçil√© programov√°n√≠ pro .NET I  
+## P≈ôedn√°≈°ka  
+- Pavel Je≈æek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)  
+## Cviƒçen√≠  
+- Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)  
+> Moc nevyu≈æ√≠v√° web  
