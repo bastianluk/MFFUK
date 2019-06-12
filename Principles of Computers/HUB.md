@@ -1,3 +1,0 @@
-# Principy poèítaèù  
-## Pøednáška  
-- Pavel Ježek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)  
