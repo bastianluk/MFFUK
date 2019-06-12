@@ -10,10 +10,10 @@ Most of them are in Czech.
 - Database systems [dir](./Database%20Systems/HUB.html)
 - Introduction to UNIX [dir](./Introduction%20to%20UNIX/HUB.html)
 ## Winter Semester 2018/2019
-- Algorithms and Data structures II [dir](./Algorithms%20and%20Data%20structures/HUB.html)
-- C# and .NET platform [dir](./C%23%20and%20.NET/HUB.html)
-- Principles of Computers [dir](./Principles%20of%20Computers/HUB.html)
-- Probability and Statistics [dir](./Probability%20and%20Statistics/HUB.html)
+- Algorithms and Data structures II [dir](https://bastianluk.github.io/MFFUK/Algorithms%20and%20Data%20structures/HUB.html)
+- C# and .NET platform [dir](https://bastianluk.github.io/MFFUK/C%23%20and%20.NET/HUB.html)
+- Principles of Computers [dir](https://bastianluk.github.io/MFFUK/Principles%20of%20Computers/HUB.html)
+- Probability and Statistics [dir](https://bastianluk.github.io/MFFUK/Probability%20and%20Statistics/HUB.html)
 ## Summer Semester 2017/2018
 - Algorithms and Data structures I [dir](./Algorithms%20and%20Data%20structures/HUB.html)
 - Linear Algebra II [dir](./Linear%20Algebra/HUB.html)
