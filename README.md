@@ -1,5 +1,5 @@
 # MFFUK
-(Hopefully) Usable materials I collected during my studies @ [MFF UK]  
+(Hopefully) Usable materials I collected during my studies @ MFF UK
 Most of them are in Czech.
 
 ## \[CURRENT\] Summer Semester 2018/2019
