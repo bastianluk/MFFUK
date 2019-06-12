@@ -1,4 +1,4 @@
-﻿# Diskrétní matematika   
+# Diskrétní matematika   
 ## Přednáška  
 
 - Jan Kynčl [web](https://kam.mff.cuni.cz/~kyncl/)  
