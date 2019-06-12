@@ -4,10 +4,17 @@ relative_links:
   enabled: true
   collections: true
 include:
-  - CONTRIBUTING.md
   - README.md
-  - LICENSE.md
-  - COPYING.md
-  - CODE_OF_CONDUCT.md
-  - CONTRIBUTING.md
-  - ISSUE_TEMPLATE.md
+  - C%23%20and%20.NET/README.md
+  - Automata%20and%20Grammars/README.md
+  - Combinatorics%20and%20Graphs/README.md
+  - Database%20Systems/README.md
+  - Introduction%20to%20UNIX/README.md
+  - Algorithms%20and%20Data%20structures/README.md
+  - Principles%20of%20Computers/README.md
+  - Probability%20and%20Statistics/README.md
+  - Discrete%20Maths/README.md
+  - Introduction%20to%20PC%20Networking/README.md
+  - Linear%20Algebra/README.md
+  - Mathematical%20Analysis/README.md
+  - Programming/README.md
