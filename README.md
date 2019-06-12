@@ -17,7 +17,7 @@ Most of them are in Czech.
 - Algorithms and Data structures I
 - Linear Algebra II
 - Mathematical Analysis II
-- Programming II (C#)
+- Programming II (C\#)
 ## Winter Semester 2017/2018
 - Discrete Maths
 - Introduction to PC Networking
