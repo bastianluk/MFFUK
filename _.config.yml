@@ -4,7 +4,8 @@ url: "https://bastianluk.github.io/MFFUK"
 baseurl: "/MFFUK"
 title: MFFUK
 description: bastianluk's materials
-
+author:
+  name: Lukas Bastian
 plugins:
   - jekyll-relative-links
 relative_links:
