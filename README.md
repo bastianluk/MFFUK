@@ -7,7 +7,7 @@ Most of them are in Czech.
 - Advanced C# and .NET platform I [dir](https://github.com/bastianluk/MFFUK/blob/master/C%23%20and%20.NET/HUB.md)
 - Automata and Grammars [dir](https://github.com/bastianluk/MFFUK/blob/master/Automata%20and%20Grammars/HUB.md)
 - Combinatorics and Graphs [dir](https://github.com/bastianluk/MFFUK/blob/master/Combinatorics%20and%20Graphs/HUB.md)
-- Database systems [dir](https://github.com/bastianluk/MFFUK/blob/master/Database%20Systems/HUB.md)
+- Database systems [dir](./Database%20Systems/HUB.md)
 - Introduction to UNIX [dir](https://github.com/bastianluk/MFFUK/blob/master/Introduction%20to%20UNIX/HUB.md)
 ## Winter Semester 2018/2019
 - Algorithms and Data structures II [dir](https://github.com/bastianluk/MFFUK/blob/master/Algorithms%20and%20Data%20structures/HUB.md)
