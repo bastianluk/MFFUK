@@ -1,11 +1,11 @@
-# Matematická analıza pro informatiky I  
-## Pøednáška  
-- Tereza Klimošová [web](https://iuuk.mff.cuni.cz/~tereza/)  
-## Cvièení  
-- Markéta Lopatková [web](http://ufal.mff.cuni.cz/marketa-lopatkova)  
+# MatematickÃ¡ analÃ½za pro informatiky I  
+## PÅ™ednÃ¡Å¡ka  
+- Tereza KlimoÅ¡ovÃ¡ [web](https://iuuk.mff.cuni.cz/~tereza/)  
+## CviÄenÃ­  
+- MarkÃ©ta LopatkovÃ¡ [web](http://ufal.mff.cuni.cz/marketa-lopatkova)  
   
-# Matematická analıza pro informatiky II  
-## Pøednáška  
-- Tereza Klimošová [web](https://iuuk.mff.cuni.cz/~tereza/)  
-## Cvièení  
-- Markéta Lopatková [web](http://ufal.mff.cuni.cz/marketa-lopatkova)  
+# MatematickÃ¡ analÃ½za pro informatiky II  
+## PÅ™ednÃ¡Å¡ka  
+- Tereza KlimoÅ¡ovÃ¡ [web](https://iuuk.mff.cuni.cz/~tereza/)  
+## CviÄenÃ­  
+- MarkÃ©ta LopatkovÃ¡ [web](http://ufal.mff.cuni.cz/marketa-lopatkova)  
