@@ -1,5 +1,5 @@
-# Úvod do UNIXu   
-## Pøednáška  
+# Ãšvod do UNIXu   
+## PÅ™ednÃ¡Å¡ka  
 - Libor Forst [web](https://www.ms.mff.cuni.cz/~forst/)  
-## Cvièení  
-- Vojtìch Aschenbrenner [web](http://asch.cz/)  
+## CviÄenÃ­  
+- VojtÄ›ch Aschenbrenner [web](http://asch.cz/)  
