@@ -8,8 +8,8 @@ Empty for now - using separate private repositories for solution to tasks and ph
 
 ## Cvičení
 
-  - Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)
-    > Moc nevyužívá web  
+  - Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)  
+  > Moc nevyužívá web  
 
 # Pokročilé programování pro .NET I
 ## Přednáška
@@ -18,5 +18,5 @@ Empty for now - using separate private repositories for solution to tasks and ph
 
 ## Cvičení
 
-  - Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)
-    > Moc nevyužívá web  
+  - Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)  
+  > Moc nevyužívá web  
