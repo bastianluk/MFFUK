@@ -1,3 +1,10 @@
+markdown: kramdown
+
+url: "https://bastianluk.github.io/MFFUK"
+baseurl: "/MFFUK"
+title: MFFUK
+description: bastianluk's materials
+
 plugins:
   - jekyll-relative-links
 relative_links:
