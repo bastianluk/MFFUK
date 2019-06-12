@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 plugins:
   - jekyll-relative-links
 relative_links:
@@ -12,19 +11,3 @@ include:
   - CODE_OF_CONDUCT.md
   - CONTRIBUTING.md
   - ISSUE_TEMPLATE.md
-=======
-plugins:
-  - jekyll-relative-links
-relative_links:
-  enabled: true
-  collections: true
-include:
-  - CONTRIBUTING.md
-  - README.md
-  - LICENSE.md
-  - COPYING.md
-  - CODE_OF_CONDUCT.md
-  - CONTRIBUTING.md
-  - ISSUE_TEMPLATE.md
->>>>>>> b41cdb2f04e3928cb25ae8da3b9a13825877d994
-  - PULL_REQUEST_TEMPLATE.md
