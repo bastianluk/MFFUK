@@ -4,8 +4,8 @@
 Most of them are in Czech.
 
 ## \[CURRENT\] Summer Semester 2018/2019
-- Advanced C# and .NET platform I [dir](https://bastianluk.github.io/MFFUK/C%23%20and%20.NET/README.html)
-- Automata and Grammars [dir](https://bastianluk.github.io/MFFUK/Automata%20and%20Grammars/README.html)
+- Advanced C# and .NET platform I [dir](https://bastianluk.github.io/MFFUK/C%23%20and%20.NET/README.md)
+- Automata and Grammars [dir](https://bastianluk.github.io/MFFUK/Automata%20and%20Grammars/README.md)
 - Combinatorics and Graphs [dir](https://bastianluk.github.io/MFFUK/Combinatorics%20and%20Graphs/README.html)
 - Database systems [dir](https://bastianluk.github.io/MFFUK/Database%20Systems/README.html)
 - Introduction to UNIX [dir](https://bastianluk.github.io/MFFUK/Introduction%20to%20UNIX/README.html)
