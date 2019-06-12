@@ -4,6 +4,7 @@ Empty for now - using separate private repositories for solution to tasks and ph
 # Jazyk C# a platforma .NET
 ## Přednáška  
 - Pavel Ježek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)
+  
 ## Cvičení  
 - Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)
 > Moc nevyužívá web  
@@ -11,6 +12,7 @@ Empty for now - using separate private repositories for solution to tasks and ph
 # Pokročilé programování pro .NET I
 ## Přednáška
 - Pavel Ježek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)
+  
 ## Cvičení
 - Radek Zikmund [web](https://www.ms.mff.cuni.cz/~zikmundr/)
 > Moc nevyužívá web  
