@@ -3,7 +3,7 @@
 (Hopefully) Usable materials I collected during my studies @ [MFF UK](https://www.mff.cuni.cz/studium/bcmgr/ok/ib3a23.htm).  
 Most of them are in Czech.
 
-## \[NEXT\] Summer Semester 2018/2019
+## \[NEXT\] Winter Semester 2019/2020
 - Compiler Principles [dir](https://bastianluk.github.io/MFFUK/Compiler%20Principles/pagehub.html)
 - Data Organisation and Processing I [dir](https://bastianluk.github.io/MFFUK/Data%20Organisation%20and%20Processing%20Ipagehub.html)
 - Digital Image Processing [dir](https://bastianluk.github.io/MFFUK/Digital%20Image%20Processing/pagehub.html)
