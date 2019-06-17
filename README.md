@@ -3,6 +3,11 @@
 (Hopefully) Usable materials I collected during my studies @ [MFF UK](https://www.mff.cuni.cz/studium/bcmgr/ok/ib3a23.htm).  
 Most of them are in Czech.
 
+## \[NEXT\] Summer Semester 2018/2019
+- Compiler Principles [dir](https://bastianluk.github.io/MFFUK/Compiler%20Principles/pagehub.html)
+- Data Organisation and Processing I [dir](https://bastianluk.github.io/MFFUK/Data%20Organisation%20and%20Processing%20Ipagehub.html)
+- Digital Image Processing [dir](https://bastianluk.github.io/MFFUK/Digital%20Image%20Processing/pagehub.html)
+- Propositional and Predicate Logic [dir](https://bastianluk.github.io/MFFUK/Propositional%20and%20Predicate%20Logic/pagehub.html)
 ## \[CURRENT\] Summer Semester 2018/2019
 - Advanced C# and .NET platform I [dir](https://bastianluk.github.io/MFFUK/C%23%20and%20.NET/pagehub.html)
 - Automata and Grammars [dir](https://bastianluk.github.io/MFFUK/Automata%20and%20Grammars/pagehub.html)
