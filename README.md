@@ -7,7 +7,8 @@ Most of them are in Czech.
 
 - Compiler Principles [hub](https://bastianluk.github.io/MFFUK/Compiler%20Principles/pagehub.html)
 - Data Organisation and Processing I [hub](https://bastianluk.github.io/MFFUK/Data%20Organisation%20and%20Processing%20Ipagehub.html)
-- Digital Image Processing [hub](https://bastianluk.github.io/MFFUK/Digital%20Image%20Processing/pagehub.html)
+- Database Applications [hub](https://bastianluk.github.io/MFFUK/Database%20Applications/pagehub.html)
+- Information Security I [hub](https://bastianluk.github.io/MFFUK/Information%20Security%20I/pagehub.html)
 - Propositional and Predicate Logic [hub](https://bastianluk.github.io/MFFUK/Propositional%20and%20Predicate%20Logic/pagehub.html)
 
 ## Summer Semester 2018/2019
