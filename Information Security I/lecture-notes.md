@@ -150,3 +150,54 @@ ztráta proudu, nebo přepětí (blesk)
 - blesk jinde ale svod na smolné místo
 
 pretty straight forward věci
+
+## 7. Přednáška 
+
+#### Fyzicke zabezpeceni
+
+"Nekdo" zodopovedny za
+
+- decommision of devices
+- mazani nebo obfuskace dat na disku, ktereho se chci zbavit...
+
+#### Vyzařování
+
+- nejenom radiove vlny
+- treba i viditelnost displeje
+
+#### Obnova provozu
+
+- sustainability without user input for "extended" periods of time
+- zálohy A PŘÍSTUP k nim
+
+##### Záložní média
+
+- mít je a mít je pokud možno fyzicky jinde, než jejich zdroj
+- pravidelně dělané
+
+RTO recovery time objective
+RPO recovery point objective
+
+- i moc lehce dostupne zalohy jsou blbe - lide potom zkousi blbosti, protoze maji lehky zpusob obnovy
+
+## 8.  Přednáška
+
+--missing--
+
+## 9.  Přednáška
+
+--missing--
+
+- Operační systémy
+
+## 10. Přednáška
+
+- závěr operačních systémů
+- integrita databaze
+- SŘBD - systém řízení báze dat ~ "engine"
+
+## 11. Přednáška
+
+### Bezpečnost počítačových sítí (page 91)
+
+
