@@ -3,7 +3,16 @@
 (Hopefully) Usable materials I collected during my studies @ [MFF UK](https://www.mff.cuni.cz/studium/bcmgr/ok/ib3a23.htm).  
 Most of them are in Czech.
 
-## \[NEXT\] Winter Semester 2019/2020
+## \[NEXT\] Summer Semester 2019/2020
+
+- Intro to Software Engineering
+- Linear Optimalization
+- Non-procedural (functional) programming
+- XML
+- Project
+
+
+## Winter Semester 2019/2020
 
 - Compiler Principles [hub](https://bastianluk.github.io/MFFUK/Compiler%20Principles/pagehub.html)
 - Data Organisation and Processing I [hub](https://bastianluk.github.io/MFFUK/Data%20Organisation%20and%20Processing%20Ipagehub.html)
