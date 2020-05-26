@@ -69,7 +69,7 @@
   * [Definitions (Scrum)](#Definitions-Scrum)
   * [Lifecycle of a feature request](#Lifecycle-of-a-feature-request)
     + [Agile processes](#Agile-processes)
-- [Requirements enineering](#Requirements-enineering)
+- [Requirements engineering](#Requirements-engineering)
   * [Req. elicitation and analysis](#Req-elicitation-and-analysis)
     + [Problem domain](#Problem-domain)
       - [Ubiquitous language](#Ubiquitous-language)
@@ -166,7 +166,6 @@
   * [Právní ochrana databází](#Právní-ochrana-databází)
 
 <!-- tocstop -->
-
 
 ## What is sofware
 
@@ -908,7 +907,7 @@ codename "Mews"
 
 
 ---
-## Requirements enineering
+## Requirements engineering
 
 process of establishing
  - services
