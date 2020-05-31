@@ -1,5 +1,252 @@
 # Technologie XML
 
+<!-- toc -->
+
+- [Progress](#Progress)
+  * [Presentations](#Presentations)
+  * [Videos](#Videos)
+  * [Classes](#Classes)
+- [Intro](#Intro)
+  * [Well-formed XML document](#Well-formed-XML-document)
+    + [Prolog](#Prolog)
+  * [XML Technologies](#XML-Technologies)
+- [DTD](#DTD)
+  * [Valid XML document](#Valid-XML-document)
+    + [Structure](#Structure)
+      - [Tags](#Tags)
+      - [Element](#Element)
+      - [Attribute](#Attribute)
+        * [Data Types](#Data-Types)
+        * [Presence](#Presence)
+      - [Entities](#Entities)
+        * [Character Entities](#Character-Entities)
+        * [General Entity](#General-Entity)
+        * [Parameter Entity](#Parameter-Entity)
+        * [Condional Sections](#Condional-Sections)
+- [XML](#XML)
+  * [Namespaces](#Namespaces)
+    + [Examples](#Examples)
+  * [Data Model - InfoSet](#Data-Model---InfoSet)
+    + [Item properties - element](#Item-properties---element)
+    + [Post Schema Validation Infoset (PSVI)](#Post-Schema-Validation-Infoset-PSVI)
+  * [Formats](#Formats)
+    + [XHTML](#XHTML)
+      - [XHTML vs. HTML](#XHTML-vs-HTML)
+      - [XHTML DTD](#XHTML-DTD)
+    + [SVG](#SVG)
+    + [XForms](#XForms)
+    + [OOXML](#OOXML)
+    + [WSDL](#WSDL)
+      - [Example](#Example)
+        * [Parameters of Operations](#Parameters-of-Operations)
+        * [Operation](#Operation)
+        * [Way of Communication](#Way-of-Communication)
+        * [Service Definition](#Service-Definition)
+- [XPath](#XPath)
+        * [Example](#Example-1)
+  * [Expression](#Expression)
+    + [Evaluation](#Evaluation)
+    + [Formally](#Formally)
+      - [Axes](#Axes)
+      - [Node-test](#Node-test)
+        * [Examples](#Examples-1)
+      - [Predicates](#Predicates)
+        * [Examples](#Examples-2)
+      - [Built-in Functions](#Built-in-Functions)
+  * [Advanced XPath](#Advanced-XPath)
+  * [Data Types](#Data-Types-1)
+    + [XPath 2.0 – Data Model](#XPath-20-–-Data-Model)
+      - [Sequence](#Sequence)
+      - [Iteration](#Iteration)
+      - [Quantifiers](#Quantifiers)
+      - [Merging](#Merging)
+      - [Comparison](#Comparison)
+      - [Conditions](#Conditions)
+- [SQL/XML](#SQLXML)
+  * [Functions for Data Publication](#Functions-for-Data-Publication)
+    + [XMLELEMENT](#XMLELEMENT)
+      - [Namespaces](#Namespaces-1)
+    + [XMLATTRIBUTES](#XMLATTRIBUTES)
+    + [XMLFOREST](#XMLFOREST)
+    + [XMLCONCAT](#XMLCONCAT)
+    + [XMLAGG](#XMLAGG)
+    + [XML Data Type and Querying](#XML-Data-Type-and-Querying)
+      - [XMLQUERY](#XMLQUERY)
+      - [XMLTABLE](#XMLTABLE)
+      - [XMLEXISTS](#XMLEXISTS)
+      - [Other Constructs](#Other-Constructs)
+- [XML Schema](#XML-Schema)
+  * [Advantages](#Advantages)
+  * [Disadvantages = advantages](#Disadvantages--advantages)
+  * [Basics](#Basics)
+        * [Examples](#Examples-3)
+    + [Root-element](#Root-element)
+    + [How to work](#How-to-work)
+  * [Basic components](#Basic-components)
+    + [Simple Data Types](#Simple-Data-Types)
+      - [Primitive Data Types](#Primitive-Data-Types)
+      - [User defined simple types](#User-defined-simple-types)
+        * [Restriction](#Restriction)
+        * [List](#List)
+        * [Union](#Union)
+      - [Global VS Local definition](#Global-VS-Local-definition)
+    + [Attributes](#Attributes)
+        * [Examples](#Examples-4)
+    + [Elements](#Elements)
+    + [Complex Data Types](#Complex-Data-Types)
+      - [Simple content](#Simple-content)
+      - [Sequence](#Sequence-1)
+      - [Choice](#Choice)
+      - [All](#All)
+        * [Version differences](#Version-differences)
+      - [Group](#Group)
+        * [References](#References)
+      - [Complex content](#Complex-content)
+    + [Invariants - assert](#Invariants---assert)
+    + [Attritbute group](#Attritbute-group)
+  * [Advanced components](#Advanced-components)
+    + [Namespaces](#Namespaces-2)
+    + [Include](#Include)
+    + [Import](#Import)
+  * [Identity Restriction](#Identity-Restriction)
+    + [Unique](#Unique)
+    + [Key](#Key)
+    + [Keyref](#Keyref)
+  * [Implicit Substitutability (Substitutability of Data Types)](#Implicit-Substitutability-Substitutability-of-Data-Types)
+  * [Substitution Groups (Substitutability of Elements)](#Substitution-Groups-Substitutability-of-Elements)
+  * [Wildcards](#Wildcards)
+  * [Notation](#Notation)
+  * [Annotation](#Annotation)
+- [XSLT](#XSLT)
+  * [Basic Principles](#Basic-Principles)
+  * [Basics](#Basics-1)
+  * [Templates](#Templates)
+    + [Unnamed](#Unnamed)
+    + [Named](#Named)
+    + [XSLT script](#XSLT-script)
+      - [How does it work](#How-does-it-work)
+    + [Body](#Body)
+      - [1 Creating Elements/Attributes](#1-Creating-ElementsAttributes)
+      - [2 Text Nodes](#2-Text-Nodes)
+      - [3 Input Data](#3-Input-Data)
+      - [4 Calling Other Templates](#4-Calling-Other-Templates)
+        * [Element xsl:apply-templates](#Element-xslapply-templates)
+        * [Element xsl:call-template](#Element-xslcall-template)
+      - [5 Variables and Parameters](#5-Variables-and-Parameters)
+      - [6 Repetition](#6-Repetition)
+      - [7 Branching](#7-Branching)
+        * [Conditions](#Conditions-1)
+        * [General](#General)
+        * [Recursion (examples)](#Recursion-examples)
+  * [Implicit Templates](#Implicit-Templates)
+  * [XSLT programming – Two Approaches](#XSLT-programming-–-Two-Approaches)
+  * [Advanced XSLT](#Advanced-XSLT)
+    + [XSLT 1.0](#XSLT-10)
+      - [Sorting](#Sorting)
+      - [Keys](#Keys)
+      - [Modes](#Modes)
+      - [Combinations of Scripts](#Combinations-of-Scripts)
+      - [Copies of Nodes](#Copies-of-Nodes)
+    + [XSLT 2.0](#XSLT-20)
+      - [Output and Input](#Output-and-Input)
+      - [Grouping of Nodes](#Grouping-of-Nodes)
+      - [User-defined Functions](#User-defined-Functions)
+    + [XSLT 3.0](#XSLT-30)
+      - [Streaming](#Streaming)
+      - [Higher-Order Functions](#Higher-Order-Functions)
+- [Schemas](#Schemas)
+  * [Best Practices](#Best-Practices)
+    + [Basic Recommendations](#Basic-Recommendations)
+    + [Elements vs. Attributes](#Elements-vs-Attributes)
+  * [Namespaces](#Namespaces-3)
+  * [XML Schema Versioning](#XML-Schema-Versioning)
+    + [Takeaways](#Takeaways)
+  * [Extensible Content Types](#Extensible-Content-Types)
+  * [Conclusion](#Conclusion)
+- [RELAX NG](#RELAX-NG)
+  * [General features](#General-features)
+  * [XML vs. Compact Syntax](#XML-vs-Compact-Syntax)
+  * [Data Types](#Data-Types-2)
+        * [Example](#Example-2)
+  * [Conclusion](#Conclusion-1)
+- [Schematron](#Schematron)
+  * [Structure](#Structure-1)
+  * [Validation](#Validation)
+  * [Combination with XML Schema](#Combination-with-XML-Schema)
+  * [Combination with RELAX NG](#Combination-with-RELAX-NG)
+- [XQuery](#XQuery)
+  * [Constructs](#Constructs)
+    + [Constructors](#Constructors)
+    + [FLWOR](#FLWOR)
+      - [Parts](#Parts)
+      - [Use](#Use)
+    + [Conditions](#Conditions-2)
+    + [Quantifiers](#Quantifiers-1)
+    + [Functions](#Functions)
+        * [Examples](#Examples-5)
+      - [Imports](#Imports)
+    + [Comparison](#Comparison-1)
+      - [Value](#Value)
+      - [General (Group)](#General-Group)
+      - [Node](#Node)
+    + [Integrity Constraints](#Integrity-Constraints)
+  * [Support for Schemas](#Support-for-Schemas)
+  * [Semantics](#Semantics)
+  * [Advanced XQuery](#Advanced-XQuery)
+    + [XQuery Update Facility 1.0](#XQuery-Update-Facility-10)
+    + [(Dotazovaci vyrazy vs) Aktualizacni vyrazy](#Dotazovaci-vyrazy-vs-Aktualizacni-vyrazy)
+      - [Construct insert](#Construct-insert)
+      - [Construct delete](#Construct-delete)
+      - [Construct replace](#Construct-replace)
+      - [Construct replace value of](#Construct-replace-value-of)
+      - [Other constructs](#Other-constructs)
+    + [Special Namespaces](#Special-Namespaces)
+    + [XQuery Data Model](#XQuery-Data-Model)
+      - [Atomic Values](#Atomic-Values)
+      - [Nodes](#Nodes)
+      - [Result](#Result)
+    + [XQuery 3.0](#XQuery-30)
+- [XQuery vs. XSLT](#XQuery-vs-XSLT)
+  * [Examples](#Examples-6)
+  * [Takeawys](#Takeawys)
+- [Parsers](#Parsers)
+  * [Types of parsers](#Types-of-parsers)
+  * [SAX](#SAX)
+    + [Interface - ContentHandler](#Interface---ContentHandler)
+      - [startElement()](#startElement)
+      - [Interface attributes](#Interface-attributes)
+      - [characters()](#characters)
+      - [ignorableWhitespace()](#ignorableWhitespace)
+      - [setDocumentLocator()](#setDocumentLocator)
+    + [Initialization](#Initialization)
+    + [StAX](#StAX)
+      - [Initialization](#Initialization-1)
+      - [XMLEventReader](#XMLEventReader)
+      - [XMLEventWriter](#XMLEventWriter)
+      - [XMLStreamReader](#XMLStreamReader)
+      - [XMLStreamWriter](#XMLStreamWriter)
+  * [DOM](#DOM)
+    + [Initialization](#Initialization-2)
+    + [Hierarchy](#Hierarchy)
+    + [Interface Node](#Interface-Node)
+      - [Examples of processing Child Nodes vs. Attributes](#Examples-of-processing-Child-Nodes-vs-Attributes)
+    + [Interface Document](#Interface-Document)
+    + [Interface Element](#Interface-Element)
+    + [Interface Attr](#Interface-Attr)
+    + [Interface CharacterData](#Interface-CharacterData)
+    + [Interface Text](#Interface-Text)
+    + [Interface ProcessingInstruction (PI)](#Interface-ProcessingInstruction-PI)
+    + [Interface Notation](#Interface-Notation)
+    + [Interface Entity](#Interface-Entity)
+    + [Interface DocumentType](#Interface-DocumentType)
+    + [Other Interfaces](#Other-Interfaces)
+    + [Other classes](#Other-classes)
+  * [JAXP](#JAXP)
+- [XML Databases](#XML-Databases)
+
+<!-- tocstop -->
+
+
 ---
 ## Progress
 
@@ -21,7 +268,7 @@ Saturday:
 - [x] Lec 9
 
 Sunday:
-- [ ] Lec 10
+- [x] Lec 10
 - [ ] Lec 11
 - [ ] Lec 12
 
@@ -1015,7 +1262,12 @@ Supports subelements; mixed content; subqueries
 
 #### XMLFOREST
 
- Constructs a sequence of XML elements for ◼ Optional declaration of namespaces ◼ List of named expressions as arguments  If any of the expressions returns NULL, it is ignored  If all the expressions return NULL, the result is XML value NULL  Each element in the result can be named implicitly or explicitly
+- Constructs a sequence of XML elements for
+  - Optional declaration of namespaces
+  - List of named expressions as arguments 
+- If any of the expressions returns NULL, it is ignored 
+- If all the expressions return NULL, the result is XML value NULL 
+- Each element in the result can be named implicitly or explicitly
 
 ![4b232a64.png](attachments/15e42996-b386-4d59-87af-840ece336296/4b232a64.png)
 
@@ -1025,7 +1277,13 @@ Supports subelements; mixed content; subqueries
 
 #### XMLAGG
 
- XMLAGG is an aggregation function ◼ Similar to SUM, AVG from SQL  The argument for XMLAGG must be an XML expression  For each row in a group G, we evaluate the expression and the resulting XML values are concatenated so that they form a single XML value for the whole group G  For sorting we can use clause ORDER BY  All NULL values are ignored for the concatenation ◼ If all the concatenated values are NULL or the group is empty, the result is NULL
+- XMLAGG is an aggregation function
+  - Similar to SUM, AVG from SQL
+- The argument for XMLAGG must be an XML expression
+- For each row in a group G, we evaluate the expression and the resulting XML values are concatenated so that they form a single XML value for the whole group G 
+- For sorting we can use clause ORDER BY 
+- All NULL values are ignored for the concatenation 
+  - If all the concatenated values are NULL or the group is empty, the result is NULL
 
 ![b053637c.png](attachments/15e42996-b386-4d59-87af-840ece336296/b053637c.png)
 
@@ -3635,22 +3893,666 @@ Rules:
 - XSLT
 
 ---
-## SAX
+## Parsers
+
+Problem: We want to process XML data
+- Read it in a particular SW
+
+
+- XML document = text document → we can read the document as a text
+  - Demanding, user-unfriendly, inefficient,…
+- Solution: While processing XML data, we need to know what is element, attribute, text, comment, … → we are interested in Infoset of the XML document
+- XML parser = SW which provides an application with an interface to the Infoset of input XML data 
+
+![e75be396.png](attachments/15e42996-b386-4d59-87af-840ece336296/e75be396.png)
+
+### Types of parsers
+
+1. Sequential
+    - Fast, require less memory
+    - A single linear traversal of the data
+    - Push vs. pull parser
+    - A stream of events vs. reading when required
+2. Tree representations
+    - The whole document is read into memory
+    - Repeatable and non-sequential traversal
+    - Memory requirements, inefficient
+
+
+1. Validating 
+    - Can check validity of the data against an XML schema
+2. Non-validating
+
+![760b555c.png](attachments/15e42996-b386-4d59-87af-840ece336296/760b555c.png)
+
+1. With(out (2.)) support for PSVI
 
 
 
-### StAX
+### SAX
+
+~ Simple API for XML
+
+Reading a part of document = event
+- We can define a handler 
+
+![555e5920.png](attachments/15e42996-b386-4d59-87af-840ece336296/555e5920.png)
+
+#### Interface - ContentHandler
+
+- Attributes are a part of parameters of `startElement()`
+
+```java
+void startDocument () 
+void endDocument () 
+void startElement (String uri, String localName, String qName, Attributes atts)
+void endElement (String uri, String localName, String qName) 
+void characters (char[] ch, int start, int length) 
+void processingInstruction (String target, String data) 
+void ignorableWhitespace (char[] ch, int start, int length)
+void startPrefixMapping (String prefix, String uri) 
+void endPrefixMapping (String prefix) 
+void skippedEntity (String name) 
+void setDocumentLocator (Locator locator)
+```
+
+##### startElement()
+
+- String uri
+  - URI of element namespace
+- String localName
+  - Local name
+- String qName
+  - Qualified name
+- Attributes atts
+
+```java
+for (int i = 0; i < atts.getLength (); i++ ) 
+{ 
+  System.out.println (atts.getQName (i));
+  System.out.println (atts.getValue (i)); 
+}
+```
+
+##### Interface attributes
+
+- `int getLength ()`
+  - Returns the number of attributes in the list of attributes
+- `int getIndex (String qName)`
+  - Returns the index of attribute with the given (qualified) name 
+- `int getIndex (String uri, String localName)`
+  - Returns the index of attribute with the given local name and URI of namespace
+- `String getLocalName (int index)`
+  - Returns the local name of attribute with the given index
+- `String getQName (int index)`
+  - Returns the qualified name of attribute with the given index
+- `String getURI (int index)`
+  - Returns the URI of attribute with the given index
+- `String getType (int index) `
+  - Returns the type of attribute with the given index 
+- `String getType (String qName) `
+  - Returns the type of attribute with the given (qualified) name 
+- `String getType (String uri, String localName) `
+  - Returns the type of attribute with the given local name and URI of namespace
+- `String getValue (int index) `
+  - Returns the value of attribute with the given index 
+- `String getValue (String qName) `
+  - Returns the value of attribute with the given (qualified) name 
+- `String getValue (String uri, String localName) `
+  - Returns the value of attribute with the given local name and URI of namespace
+
+##### characters()
+
+SAX parser can buffer the character data arbitrarily → we cannot rely on getting the whole text in a single call of the function
+- `char[] ch`
+  - An array where the character data are stored
+- `int start`
+  - Starting position of the characters in the array 
+- `int length`
+  - Number of characters in the array
+
+##### ignorableWhitespace()
+
+Ignorable white spaces 
+- `char[] ch` 
+  - An array where the character data are stored 
+- `int start` 
+  - Starting position of the characters in the array 
+- `int length` 
+  - Number of characters in the array
+
+##### setDocumentLocator()
+
+```java
+class myContentHandler implements ContentHandler {
+  Locator locator;
+
+  public void setDocumentLocator (Locator locator) {
+    this.locator = locator;
+    }
+  ...
+```
+
+Targeting the place in the document where the event occurred
+- Interface Locator
+  - `int getColumnNumber ()` – column number
+  - `int getLineNumber ()` – row number
+  - `String getPublicId ()` – public identifier of the document (if exists)
+  - `String getSystemId ()` – system identifier of the document (if exists)
 
 
+#### Initialization
 
----
-##  DOM
+```java
+// Creating of an instance of the parser
+XMLReader parser = XMLReaderFactory.createXMLReader ();
+
+// Creating of input stream of data
+InputSource source = new InputSource ("myDocument.xml");
+
+// Setting our own content handler for processing of events 
+parser.setContentHandler (new myContentHandler ());
+
+// Processing of the data
+parser.parse (source);
+```
+
+#### StAX
+
+~ Streaming API for XML
+- http://stax.codehaus.org/Home
+
+Advantages:
+  - DOM: Data traversal is driven by the application; support for data modification 
+  - SAX: Low memory requirements
+  - StAX: Both 
+
+General properties: 
+- Pull parser 
+  - The application does not have to save the context, it decides when to move further 
+- Idea: cursor which we can move through the data 
+  - Raw vs. object-based data access
+
+- developer can build the tree if needed
+- 
+##### Initialization
+
+```java
+while (eventReader.hasNext()) { 
+  XMLEvent event = eventReader.nextEvent(); 
+  
+  if (event.getEventType() == XMLStreamConstants.START_ELEMENT) { 
+    StartElement startElement = event.asStartElement(); 
+    System.out.println(startElement.getName().getLocalPart());
+  }
+}
+```
+
+Events: ATTRIBUTE, CDATA, CHARACTERS, COMMENT, DTD, END_DOCUMENT, END_ELEMENT, ENTITY_DECLARATION, ENTITY_REFERENCE, NAMESPACE, NOTATION_DECLARATION, PROCESSING_INSTRUCTION, SPACE, START_DOCUMENT, START_ELEMENT 
+
+- start element doesnt have attributes - it is a separate event
+
+##### XMLEventReader
+
+XMLEvent
+- Reads XML data
+- Knows where we are in the document
+  - Column, row 
+- Can be transformed to particular (XML) object: 
+  - asStartElement – element name, attribute, namespaces
+  - asEndElement – element name, namespaces
+  - asCharacters – text data 
+    - CDATA sections, white spaces, ignorable white spaces, …
 
 
+##### XMLEventWriter
+
+```java
+// we create XMLOutputFactory
+XMLOutputFactory factory = XMLOutputFactory.newInstance();
+// we create serializer of events
+XMLEventWriter writer = factory.createXMLEventWriter (new FileWriter("myData2.xml"));
+// we create XMLEventFactory to create events
+XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+
+
+XMLEvent event = eventFactory.createStartDocument();
+writer.add(event);
+
+event = eventFactory.createStartElement ("employee", "http://mynamespace.com", “mns");
+writer.add(event);
+
+event = eventFactory.createNamespace ("mns", "http://mynamespace.com"); 
+writer.add(event);
+
+event = eventFactory.createAttribute ("number", "1234");
+writer.add(event);
+
+event = eventFactory.createEndElement ("employee", "http://mynamespace.com", “mns");
+writer.add(event);
+
+writer.flush(); 
+writer.close();
+```
+
+##### XMLStreamReader
+
+```java
+while (streamReader.hasNext()) {
+  streamReader.next(); 
+
+  if (streamReader.getEventType() == XMLStreamReader.START_ELEMENT) { 
+    System.out.println(streamReader.getLocalName());
+  }
+} 
+```
+
+Main difference: When we move cursor (next()), we loose information on the previous event
+- XMLEventReader returns the event as an object – we can store it
+
+##### XMLStreamWriter
+
+```java
+XMLOutputFactory factory = XMLOutputFactory.newInstance();
+XMLStreamWriter writer = factory.createXMLStreamWriter( new FileWriter("myData2.xml"));
+
+writer.writeStartDocument();
+writer.writeStartElement("employee");
+writer.writeStartElement("data");
+writer.writeAttribute("number", "1234");
+writer.writeEndElement();
+writer.writeEndElement();
+writer.writeEndDocument(); 
+writer.flush();
+writer.close();
+```
+
+###  DOM
+
+~ Document Object Model 
+
+W3C standard
+- Versions: Level (0), 1, 2, 3
+  - Level 0 = DOM-like technologies before standardization by W3C 
+
+- The whole document is loaded into memory
+- Tree representation
+- Nodes of the tree are represented as objects
+  - Document, document fragment, DTD declaration, element, attribute, text, CDATA section, comment, entity, entity reference, notation, processing instruction 
+  - Methods of objects are given by the DOM specification 
+  - Child nodes of objects are given by XML Infoset
+
+
+![2194e65a.png](attachments/15e42996-b386-4d59-87af-840ece336296/2194e65a.png)
+
+#### Initialization
+
+Load, parse, process
+```java
+// DocumentBuilderFactory creates DOM parsers
+DocumentBuilderFactory dbf = documentBuilderFactory.newInstance ();
+
+// we do not want to validate (and other parameters can be set)
+dbf.setValidating (false);
+
+// we create a DOM parser
+DocumentBuilder builder = dbf.newDocumentBuilder ("myDocument.xml");
+
+// the parser processes the documents and builds the tree
+Document doc = builder.parse ();
+
+// we process the DOM tree
+processTree (doc);
+```
+
+Store
+```java
+// TransformerFactory creates DOM serializers
+TransformerFactory tf = TransformerFactory.newInstance ();
+
+// Transformer serializes DOM trees 
+Transformer writer = tf.newTransformer ();
+
+// we set encoding
+writer.setOutputProperty (OutputKeys.ENCODING, "windows-1250");
+
+// we start transformation of DOM tree into a document
+writer.transform (new DOMSource (doc), new StreamResult (new File ("outputDocument.xml")));
+```
+
+#### Hierarchy
+
+![0646232e.png](attachments/15e42996-b386-4d59-87af-840ece336296/0646232e.png)
+
+| Node                  | Child Nodes                                                                       |
+| --------------------- | --------------------------------------------------------------------------------- |
+| Document              | Element (at most one), ProcessingInstruction, Comment, DocumentType (at most one) |
+| DocumentFragment      | Element, ProcessingInstruction, Comment, Text, CDATASection, EntityReference      |
+| Element               | Element, Text, Comment, ProcessingInstruction, CDATASection, EntityReference      |
+| Attr                  | Text, EntityReference                                                             |
+| Text                  |                                                                                   |
+| CharacterData         |                                                                                   |
+| ProcessingInstruction |                                                                                   |
+| Comment               |                                                                                   |
+| CDATASection          |                                                                                   |
+| Entity                | Element, ProcessingInstruction, Comment, Text, CDATASection, EntityReference      |
+| EntityReference       | Element, ProcessingInstruction, Comment, Text, CDATASection, EntityReference      |
+| Notation              |                                                                                   |
+| DocumentType          |                                                                                   |
+
+#### Interface Node
+
+- `String getNodeName ()` - good for attribute or element
+- `short getNodeType ()` - type
+- `String getNodeValue () ` - value
+
+
+- `String getBaseURI ()`
+- `String getPrefix ()`
+- `void setPrefix (String prefix)`
+- `String getLocalName ()` - local name
+- `String getNamespaceURI () `
+- `String lookupNamespaceURI (String prefix) `
+- `String lookupPrefix (String namespaceURI)`
+- `boolean isDefaultNamespace (String namespaceURI) `
+
+
+- `boolean hasAttributes ()` 
+- `boolean hasChildNodes ()`
+
+
+- `Node getParentNode () ` - parent
+- `Node getPreviousSibling ()` - siblings
+- `Node getNextSibling ()`- siblings
+- `NodeList getChildNodes ()`- child
+- `Node getFirstChild ()`
+- `Node getLastChild () `
+
+
+- `NamedNodeMap getAttributes ()` - attributes
+- `String getTextContent ()`
+- `Document getOwnerDocument ()`
+  - Returns Document associated with the node
+
+
+- `Node removeChild (Node oldChild)` - remove 
+- `Node replaceChild (Node newChild, Node oldChild) ` - replace
+- `Node appendChild (Node newChild)` - append/add
+- `Node insertBefore (Node newChild, Node refChild) ` - insert
+
+- `Node cloneNode (boolean deep)` - clone
+- `void setNodeValue (String nodeValue)`
+- `void setTextContent (String textContent) `
+
+
+- `void normalize ()` - "cleanup"
+  - Normalizes all text sub-nodes, i.e. merges text contents and eliminates the empty ones
+
+
+- `boolean isEqualNode (Node arg)`
+- `boolean isSameNode (Node other)` - xpath `is`
+- `short compareDocumentPosition (Node other)`
+  - Compares positions of Nodes in the document
+
+
+- can add user data to a node in the tree - only while processing, not serialized to .xml file
+- `Object getUserData (String key)`
+  - Returns an Object associated with key 
+- `Object setUserData (String key, Object data, UserDataHandler handler)`
+  - Associates an Object with a key
+  - Handler is a callback which will be called any time the node is being cloned, imported, renamed, as well as if deleted or adopted 
+
+
+- `Object getFeature (String feature, String version)`
+  - Returns an Object with a given feature with a given version
+- `boolean isSupported (String feature, String version)`
+  - Tests if the implementation supports the given feature with the given version
+
+![b788b262.png](attachments/15e42996-b386-4d59-87af-840ece336296/b788b262.png)
+
+##### Examples of processing Child Nodes vs. Attributes
+
+```java
+for (Node child = n.getFirstChild();
+     child != null;
+     child = child.getNextSibling())
+   {
+     processChildNode(child); 
+   }
+
+NamedNodeMap atts = n.getAttributes();
+for (int i = 0; i < atts.getLength(); i++)
+  { 
+    Node att = atts.item(i);
+    processAttribute(att);
+  }
+```
+
+#### Interface Document
+
+- `Attr createAttribute (String name)` - create attr
+- `Attr createAttributeNS (String namespaceURI, String qualifiedName)`
+- `CDATASection createCDATASection (String data)`
+- `Comment createComment (String data)`
+- `DocumentFragment createDocumentFragment () `
+- `Element createElement (String tagName) ` - create element
+- `Element createElementNS (String namespaceURI, String qualifiedName) `
+- `EntityReference createEntityReference (String name) `
+- `ProcessingInstruction createProcessingInstruction (String target, String data) `
+- `Text createTextNode (String data) ` - create text node
+
+
+- `Element getElementById (String elementId)` - get by ID
+  - Returns an element with a given value of attribute of type ID 
+- `NodeList getElementsByTagName (String tagname)` - get by tag name
+- `NodeList getElementsByTagNameNS (String namespaceURI, String localName)` 
+
+
+- `Element getDocumentElement ()`
+- `DocumentType getDoctype () `
+
+
+- `Node renameNode (Node n, String namespaceURI, String qualifiedName)`
+- `Node adoptNode (Node source) `
+  - Appends Node to current document
+- `Node importNode (Node importedNode, boolean deep)`
+  - Imports a node to current document, i.e. creates its copy
+
+
+- `String getInputEncoding ()`
+  - Returns encoding used when parsing
+- `String getXmlEncoding () ` - get encoding
+- `DOMImplementation getImplementation ()`
+  - Returns implementation (DOMImplementation) associated with the document
+- `DOMConfiguration getDomConfig ()`
+  - Returns configuration for normalization of nodes 
+
+
+- `boolean getXmlStandalone () `
+- `String getXmlVersion ()` - get version
+- `String getDocumentURI ()`
+- `void setXmlStandalone (boolean xmlStandalone)`
+- `void setXmlVersion (String xmlVersion)`
+- `void setDocumentURI (String documentURI) `
+
+
+- `void normalizeDocument ()` - "cleanup"
+  - Normalizes XML document, i.e. replaces all references to entities and normalizes text values
+
+
+- `boolean getStrictErrorChecking ()`
+  - Checks whether error checking is given by the specification or depends on the implementation
+- `void setStrictErrorChecking (boolean strictErrorChecking)`
+  - Sets whether error checking is given by the specification or depends on the implementation
+
+#### Interface Element
+
+- `String getTagName ()` - name
+  - Returns the element name
+
+- `NodeList getElementsByTagName (String name)` - in sub-tree
+  - Returns the NodeList of all child elements with the given name
+- `NodeList getElementsByTagNameNS (String namespaceURI, String localName)
+  - Returns the NodeList of all child elements with the given local name and URI
+
+- `String getAttribute (String name)` - attr
+  - Returns the value of attribute with the given name
+- `Attr getAttributeNode (String name)`
+  - Returns the attribute with the given name
+- `Attr getAttributeNodeNS (String namespaceURI, String localName)`
+  - Returns the attribute with the given local name and URI
+- `String getAttributeNS (String namespaceURI, String localName)`
+  - Returns the value of attribute with the given local name and URI
+
+
+- `boolean hasAttribute (String name)`
+- true = the element has an attribute wit the given name
+- `boolean hasAttributeNS (String namespaceURI, String localName)`
+- true = the element has and attribute with the given local name and URI
+
+- `void removeAttribute (String name)`
+- Removes attribute with the given name
+- `Attr removeAttributeNode (Attr oldAttr)`
+- Removes the given attribute node
+- `void removeAttributeNS (String namespaceURI, String localName)`
+- Removes attribute with the given local name and URI
+
+- `TypeInfo getSchemaTypeInfo ()`
+- Type information for the given element
+
+- `void setAttribute (String name, String value)`
+- Adds a new attribute with the given name and value 
+- `Attr setAttributeNode (Attr newAttr) `
+- Adds a new attribute node, replaces if it exists 
+- `Attr setAttributeNodeNS (Attr newAttr) `
+- Adds a new attribute node, replaces if it exists and takes into account also namespaces
+- `void setAttributeNS (String namespaceURI, String qualifiedName, String value)`
+- Adds a new attribute with the specified parameters
+
+- `void setIdAttribute (String name, boolean isId)`
+- Changes attribute type from/to ID 
+- `void setIdAttributeNode (Attr idAttr, boolean isId)`
+- Changes attribute type from/to ID`
+- `void setIdAttributeNS (String namespaceURI, String localName, boolean isId)`
+- Changes attribute type from/to ID
+
+```java
+public Node createEmployee(Document document) {
+  Element firstName = document.createElement("FirstName"); 
+  firstName.appendChild(document.createTextNode("Shawn"));
+
+  Element lastName = document.createElement("LastName"); 
+  lastName.appendChild(document.createTextNode("Michaels"));
+
+  Attr genderAttribute = document.createAttribute("gender"); 
+  genderAttribute.setValue("M");
+
+  Element employee = document.createElement("Employee"); 
+  employee.setAttributeNode(genderAttribute); employee.appendChild(firstName); 
+  employee.appendChild(lastName);
+  
+  return employee; 
+  }
+```
+
+#### Interface Attr
+
+- `String getName () ` - name
+  - Returns attribute name 
+- `String getValue () ` - value
+  - Returns attribute value 
+- `void setValue (String value) `
+  - Sets attribute value
+- `Element getOwnerElement () ` - can be useful
+  - Returns the element node of the attribute 
+- `TypeInfo getSchemaTypeInfo () `
+  - Returns information on attribute type 
+- `boolean getSpecified () `
+  - true = the attribute was explicitly specified in the document
+- `boolean isId ()`
+  - true = the attribute is of type ID
+
+#### Interface CharacterData 
+
+- `String getData ()` - get
+  - Returns the text data 
+- `int getLength () `
+  - Returns the length of the data 
+- `String substringData (int offset, int count) `
+  - Returns the required substring of the data 
+- `void setData (String data) ` - set
+  - Sets the text data
+- `void insertData (int offset, String arg) ` - insert
+  - Inserts a part of the data at the specified index 
+- `void appendData (String arg)` - append
+  - Appends a new part of the data at the end
+- `void deleteData (int offset, int count) `
+  - Removes the specified part part of the data 
+- `void replaceData (int offset, int count, String arg)`
+  - Replaces the specified part of the data
+
+#### Interface Text 
+
+Methods of CharacterData plus:
+- `String getWholeText () ` - get all text
+  - Returns the text content of all logically neighbouring text child nodes connected into one
+- `Text replaceWholeText (String content) `
+  - Replaces textual content of all logically neighbouring text child nodes
+- `boolean isElementContentWhitespace () ` - if it is valid text
+  - true = the text node contains insignificant white spaces 
+- `Text splitText (int offset)`
+  - Splits the text at the given position into two
+
+#### Interface ProcessingInstruction (PI) 
+
+#### Interface Notation 
+
+#### Interface Entity 
+
+#### Interface DocumentType 
+
+#### Other Interfaces
+- Interface DocumentFragment 
+  - Just methods of Node 
+- Interface EntityReference 
+  - Just methods of Node 
+- Interface CDATASection 
+  - Methods of Node, Text and CharacterData 
+- Interface Comment
+  - Methods of Node and CharacterData
+
+#### Other classes
+
+E.g. DOMLocator 
+- DOM Level 3 
+- Similar to SAX locator 
+- Attributes: lineNumber, columnNumber, relatedNode, …
+- One of properties of class DOMError 
+  - Parameter of method handleError of class DOMErrorHandler which is a 
+    - property of class DOMConfiguration which is a 
+      - property of class Document (but from Level 3)
+
+### JAXP
+
+~ Java API for XML Processing
+
+-https://jaxp.java.net/ 
+- http://java.sun.com/j2ee/1.4/docs/tutorial/doc/ 
+
+
+- JAXP 1.3 is a part of J2SE 5.0 
+- JAXP 1.4 is a part of Java SE 6.0.
+  - Corrected errors in JAXP 1.3 + support for StAX 
+- Parsing, validation, transformation
+  - XML 1.0, XML 1.1 
+  - SAX 2.0.2 
+  - StAX 1.0 
+  - DOM Level 3 Core, DOM Level 3 Load and Save
+  - XInclude 1.0, W3C XML Schema 1.0, XSLT 1.0, XPath 1.0 
 
 ---
 ## XML Databases
 
-
+###
 
 ---
