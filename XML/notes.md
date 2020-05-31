@@ -243,6 +243,33 @@
     + [Other classes](#Other-classes)
   * [JAXP](#JAXP)
 - [XML Databases](#XML-Databases)
+  * [Documents vs. Databases](#Documents-vs-Databases)
+  * [Documents and Structured Data](#Documents-and-Structured-Data)
+  * [Classification of XML Documents](#Classification-of-XML-Documents)
+    + [Implementation Approaches](#Implementation-Approaches)
+    + [Data-oriented XML Documents](#Data-oriented-XML-Documents)
+      - [Techniques](#Techniques)
+    + [Document-oriented XML Documents](#Document-oriented-XML-Documents)
+      - [Techniques](#Techniques-1)
+  * [Numbering Schemas](#Numbering-Schemas)
+    + [Dietz Numbering](#Dietz-Numbering)
+    + [Depth-first (DF) Numbering](#Depth-first-DF-Numbering)
+    + [ORDPATH](#ORDPATH)
+    + [XML Databases - Mapping Methods](#XML-Databases---Mapping-Methods)
+    + [Generic Methods](#Generic-Methods)
+      - [Table-based Mapping](#Table-based-Mapping)
+      - [Generic-tree Mapping](#Generic-tree-Mapping)
+      - [Structure-centred Mapping](#Structure-centred-Mapping)
+      - [Simple-path Mapping](#Simple-path-Mapping)
+    + [Schema-driven Mapping](#Schema-driven-Mapping)
+      - [Fixed methods](#Fixed-methods)
+        * [Basic, Shared and Hybrid](#Basic-Shared-and-Hybrid)
+      - [Flexible methods](#Flexible-methods)
+        * [LegoDB mapping](#LegoDB-mapping)
+        * [Hybrid object-relational mapping](#Hybrid-object-relational-mapping)
+    + [User-defined Mapping](#User-defined-Mapping)
+      - [Example – system XCacheDB](#Example-–-system-XCacheDB)
+  * [Current State of the Art of XML Databases](#Current-State-of-the-Art-of-XML-Databases)
 
 <!-- tocstop -->
 
@@ -269,8 +296,8 @@ Saturday:
 
 Sunday:
 - [x] Lec 10
-- [ ] Lec 11
-- [ ] Lec 12
+- [x] Lec 11
+- [x] Lec 12
 
 ---
 
@@ -4536,7 +4563,7 @@ E.g. DOMLocator
 
 ~ Java API for XML Processing
 
--https://jaxp.java.net/ 
+- https://jaxp.java.net/ 
 - http://java.sun.com/j2ee/1.4/docs/tutorial/doc/ 
 
 
@@ -4553,6 +4580,539 @@ E.g. DOMLocator
 ---
 ## XML Databases
 
-###
+Motivation: requirements of applications
+- Processing of external data
+  - Web pages, other textual data, structured data 
+- E-commerce 
+  - Lists of goods, personalized views of the lists, orders, invoices, … 
+- Integration of heterogeneous information resources 
+  - Integrated processing of data from Web pages and from relational databases 
+
+Main reason: storing XML data into databases means management of huge volumes of XML data in an efficient way
+
+What we want: persistent storage of XML data
+- General classification:
+  - Based on a file system
+  - Based on an object model
+  - Based on (object-)relational databases 
+    - XML-enabled databases 
+    - Exploit a mapping method between XML data and relations 
+  - Native XML databases 
+    - Exploit a suitable data structure for hierarchical tree data
+    - Usually a set of numbering schemas
+
+The most efficient approaches are the native ones
+- Reason: From the beginning they target the XML data structure
+  - They are based on it 
+- Disadvantage: We need to start from scratch 
+  - The databases are not only about storing the data, but also transactions, versioning, multi-user access, replication, …
+
+
+- An alternative intuitive idea: Exploitation of a mature and verified technology of (object-) relational databases
+
+
+### Documents vs. Databases
+
+| World of documents           | World of databases          |
+| ---------------------------- | --------------------------- |
+| many small documents         | several huge databases      |
+| usually static               | usually dynamic             |
+| implicit structure - tagging | explicit structure - schema |
+| suitable for humans          | suitable for machines       |
+|                              |                             |
+| editing                      | updating                    |
+| printing                     |                             |
+| lexical checking             | data cleaning               |
+| word count                   |                             |
+| information retrieval        | querying                    |
+| searching                    | storing/transforming        |
+
+### Documents and Structured Data
+
+- The border between the world of documents and world of databases is not exact 
+  - In some proposals both kinds of access are possible 
+  - Somewhere in the middle we can find formatting languages and semi-structured data 
+- Semi-structured data are defined as data which are not sorted (have arbitrary order), which are not complete (have optional parts) and whose structure can "unpredictably" change 
+  - Web data, HTML pages, Bibtex files, biological and chemical data
+  - XML data are a kind of semi-structured data
+
+### Classification of XML Documents
+
+The basic classification of XML documents results from their origin and the way they were created
+- data-oriented
+- document-oriented 
+- hybrid
+
+For the particular classes different ways of implementations are suitable
+
+#### Implementation Approaches
+
+Differ according to the type of documents
+- Exploit typical features
+- Problem: hybrid documents
+  - Ambiguous classification
+
+
+- Document-oriented techniques
+vs.
+- Data-oriented techniques
+
+#### Data-oriented XML Documents
+
+- Usually created and processed by machines
+- Regular, deep structure
+  - Fully structured data 
+- They do not contain
+  - Mixed-content elements
+  - CDATA sections
+  - Comments 
+  - Processing instructions
+- The order of sibling elements is often unimportant 
+
+Example: database exports, catalogues, …
+
+```xml
+<book id="12345">
+  <title>All I Really Need To Know I Learned in Kindergarten</title> 
+  <author>
+    <name>Robert</name> 
+    <surname>Fulghum</surname>
+  </author>
+  <edition title="Argo"> 
+    <year>2003</year>
+    <ISBN>80-7203-538-X</ISBN>
+  </edition>
+  <edition title="Argo">
+    <year>1996</year> 
+    <ISBN>80-7203-028-0</ISBN>
+  </edition>
+</book>
+```
+
+##### Techniques
+
+Exploit data-oriented aspects (low level of round tripping)
+- It is not necessary to preserve the document as a whole
+  - Order of sibling elements is ignored, document-oriented constructs (comments, whitespaces, …) are ignored, …
+- No (little) support for mixed-content elements
+1. Middleware
+    - A separate software which ensures transformation of XML data between XML documents and relations
+2. XML-enabled database
+    - RDBMS with functions and extensions for XML data support
+3. Special related approach: XML data binding
+    - Methods for binding of XML data and objects
+    - For each element type a separate class
+      - Its attributes and subelements form properties of the class
+      - I.e. it is not a DOM tree of objects!
+4. Mapping
+    - Idea: The data are stored in a relational database management system (RDBMS) 
+    - Mapping method – transforms the data into relations (and back) 
+    - XML queries over XML data → SQL queries over relations
+    - The result of SQL query → XML document
+
+#### Document-oriented XML Documents
+
+- Usually created and processed by humans 
+- Irregular, less structured 
+  - Semi-structured data 
+- Often contain 
+  - Mixed-content elements 
+  - CDATA sections 
+  - Comments 
+  - Processing instructions 
+- The order of sibling elements is crucial 
+
+Example: XHTML web pages
+
+```xml
+<book id="12345">
+  <title>All I Really Need To Know I Learned in Kindergarten</title> 
+  <author>Robert Fulghum</author>
+  <description>A new, edited and extended publication published on the occasion of the fifteen anniversary of the first edition</description> 
+  <Text> <p>Fifteen years after publishing of <q>his</q> <i>Kindergarten</i> Robert Fulghum has decided to read it once again, now in <i>2003</i>.</p> <p>He wanted to find out whether and, if so, to what extent his opinions have changed and why. Finally, he modified and extended his book to...</p> 
+  </Text>
+</book>
+```
+
+##### Techniques
+
+We need to preserve the document as whole
+- Order of sibling elements
+- Comments, CDATA sections, ...
+- Even whitespaces
+  - For legal documents
+
+Round tripping – storing a document into a database and its retrieval 
+- The level of round tripping says to what extent the documents are similar
+  - The higher level, the higher similarity 
+- In the optimal case they are equivalent
+
+1. Native XML databases (NXD) 
+    - Natural support for XML operations
+      - XML query languages, XML update operations, DOM/SAX interfaces, … 
+      - Focus on document-oriented aspects
+        - Comments, CDATA sections, … 
+    - The logical model is based on XML 
+      - i.e. we work with trees 
+    - The physical model can be, e.g., relational 
+      - i.e. we can physically store the trees, e.g., into relations
+    - (+) Good level of round tripping
+    - (–) The index (numbering schema) is (used to be) several times bigger than the data, necessity to start from scratch (transactions, replication, multi-user access, query optimization, …)
+2. LOB
+    - Storing of the whole document into a BLOB (binary large object) / CLOB (character large object) column
+      - Possible in all known database systems
+    - (+) The highest level of round tripping, fast retrieval of the whole document, extending of XML data with database features
+    - (–) No XML operations 
+      - The data need to be extracted from the DB and pre-processed
+3.  XML data type
+    - Like a LOB with the support for XML operations 
+      - XML querying, XML full-text search
+      - Requires special indices (numbering schemas)
+    - SQL/XML
+
+### Numbering Schemas
+
+A numbering schema of a tree model of a document is a function which assigns each node a unique identifier that serves as a reference to that node for indexing and query evaluation 
+
+Enable fast evaluation of selected relationships among nodes of XML document
+- Ancestor-descendant
+- Parent-child
+- Element-attribute
+- …
+- Depth of the node
+- Order among siblings
+- …
+
+> Like database indexes
+
+1. Sequential numbering schema
+   - The identifiers are assigned to the nodes as soon as they are added to the system sequentially, starting from 1
+2. Structural numbering schema
+   - Enables to preserve and evaluate a selected relationship among any two nodes of the document
+   - Often it is expected to enable fast searching for all occurrences of such a relationship in the document
+3. Stable numbering schema
+   - A schema which does not have to be modified (except for preserving its local features) when the structure of the respective data changes 
+     - i.e., on insertion/deletion of nodes
+
+A schema of a structural numbering schema
+- Is an ordered pair `(p, L)`, where `p` is a binary predicate and `L` is an invertible function which for the given XML tree model `T = (N, E) `assigns each node `v ∈ N` a binary sequence `L(v)`.
+- For each pair of nodes `u`, `v ∈ N` predicate `p(L(u), L(v))` is satisfied if `v` is in a particular relationship with `u`.
+  - e.g. `v` is a descendant of u
+- Particular numbering schema: particular `p` and `L`
+
+#### Dietz Numbering
+
+![53c43598.png](attachments/15e42996-b386-4d59-87af-840ece336296/53c43598.png)
+
+- Preorder traversal
+  - Child nodes of a node follow their parent node
+- Postorder traversal
+  - Parent node follows its child nodes
+- Construction of a numbering schema
+  - Each node `v ∈ N` is assigned with a pair `(x,y)` denoting preorder and postorder order
+  - Node `v ∈ N` having `L(v) = (x,y)` is a descendant node of node u having `L(u) = (x',y')` if `x' < x & y' > y`
+
+#### Depth-first (DF) Numbering
+
+![f369273d.png](attachments/15e42996-b386-4d59-87af-840ece336296/f369273d.png)
+
+can be non sequential because it doesnt cause whole tree to be recalculated on insert
+
+#### ORDPATH
+
+prefix and using odd numbers
+
+![a118441e.png](attachments/15e42996-b386-4d59-87af-840ece336296/a118441e.png)
+
+Insert 
+- beginning using negative number
+- end using next odd
+- middle using even number with subnodes
+
+![7c01ecec.png](attachments/15e42996-b386-4d59-87af-840ece336296/7c01ecec.png)
+
+#### XML Databases - Mapping Methods
+
+Methods for transformation between XML data and relations
+Further classification:
+1. Generic – mapping regardless XML schema of the stored XML data
+2. Schema-driven – mapping based on XML schema of the stored XML data 
+    - DTD, XML Schema
+3. User-defined – mapping provided by the user
+
+#### Generic Methods
+
+Do not exploit XML schema of the stored data
+Idea: Not all data have a schema 
+Approaches: 
+1. A relational schema for a particular type of (collection of) XML data 
+    - e.g. Table-based mapping 
+    - > Fixed.
+2. A general relational schema for any type of (collection of) XML data 
+    - View XML data as a general tree
+      - We store the tree
+    - e.g. Generic-tree mapping, Structure-centred mapping, Simple-path mapping
+    - > General
+
+##### Table-based Mapping
+
+```xml
+<Tables>
+  <Table_1>
+    <Row>
+      <Column_1>...</Column_1> 
+      ...
+      <Column_n>...</Column_n>
+    </Row>
+    ... 
+  </Table_1>
+  ... 
+  <Table_n> 
+    <Row>
+      <Column_1>...</Column_1>
+      ...
+      <Column_m>...</Column_m>
+    </Row>
+    ...
+  </Table_n>
+</Tables>
+```
+
+Trivial case
+The schema is an implicit part of the data
+- Only a limited set of documents can be stored 
+
+Typical usage: (export) data transfer among multiple databases
+There exist also more complex schemas, but the idea is the same
+- Basically again usage of (an implicit) schema
+
+##### Generic-tree Mapping 
+
+The target relational schema enables to store any kind of XML data
+- Regardless their XML schema
+
+XML document <--> directed tree
+- Inner nodes have an ID
+- Leaves carry values of attributes or text nodes
+- Outgoing edges of a node represent subelements/attributes of the element represented by ingoing edge of the same node
+- Edges are labeled with element/attribute names
+
+![70a7f90b.png](attachments/15e42996-b386-4d59-87af-840ece336296/70a7f90b.png)
+
+- Edge mapping
+  - `Edge (sourceID, order, label, type, targetID)`
+  - Type: inner edge, element/attribute edge, …
+  - `Edge (..., (1, 2, "name", element, -1), ... (1, 4, "address", inner, 2), ...)`
+
+
+- Attribute mapping
+  - Attribute = name of the edge >> groub by type on Edge mapping
+  - `Edgeattribute (sourceID, order, type, targetID)`
+  - `Edgename(..., (1, 2, element, -1), ... (3, 2, element, -1), ...)`
+
+
+- Universal mapping
+  - `Uni (sourceID, ordera1, typea1, targetIDa1, ... orderak, typeak, targetIDak)`
+    - Outer join of tables from attribute mapping
+    - `a1, ... ak` are all the attribute names in the XML document 
+  - Too many null values 
+
+
+- Normalized universal mapping 
+  - The universal table contains for each name just one record 
+  - Others (i.e. multi-value attributes) are stored in `overflow tables`
+    - From edge mapping
+
+How do we store the leaf values?
+1. Special value tables, each for each data type used 
+2. Value columns in the previous tables 
+    - Many null values (for each data type an extra column)
+    - Or we ignore data types
+3. Other options 
+    - Combination of previous approaches
+    - E.g. attribute mapping for frequent attributes and edge mapping for other
+
+##### Structure-centred Mapping
+
+XML document <--> directed tree
+- All nodes have the same structure: `N = (t, l, c, n)`, where
+  - `t` is the type of node (i.e. ELEM, ATTR, TXT, ...)
+  - `l` is the label of node (if exists) 
+  - `c` is text content of node (if exists)
+  - `n = {N1, ... Nm}` is (possibly empty) list of child nodes
+
+Variants of the algorithm = variants of storing the list of child nodes
+- Aim: efficient operations
+
+Different way of storing the info about child nodes
+
+1. Keys and foreign keys
+    - Each node is assigned with an ID (key) and ID of its parent node (foreign key) 
+    - (+) Simple, efficient updates 
+    - (–) Inefficient queries (joins of many tables) 
+2. DF values 
+    - Node ID = pair `(DFmin, DFmax)`
+      - `DFmin` = the time of visiting a node
+      - `DFmax` = the time of leaving a node 
+    - (+) Efficient querying and reconstruction of a node 
+      - E.g. `v` is a descendant of `u`, if `umin < vmin` and `vmax < umax`
+      - The nodes can be ordered totally
+    - (–) Inefficient updates
+      - In the worst case we need to re-number the whole tree
+    - ![ca0a9989.png](attachments/15e42996-b386-4d59-87af-840ece336296/ca0a9989.png)
+3. SICF (simple continued fraction) values
+    - SICF node identifier = `sigma`, where `qi is element of N` (i = 1, ... k)
+      - Sequence `<q1, ... qk>` identifies the node 
+    - For root node: SICF ID `sigma = <s>`, s \> 1 
+    - ![1163c3c3.png](attachments/15e42996-b386-4d59-87af-840ece336296/1163c3c3.png)
+    - For all other nodes:
+      If node `u` has `SICF ID = <q1, ... qm>` and `n` child nodes `u1, ... un`, then SICF ID of i-th child node is `<q1, ... qm, i>` 
+      - Resembles to ORDPATH 
+      - Does not have its advantages 
+        - We do not use the “trick” with odd and even numbers 
+    - (+) we have a more precise structural information
+    - (–) like in the previous case
+
+##### Simple-path Mapping
+
+Assumption: XPath queries
+Idea: We can store all paths to all nodes in the documents
+- So-called simple paths
+
+```c
+<SimpleAbsolutePathUnit> ::= <PathOp> <SimplePathUnit> |
+                             <PathOp> <SimplePathUnit> ’@’ <AttName>
+<PathOp>                 ::= ’/’
+<SimplePathUnit>         ::= <ElementType> |
+                             <ElementType> <PathOp> <SimplePathUnit>
+```
+
+Just a simple path is not sufficient information
+- It does not contain information about position/order of node in the document
+
+Relational schema:
+- Element (IDdoc, IDpath, Order, Position)
+- Attribute (IDdoc, IDpath, Value, Position)
+- Text (IDdoc, IDpath, Value, Position)
+- Path (IDpath, Value)
+  - Order of an element within its sibling nodes
+  - Position of a word in a text is an integer value
+  - Position of a tag is a real number 
+    - integral part = position of the closest preceding word
+    - decimal fraction = position within tags following the closest preceding word
+
+(+) Efficient processing of XPath queries
+- Implementation of ‘//’ using SQL LIKE
+
+#### Schema-driven Mapping
+
+Based on existence of an XML schema 
+- Usually DTD or XML Schema 
+
+- Algorithm:
+  1. XML schema is mapped to relational schema
+  2. XML data valid against the XML schema are stored into relations
+      - i.e., for data with different structure (XML schema) we have a different relational schema
+- Aim: We want to create an optimal schema with "reasonable" amount of tables and null values and which corresponds to the source XML schema
+
+General characteristics of the algorithms:
+1. For each element we create a relation consisting of its attributes
+2. Subelements with maximum occurrence of one are (instead of to separate tables) mapped to tables of parent elements
+    - so-called inlining
+3. Elements with optional occurrence → nullable columns
+4. Subelements with multiple-occurrence → separate tables 
+    - Element-subelement relationships are mapped using keys and foreign keys
+5. Alternative subelements →
+    - separate tables (analogous to the previous case) or
+    - one universal table (with many nullable fields)
+6. Order of sibling elements (if necessary) → special column 
+7. Mixed-content elements usually not supported
+    - Would require many columns with nullable fields
+8. Despite the previous optimizations a reconstruction of an element requires joining several tables. 
+
+
+- Most of the techniques use an auxiliary graph
+- Classification:
+  - Fixed methods – exploit information only from schema
+    - Basic, Shared and Hybrid
+  - Flexible methods – exploit other information
+    - LegoDB mapping, Hybrid object-relational mapping 
+
+##### Fixed methods
+
+###### Basic, Shared and Hybrid
+
+- Continuous improvements of mapping a DTD to relational schema
+  - One of the first approaches 
+- DTD graph – auxiliary structure for creation of a relational schema
+  - Nodes = elements (occur 1x) / attributes / operators
+  - Directed edges = relationships element-subelement / element-attribute / element-operator / operator-element 
+
+- Note: DTD is first "flattened" and simplified
+  - Contains only operators `*` and `?` `(+ → *, a|b → a?,b?)`
+  - A classical trick
+
+![ed743f6d.png](attachments/15e42996-b386-4d59-87af-840ece336296/ed743f6d.png)
+
+![57bba719.png](attachments/15e42996-b386-4d59-87af-840ece336296/57bba719.png)
+![6e9d18e7.png](attachments/15e42996-b386-4d59-87af-840ece336296/6e9d18e7.png)
+![c0c518a9.png](attachments/15e42996-b386-4d59-87af-840ece336296/c0c518a9.png)
+
+##### Flexible methods
+
+###### LegoDB mapping
+
+![3f400e7a.png](attachments/15e42996-b386-4d59-87af-840ece336296/3f400e7a.png)
+![df11e2e2.png](attachments/15e42996-b386-4d59-87af-840ece336296/df11e2e2.png)
+![64b02a28.png](attachments/15e42996-b386-4d59-87af-840ece336296/64b02a28.png)
+
+###### Hybrid object-relational mapping 
+
+![5370c9ee.png](attachments/15e42996-b386-4d59-87af-840ece336296/5370c9ee.png)
+![8d6e9cb5.png](attachments/15e42996-b386-4d59-87af-840ece336296/8d6e9cb5.png)
+![8b57481d.png](attachments/15e42996-b386-4d59-87af-840ece336296/8b57481d.png)
+
+#### User-defined Mapping
+
+The whole mapping process is defined by the user 
+
+Algorithm:
+1. The user creates the target relational schema
+2. The user specifies the required mapping (using a systemdependent interface)
+    - Usually a declarative interface, annotations in XML schemas, special query languages, ...
+
+- (+) The most flexible approach
+  - The user knows what (s)he wants
+
+- (–) The user must know several advanced technologies, the definition of an optimal relational schema is not an easy task
+
+An attempt to solve the disadvantages of userdefined mapping
+Idea: an implicit method + user-defined local changes
+  - Annotation of schema = user denotes fragments (subtrees) whose storage strategy should be modified
+  - Pre-defined set of allowed changes of mapping
+    - Usually a set of attributes and their values
+
+##### Example – system XCacheDB
+
+- `INLINE` – inline the fragment into parent table
+- `TABLE` – store the fragment into a separate table
+- `BLOB_ONLY` – store the fragment into a BLOB column
+- `STORE_BLOB` – store the fragment implicitly + into a BLOB column
+- `RENAME` – change the name of table of column
+- `DATATYPE` – change the data type of the column
+
+### Current State of the Art of XML Databases
+
+Native databases vs. XML-enabled databases
+- The difference is fading away
+
+- Oracle DB, IBM DB2, MS SQL Server – the storage is defined by the user
+  - BLOB
+  - Native XML storage (typically parsed XML data + ORDPATH numbering schema)
+  - Decomposition into relations – fixed schema-driven or userdriven
+    - Currently user-driven annotations often denoted as obsolete 
+
+
+- Standard bridge between XML and relational world: SQL/XML
 
 ---
