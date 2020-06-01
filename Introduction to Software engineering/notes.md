@@ -45,7 +45,7 @@
         * [Drawbacks](#Drawbacks-2)
   * [Software assesment](#Software-assesment)
     + [CMMI - Capability Maturity Model Integration for Development](#CMMI---Capability-Maturity-Model-Integration-for-Development)
-      - [Capabulity Levels](#Capabulity-Levels)
+      - [Capability Levels](#Capability-Levels)
       - [Maturity levels](#Maturity-levels)
 - [DevOps (external)](#DevOps-external)
   * [High performing teams](#High-performing-teams)
@@ -153,6 +153,7 @@
       - [Autorské právo](#Autorské-právo)
         * [101 o AP](#101-o-AP)
         * [AP v informačních sítích](#AP-v-informačních-sítích)
+        * [Veřejné licence](#Veřejné-licence)
       - [Práva průmyslová](#Práva-průmyslová)
       - [Autorské právo a software](#Autorské-právo-a-software)
       - [Licencování](#Licencování)
@@ -569,7 +570,7 @@ X
   - capability levels - rating of each process of interest
   - maturity levels - rating of the organization
 
-##### Capabulity Levels
+##### Capability Levels
 - Level 0 - incomplete process
   - is not performed at all, may not be performed or in only partial
 - Level 1 - performed process
@@ -1360,7 +1361,7 @@ architecture = abstraction = skeleton
 #### Static architecture
 
 elements = modules
-- collections of wartifacts which need to be developed (source code, data structures ...)
+- collections of artifacts which need to be developed (source code, data structures ...)
 - decomposed to submodules
 - have responsibility
 - doesnt exist at runtime
@@ -1916,7 +1917,7 @@ Třístupňový test
     - DRM occured
     - ochrana databází
 
-####### Veřejné licence
+###### Veřejné licence
 
 změna smíšlení - vynucování otevřenosti a svobody oproti výhradnosti
 
