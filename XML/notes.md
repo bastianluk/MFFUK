@@ -3909,15 +3909,16 @@ More precisely:
 
 Rules: 
 - If the data are stored in database 
-- XQuery 
+  - XQuery 
 - If we want to copy the document with only small changes 
-- XSLT 
+  - XSLT 
 - If we want to extract only a small part of the data 
-- XQuery
+  - XQuery
 - XQuery is easy-to-learn and simpler for smaller tasks 
-- Highly structured data  XQuery 
+- Highly structured data
+  - XQuery 
 - Large applications, re-usable components 
-- XSLT
+  - XSLT
 
 ---
 ## Parsers
