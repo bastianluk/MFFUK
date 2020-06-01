@@ -2,10 +2,6 @@
 
 <!-- toc -->
 
-- [Progress](#Progress)
-  * [Presentations](#Presentations)
-  * [Videos](#Videos)
-  * [Classes](#Classes)
 - [Intro](#Intro)
   * [Well-formed XML document](#Well-formed-XML-document)
     + [Prolog](#Prolog)
@@ -272,44 +268,6 @@
   * [Current State of the Art of XML Databases](#Current-State-of-the-Art-of-XML-Databases)
 
 <!-- tocstop -->
-
-
----
-## Progress
-
-### Presentations
-
-Friday:
-- [x] Lec 1
-- [x] Lec 2
-- [x] Lec 3
-- [x] Lec 4
-
-### Videos
-
-Saturday:
-- [x] Lec 5
-- [x] Lec 6
-- [x] Lec 7
-- [x] Lec 8
-- [x] Lec 9
-
-Sunday:
-- [x] Lec 10
-- [x] Lec 11
-- [x] Lec 12
-
----
-
-### Classes
-
-Monday:
-- [ ] DTD
-- [ ] XPath
-- [ ] XML Schema
-- [ ] XSLT
-- [ ] XQuery
-- [ ] SAX, DOM
 
 ---
 ## Intro
@@ -2049,7 +2007,12 @@ Related attributes of complexType:
     - Default: unqualified 
   - Denote the necessity of qualification of element/attribute names with namespace prefixes
 
- Namespaces: ◼ Namespace of XML Schema language ◼ Target namespace ◼ Implicit namespace  We do not have to use a prefix for defined items ◼ If we do not define a target namespace, this holds implicitly
+Namespaces:
+- Namespace of XML Schema language
+- Target namespace 
+- Implicit namespace 
+  - We do not have to use a prefix for defined items 
+- If we do not define a target namespace, this holds implicitly
 
 ```xml
 <?xml version="1.0" encoding="windows-1250"?>
@@ -2179,7 +2142,8 @@ Content:
   - Derived from the original
 - Using attribute xsi:type
 
-- Attribute block of element complexType ◼ Values: restriction, extension, #all
+- Attribute block of element complexType 
+  - Values: restriction, extension, #all
 
 ```xml
 <Publication>
