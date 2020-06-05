@@ -31,7 +31,7 @@ data FieldCell =
 instance Show FieldCell where
   show (FieldCell state count _) = case state of
     Shown -> pad (show count)
-    Hidden -> pad (show state)--pad (show count) --pad (show state)
+    Hidden -> pad (show state)
 instance Eq FieldCell where
   (FieldCell state1 count1 position1)==(FieldCell state2 count2 position2) = position1==position2
 
