@@ -8,17 +8,22 @@ import Data.STRef
 import Data.Char
 import Data.List
 import Data.Time
+-- for random seed purposes
 import System.IO.Unsafe
 
+-- State of cell
 data State = Hidden | Shown
 instance Show State where
   show Hidden = "."
   show Shown = "Impossible"
 
+-- if a mine is there >> -1 or else adjecent mines count
 type MinesCount = Int
 
+-- for cross-checking
 type Position = (Int, Int)
 
+-- FieldCell
 data FieldCell = 
   FieldCell State
             MinesCount
@@ -30,6 +35,7 @@ instance Show FieldCell where
 instance Eq FieldCell where
   (FieldCell state1 count1 position1)==(FieldCell state2 count2 position2) = position1==position2
 
+-- Field of Rows of FieldCells - rows not represented as separate type
 data Field = 
   Field [[FieldCell]]
 instance Show Field where
@@ -41,6 +47,11 @@ showRow :: [FieldCell] -> String
 showRow (field:[]) = show field ++ "\n"
 showRow (field:fields) = show field ++ " " ++ showRow fields
 
+----
+-- # Helpers
+----
+
+-- For Field printing purposes
 getHeader :: Int -> String
 getHeader length = pad "*" ++ (printHeading (take length heading)) ++ "\n"
 printHeading :: [String] -> String
@@ -49,11 +60,6 @@ printHeading (n:ns) = n ++ printHeading ns
 heading :: [String]
 heading = [ addPadding 4 [char] | char <- ['A' .. 'Z'] ]
 
-
-
-----
--- # Helpers
-----
 
 -- Mapping on Field
 mapField :: Field -> (FieldCell -> FieldCell) -> Field
