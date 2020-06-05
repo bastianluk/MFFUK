@@ -1,4 +1,4 @@
--- Minesweeber with a Devil
+-- Minesweeper with a Devil
 
 import System.Random
 import Data.Array.ST
@@ -10,18 +10,6 @@ import Data.List
 import Data.Time
 import System.IO.Unsafe
 
---data HiddenState = Hidden | Bomb
---instance Show HiddenState where
---  show Hidden = "."
---  show Bomb = "Impossible"
-
---data ShownState = Shown | Marked
---instance Show ShownState where
---  show Shown = "Impossible"
---  show Marked = "x"
-
--- States of cells on a board
--- Safe, Marked and Mines1-8 represent the revealed state, Bomb is losing state and NotRevealed is default state
 data State = Hidden | Shown
 instance Show State where
   show Hidden = "."
@@ -84,15 +72,34 @@ addPadding n st
  where
  len = length st
 
+-- Filters
+filterHidden :: [FieldCell] -> [FieldCell]
+filterHidden = filter isNotShown
+  where
+    isNotShown (FieldCell Hidden _ _) = True
+    isNotShown _ = False
+--
+filterZeroNeighbours :: [FieldCell] -> [FieldCell]
+filterZeroNeighbours = filter isZero
+  where
+    isZero (FieldCell _ (0) _) = True
+    isZero _ = False
+--
+filterBombs :: [FieldCell] -> [FieldCell]
+filterBombs = filter isBomb
+  where
+    isBomb (FieldCell _ (-1) _) = True
+    isBomb _ = False
+
 
 
 ----
 -- # Game
 ----
 
---playDevilMines
+--Main
+playDevilMines :: IO ()
 playDevilMines = playGame 1 getGameReady
--- :: [[Int]] -> (Int,Int) -> [(Int,Int)]
 
 playGame :: Int -> Field -> IO ()
 playGame turn field = do {
@@ -114,11 +121,13 @@ playGame turn field = do {
       }   
 }
 
+-- nextTurn decides based on a check if it is a win or one more turn should be played.
 nextTurn :: Int -> Field -> IO ()
 nextTurn turn field = if (checkWin field)
   then do { putStr "YOU WON!\n" ; return () }
   else playGame turn field
 
+-- If only bombs are not revealed > win
 checkWin :: Field -> Bool
 checkWin (Field field) = (bombCount == notShownCount)
   where
@@ -126,27 +135,25 @@ checkWin (Field field) = (bombCount == notShownCount)
     bombCount = length (filterBombs flattenedField)
     notShownCount = length (filterHidden flattenedField)
 
-filterHidden :: [FieldCell] -> [FieldCell]
-filterHidden = filter isNotShown
-  where
-    isNotShown (FieldCell Hidden _ _) = True
-    isNotShown _ = False
 
-
+-- Prints the info for a turn and the current field.
 showField :: Int -> Field -> IO ()
 showField turn field = putStr ("Turn: " ++ pad (show turn) ++ "\n" ++ show field)
 
+-- Bomb checking logic
 devil :: Int -> FieldCell -> Field -> Bool
 devil turn (FieldCell state count position) field = if (count==(-1))
   then True
+  -- After a set amount of turns - devil comes out.
   else if (turn > 10)
     then devilTurn (FieldCell state count position) field
     else False
 
+-- Devils logic - not present
 devilTurn :: FieldCell -> Field -> Bool
 devilTurn (FieldCell state count position) field = False
 
-
+-- Updates all the nodes that are supposed to be revealed.
 updateField :: Field -> FieldCell -> Field
 updateField field (FieldCell state count position) = if count==0
   then updateToShown toUpdate field
@@ -155,20 +162,10 @@ updateField field (FieldCell state count position) = if count==0
     cell = (FieldCell state count position)
     toUpdate = findAllNeighbours field [] cell
 
+-- Very basic way to get all nodes to be revealed.
+-- spreads from initial node to all other nodes that are adjecent
 findAllNeighbours :: Field -> [FieldCell] -> FieldCell -> [FieldCell]
-findAllNeighbours field visited (FieldCell state count position)= nub (cell:concat (map findingF toVisit))
-  where
-    nhbourPositions = neighbours field position
-    f = getCell field
-    nhbours = map f (neighbours field position)
-    zeroNhbours = filterZeroNeighbours nhbours
-    cell = (FieldCell state count position)
-    newVisited = visited++zeroNhbours
-    toVisit = zeroNhbours \\ visited
-    findingF = findAllInner field newVisited
-
-findAllInner :: Field -> [FieldCell] -> FieldCell -> [FieldCell]
-findAllInner field visited (FieldCell state count position) = nub (current++concat (map (findAllInner field newVisited) (toVisit)))
+findAllNeighbours field visited (FieldCell state count position) = nub (current++concat (map (findAllNeighbours field newVisited) (toVisit)))
   where
     nhbourPositions = neighbours field position
     f = getCell field
@@ -178,15 +175,15 @@ findAllInner field visited (FieldCell state count position) = nub (current++conc
     current = (cell:nhbours)
     toVisit = zeroNhbours \\ visited
     newVisited = visited++current
-    findingF = findAllInner field newVisited
+    findingF = findAllNeighbours field newVisited
 
+-- Updates all cells in a list to Shown
 updateToShown :: [FieldCell] -> Field -> Field
 updateToShown [] field = field
 updateToShown ((FieldCell state count position):cells) field = updateToShown cells newField
   where
     newField = mapField field update
     update = updateCellState field position
-
 updateCellState :: Field -> Position -> FieldCell -> FieldCell
 updateCellState field desiredPosition (FieldCell state count position) = (FieldCell newState count position)
   where 
@@ -194,12 +191,9 @@ updateCellState field desiredPosition (FieldCell state count position) = (FieldC
                  then Shown
                  else state
 
-filterZeroNeighbours :: [FieldCell] -> [FieldCell]
-filterZeroNeighbours = filter isZero
-  where
-    isZero (FieldCell _ (0) _) = True
-    isZero _ = False
 
+
+-- Gets positions of neighbours of in a field based on initial position.
 neighbours :: Field -> Position -> [Position]
 neighbours (Field ((firstRow):rows)) (row, col) = filter inGrid [ (row-1,col-1), (row-1,col), (row-1,col+1), (row,col-1), (row,col), (row,col+1), (row+1,col-1), (row+1,col), (row+1,col+1) ]
   where
@@ -207,6 +201,7 @@ neighbours (Field ((firstRow):rows)) (row, col) = filter inGrid [ (row-1,col-1),
     rowCount = length rows
     colCount = ((length firstRow) -1)
 
+-- Gets a cell from a field based on its position
 getCell :: Field -> Position -> FieldCell
 getCell (Field field) (row, col) = field!!row!!col
 
@@ -214,7 +209,7 @@ getCell (Field field) (row, col) = field!!row!!col
 -- ## Preparation
 ----
 
---Prepare precalculated and ready game (mine) field
+-- Prepare precalculated and game ready (mine) field.
 getGameReady :: Field
 getGameReady = mapField field updateBombs
   where
@@ -229,23 +224,19 @@ countBombNeighbours field (FieldCell state count position) = (FieldCell state ne
                  then count
                  else length (filterBombs (map f (neighbours field position)))
 
-filterBombs :: [FieldCell] -> [FieldCell]
-filterBombs = filter isBomb
-  where
-    isBomb (FieldCell _ (-1) _) = True
-    isBomb _ = False
-
+-- Gets a field with bombs - the adjecency values need to be calculated.
 getNewField :: Int -> Int -> Int -> Field
 getNewField mineCount height width = (Field [ getRow bombIndexes index width | index <- [0..height-1], let bombIndexes = getRandomBombIndexes mineCount 0 ((width*height)-1)] )
 
-getRandomBombIndexes :: Int -> Int -> Int -> [Int]
-getRandomBombIndexes count from to = take count (shuffle [from .. to] (mkStdGen sessionSeed))
-
-sessionSeed :: Int
---sessionSeed = fromIntegral (case (unsafePerformIO getCurrentTime) of (TimeOfDay s m h) -> s)
-sessionSeed = unsafePerformIO (getStdRandom (randomR (0, 322)))
-
 --
+getRandomBombIndexes :: Int -> Int -> Int -> [Int]
+getRandomBombIndexes count from to = take count (shuffle [from .. to] (mkStdGen getSeed))
+
+-- For now just "per build" seed getter
+getSeed :: Int
+getSeed = unsafePerformIO (getStdRandom (randomR (0, 322)))
+
+-- Looked for a generic way of getting random indexes for bombs - shuffle all possible positions and then in the usage I take just a set amount based on the difficuty wanted.
 shuffle :: [a] -> StdGen -> [a]
 shuffle xs gen = runST (do
                   g <- newSTRef gen
@@ -268,7 +259,6 @@ shuffle xs gen = runST (do
 
 getRow :: [Int] -> Int -> Int -> [FieldCell]
 getRow bombIndexes rowNumber rowLength = [ getNewCell (elem (rowNumber * rowLength + index) bombIndexes) (rowNumber,index)| index <- [0..rowLength-1]]
-
 getNewCell :: Bool -> Position -> FieldCell
 getNewCell isBomb point = if isBomb
                     then (FieldCell Hidden (-1) point)
