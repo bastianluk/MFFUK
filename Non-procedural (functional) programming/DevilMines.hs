@@ -116,8 +116,8 @@ playDevilMines :: IO ()
 playDevilMines = playGame 1 (getGameReady (mkStdGen getSeed))
 
 playGame :: Int -> Field -> IO ()
-playGame turn field = do {
-    showField turn field;
+playGame turn (Field field bombCount height width) = do {
+    showField turn (Field field bombCount height width);
     putStr "Input position to uncover: \n" ;
     rowCh <- getChar ;
     let { row = ord rowCh - ord '0' } ;
@@ -126,11 +126,15 @@ playGame turn field = do {
     --doNothing with the '\n' at the end of the buffer
     blank <- getChar ;
     putStr "\n" ;
-    let { cell = getCell field (row, col)} ;
-    if (devil turn cell field)
+    let { cell = getCell (Field field bombCount height width) (row, col)} ;
+    if (not((row < height) && (0 <= row) && (col < width) && (0 <= col)))
+      then do {
+        playGame turn (Field field bombCount height width)
+      }
+      else if (devil turn cell (Field field bombCount height width))
       then do { putStr "YOU LOST!\n" ; return () }
       else do {
-        let { newField = updateField field cell} ;
+        let { newField = updateField (Field field bombCount height width) cell} ;
         nextTurn (turn+1) newField
       }   
 }
@@ -162,7 +166,7 @@ devil turn (FieldCell state count position) field = if (count==(-1))
     then devilTurn (FieldCell state count position) field
     else False
 
--- Devils logic - not present
+-- Devils logic - will be backtracking based - from Field, initial seed of cell, try to find a cover for board that is possible
 devilTurn :: FieldCell -> Field -> Bool
 devilTurn (FieldCell state count position) field = False
 
