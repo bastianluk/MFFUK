@@ -35,14 +35,22 @@ instance Show FieldCell where
 instance Eq FieldCell where
   (FieldCell state1 count1 position1)==(FieldCell state2 count2 position2) = position1==position2
 
--- Field of Rows of FieldCells - rows not represented as separate type
+
+type BombCount = Int
+type Height = Int
+type Width = Int
+
+-- Field of Rows of FieldCells and number of bombs - rows not represented as separate type
 data Field = 
   Field [[FieldCell]]
+        BombCount
+        Height
+        Width
 instance Show Field where
-    show (Field (row:rows)) = getHeader (length row) ++ showInner (Field (row:rows)) 0 
+    show (Field (row:rows) bombCount height width) = getHeader width ++ showInner (Field (row:rows) bombCount height width) 0
 showInner :: Field -> Int -> String
-showInner (Field (row:[])) count = pad (show count ++ ":") ++ showRow row
-showInner (Field (row:rows)) count = pad (show count ++ ":") ++ showRow row ++ showInner (Field rows) (count+1)
+showInner (Field (row:[]) _ _ _) count = pad (show count ++ ":") ++ showRow row
+showInner (Field (row:rows) bombCount height width) count = pad (show count ++ ":") ++ showRow row ++ showInner (Field rows bombCount height width) (count+1) --bombCount height width are not valid here
 showRow :: [FieldCell] -> String
 showRow (field:[]) = show field ++ "\n"
 showRow (field:fields) = show field ++ " " ++ showRow fields
@@ -63,7 +71,7 @@ heading = [ addPadding 4 [char] | char <- ['A' .. 'Z'] ]
 
 -- Mapping on Field
 mapField :: Field -> (FieldCell -> FieldCell) -> Field
-mapField (Field field) f = (Field (mapRows field f))
+mapField (Field field bombCount height width) f = (Field (mapRows field f) bombCount height width)
 mapRows :: [[FieldCell]] -> (FieldCell -> FieldCell) -> [[FieldCell]]
 mapRows (row:[]) f = ((map f row):[])
 mapRows (row:rows) f = ((map f row):(mapRows rows f))
@@ -105,7 +113,7 @@ filterBombs = filter isBomb
 
 --Main
 playDevilMines :: IO ()
-playDevilMines = playGame 1 getGameReady
+playDevilMines = playGame 1 (getGameReady (mkStdGen getSeed))
 
 playGame :: Int -> Field -> IO ()
 playGame turn field = do {
@@ -135,10 +143,9 @@ nextTurn turn field = if (checkWin field)
 
 -- If only bombs are not revealed > win
 checkWin :: Field -> Bool
-checkWin (Field field) = (bombCount == notShownCount)
+checkWin (Field field bombCount _ _) = (bombCount == notShownCount)
   where
     flattenedField = concat field
-    bombCount = length (filterBombs flattenedField)
     notShownCount = length (filterHidden flattenedField)
 
 
@@ -201,25 +208,23 @@ updateCellState field desiredPosition (FieldCell state count position) = (FieldC
 
 -- Gets positions of neighbours of in a field based on initial position.
 neighbours :: Field -> Position -> [Position]
-neighbours (Field ((firstRow):rows)) (row, col) = filter inGrid [ (row-1,col-1), (row-1,col), (row-1,col+1), (row,col-1), (row,col), (row,col+1), (row+1,col-1), (row+1,col), (row+1,col+1) ]
+neighbours (Field ((firstRow):rows) _ height width) (row, col) = filter inGrid [ (row-1,col-1), (row-1,col), (row-1,col+1), (row,col-1), (row,col), (row,col+1), (row+1,col-1), (row+1,col), (row+1,col+1) ]
   where
-    inGrid (s,t) = 0 <= s && s <= rowCount && 0<=t && t <= colCount
-    rowCount = length rows
-    colCount = ((length firstRow) -1)
+    inGrid (s,t) = 0 <= s && s < height && 0<=t && t < width
 
 -- Gets a cell from a field based on its position
 getCell :: Field -> Position -> FieldCell
-getCell (Field field) (row, col) = field!!row!!col
+getCell (Field field _ _ _) (row, col) = field!!row!!col
 
 ----
 -- ## Preparation
 ----
 
 -- Prepare precalculated and game ready (mine) field.
-getGameReady :: Field
-getGameReady = mapField field updateBombs
+getGameReady :: StdGen -> Field
+getGameReady gen = mapField field updateBombs
   where
-    field = getNewField 10 8 8
+    field = getNewField 10 8 8 gen
     updateBombs = countBombNeighbours field
 
 countBombNeighbours :: Field -> FieldCell -> FieldCell
@@ -231,12 +236,12 @@ countBombNeighbours field (FieldCell state count position) = (FieldCell state ne
                  else length (filterBombs (map f (neighbours field position)))
 
 -- Gets a field with bombs - the adjecency values need to be calculated.
-getNewField :: Int -> Int -> Int -> Field
-getNewField mineCount height width = (Field [ getRow bombIndexes index width | index <- [0..height-1], let bombIndexes = getRandomBombIndexes mineCount 0 ((width*height)-1)] )
+getNewField :: Int -> Int -> Int -> StdGen -> Field
+getNewField mineCount height width gen = (Field [ getRow bombIndexes index width | index <- [0..height-1], let bombIndexes = getRandomBombIndexes mineCount 0 ((width*height)-1) gen] mineCount height width)
 
 --
-getRandomBombIndexes :: Int -> Int -> Int -> [Int]
-getRandomBombIndexes count from to = take count (shuffle [from .. to] (mkStdGen getSeed))
+getRandomBombIndexes :: Int -> Int -> Int -> StdGen -> [Int]
+getRandomBombIndexes count from to gen= take count (shuffle [from .. to] gen)
 
 -- For now just "per build" seed getter
 getSeed :: Int
