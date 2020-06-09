@@ -13,6 +13,7 @@ import System.IO.Unsafe
 
 -- State of cell
 data State = Hidden | Shown
+  deriving( Eq )
 instance Show State where
   show Hidden = "."
   show Shown = "Impossible"
@@ -106,7 +107,6 @@ filterBombs = filter isBomb
     isBomb _ = False
 
 
-
 ----
 -- # Game
 ----
@@ -127,6 +127,7 @@ playGame turn (Field field bombCount height width) = do {
     blank <- getChar ;
     putStr "\n" ;
     let { cell = getCell (Field field bombCount height width) (row, col)} ;
+    --prevent invalid input
     if (not((row < height) && (0 <= row) && (col < width) && (0 <= col)))
       then do {
         playGame turn (Field field bombCount height width)
@@ -168,7 +169,24 @@ devil turn (FieldCell state count position) field = if (count==(-1))
 
 -- Devils logic - will be backtracking based - from Field, initial seed of cell, try to find a cover for board that is possible
 devilTurn :: FieldCell -> Field -> Bool
-devilTurn (FieldCell state count position) field = False
+devilTurn cell field = backtracking cell (copyRevealed field)
+
+backtracking :: FieldCell -> Field -> Bool
+backtracking _ _ = False
+
+copyRevealed :: Field -> Field
+copyRevealed field = newField
+  where
+  newField = mapField field update
+  update = keepOnlyRevealed Shown
+
+
+keepOnlyRevealed :: State -> FieldCell -> FieldCell
+keepOnlyRevealed desiredState (FieldCell state count position) = (FieldCell state count position)
+  where 
+    newCount = if desiredState==Shown
+                 then count
+                 else 0
 
 -- Updates all the nodes that are supposed to be revealed.
 updateField :: Field -> FieldCell -> Field
@@ -200,9 +218,9 @@ updateToShown [] field = field
 updateToShown ((FieldCell state count position):cells) field = updateToShown cells newField
   where
     newField = mapField field update
-    update = updateCellState field position
-updateCellState :: Field -> Position -> FieldCell -> FieldCell
-updateCellState field desiredPosition (FieldCell state count position) = (FieldCell newState count position)
+    update = updateCellState position
+updateCellState :: Position -> FieldCell -> FieldCell
+updateCellState desiredPosition (FieldCell state count position) = (FieldCell newState count position)
   where 
     newState = if desiredPosition==position
                  then Shown
