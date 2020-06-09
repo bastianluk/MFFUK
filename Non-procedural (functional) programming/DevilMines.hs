@@ -169,17 +169,17 @@ devil turn (FieldCell state count position) field = if (count==(-1))
 
 -- Devils logic - will be backtracking based - from Field, initial seed of cell, try to find a cover for board that is possible
 devilTurn :: FieldCell -> Field -> Bool
-devilTurn cell field = backtracking cell (copyRevealed field)
+devilTurn cell (Field field bombCount height width) = backtracking cell (copyRevealed (Field field bombCount height width)) bombCount
 
-backtracking :: FieldCell -> Field -> Bool
-backtracking _ _ = False
+backtracking :: FieldCell -> Field -> Int -> Bool
+backtracking _ _ 0 = False
+backtracking
 
 copyRevealed :: Field -> Field
 copyRevealed field = newField
   where
   newField = mapField field update
   update = keepOnlyRevealed Shown
-
 
 keepOnlyRevealed :: State -> FieldCell -> FieldCell
 keepOnlyRevealed desiredState (FieldCell state count position) = (FieldCell state count position)
