@@ -172,8 +172,8 @@ devilTurn :: FieldCell -> Field -> Bool
 devilTurn cell (Field field bombCount height width) = backtracking cell (copyRevealed (Field field bombCount height width)) bombCount
 
 backtracking :: FieldCell -> Field -> Int -> Bool
-backtracking _ _ 0 = False
-backtracking
+backtracking _ _ _ = False
+--backtracking needs to assign bombs to unrevealed neighbours of revelead places such that it satisfies their values
 
 copyRevealed :: Field -> Field
 copyRevealed field = newField
