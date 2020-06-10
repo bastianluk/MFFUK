@@ -17,6 +17,3 @@ substitution(Xs, Ys) :-
     reverse(Y2s, Y2Rs),
     match(X1s,Y1s),
     match(X2Rs, Y2Rs).
-
-
-
