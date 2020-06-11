@@ -7,7 +7,6 @@ import Control.Monad.ST
 import Data.STRef
 import Data.Char
 import Data.List
-import Data.Time
 -- for random seed purposes
 import System.IO.Unsafe
 
@@ -34,7 +33,7 @@ instance Show FieldCell where
     Shown -> pad (show count)
     Hidden -> pad (show state)
 instance Eq FieldCell where
-  (FieldCell state1 count1 position1)==(FieldCell state2 count2 position2) = position1==position2
+  (FieldCell _ _ position1)==(FieldCell _ _ position2) = position1==position2
 
 
 type BombCount = Int
@@ -48,12 +47,13 @@ data Field =
         Height
         Width
 instance Show Field where
+    show (Field [] _ _ _) = ""
     show (Field (row:rows) bombCount height width) = getHeader width ++ showInner (Field (row:rows) bombCount height width) 0
 showInner :: Field -> Int -> String
-showInner (Field (row:[]) _ _ _) count = pad (show count ++ ":") ++ showRow row
+showInner (Field ([]) _ _ _) _ = ""
 showInner (Field (row:rows) bombCount height width) count = pad (show count ++ ":") ++ showRow row ++ showInner (Field rows bombCount height width) (count+1) --bombCount height width are not valid here
 showRow :: [FieldCell] -> String
-showRow (field:[]) = show field ++ "\n"
+showRow ([]) = "\n"
 showRow (field:fields) = show field ++ " " ++ showRow fields
 
 ----
@@ -64,7 +64,7 @@ showRow (field:fields) = show field ++ " " ++ showRow fields
 getHeader :: Int -> String
 getHeader length = pad "*" ++ (printHeading (take length heading)) ++ "\n"
 printHeading :: [String] -> String
-printHeading (n:[]) = n
+printHeading ([]) = ""
 printHeading (n:ns) = n ++ printHeading ns
 heading :: [String]
 heading = [ addPadding 4 [char] | char <- ['A' .. 'Z'] ]
@@ -74,7 +74,7 @@ heading = [ addPadding 4 [char] | char <- ['A' .. 'Z'] ]
 mapField :: Field -> (FieldCell -> FieldCell) -> Field
 mapField (Field field bombCount height width) f = (Field (mapRows field f) bombCount height width)
 mapRows :: [[FieldCell]] -> (FieldCell -> FieldCell) -> [[FieldCell]]
-mapRows (row:[]) f = ((map f row):[])
+mapRows ([]) _ = []
 mapRows (row:rows) f = ((map f row):(mapRows rows f))
 
 -- Padding for printing
@@ -182,7 +182,7 @@ copyRevealed field = newField
   update = keepOnlyRevealed Shown
 
 keepOnlyRevealed :: State -> FieldCell -> FieldCell
-keepOnlyRevealed desiredState (FieldCell state count position) = (FieldCell state count position)
+keepOnlyRevealed desiredState (FieldCell state count position) = (FieldCell state newCount position)
   where 
     newCount = if desiredState==Shown
                  then count
@@ -200,11 +200,11 @@ updateField field (FieldCell state count position) = if count==0
 -- Very basic way to get all nodes to be revealed.
 -- spreads from initial node to all other nodes that are adjecent
 findAllNeighbours :: Field -> [FieldCell] -> FieldCell -> [FieldCell]
-findAllNeighbours field visited (FieldCell state count position) = nub (current++concat (map (findAllNeighbours field newVisited) (toVisit)))
+findAllNeighbours field visited (FieldCell state count position) = nub (current++concat (map findingF (toVisit)))
   where
     nhbourPositions = neighbours field position
     f = getCell field
-    nhbours = map f (neighbours field position)
+    nhbours = map f nhbourPositions
     zeroNhbours = filterZeroNeighbours nhbours
     cell = (FieldCell state count position)
     current = (cell:nhbours)
@@ -215,7 +215,7 @@ findAllNeighbours field visited (FieldCell state count position) = nub (current+
 -- Updates all cells in a list to Shown
 updateToShown :: [FieldCell] -> Field -> Field
 updateToShown [] field = field
-updateToShown ((FieldCell state count position):cells) field = updateToShown cells newField
+updateToShown ((FieldCell _ _ position):cells) field = updateToShown cells newField
   where
     newField = mapField field update
     update = updateCellState position
@@ -230,7 +230,7 @@ updateCellState desiredPosition (FieldCell state count position) = (FieldCell ne
 
 -- Gets positions of neighbours of in a field based on initial position.
 neighbours :: Field -> Position -> [Position]
-neighbours (Field ((firstRow):rows) _ height width) (row, col) = filter inGrid [ (row-1,col-1), (row-1,col), (row-1,col+1), (row,col-1), (row,col), (row,col+1), (row+1,col-1), (row+1,col), (row+1,col+1) ]
+neighbours (Field _ _ height width) (row, col) = filter inGrid [ (row-1,col-1), (row-1,col), (row-1,col+1), (row,col-1), (row,col), (row,col+1), (row+1,col-1), (row+1,col), (row+1,col+1) ]
   where
     inGrid (s,t) = 0 <= s && s < height && 0<=t && t < width
 
