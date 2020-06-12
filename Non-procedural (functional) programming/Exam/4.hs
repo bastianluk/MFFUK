@@ -49,4 +49,4 @@ getArrayFromEither (Left x) = [x]
 getArrayFromEither (Right (x, i)) = take i (repeat x)
 
 -- e)
--- jak rle a rlef potrebuji konec seznamu pro zastaveni se vydani vysledku, ale rld mapuje a spojuje postupne co prave vypocitalo tedy i `rld (repeat (Left 'a'))` bude fungovat
+-- jak rle a rlef potrebuji konec seznamu pro zastaveni se vydani vysledku, ale rld mapuje a spojuje postupne co prave vypocitalo tedy i `rld (repeat (Left 'a'))`  bude fungovat => bude fungovat na nekonecnych

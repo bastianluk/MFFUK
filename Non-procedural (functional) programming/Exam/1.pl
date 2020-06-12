@@ -11,7 +11,7 @@ setrid(X, X) :- !.
 % missing
 
 % c)
-% Jde o zeleny rez, ktery po usporadani zajisti, ze se znovu nebude brat mensi prefix seznamu nez A a A bude uz setrizene
+% Jde o cerveny rez, ktery po usporadani zajisti, ze se znovu nebude brat mensi prefix seznamu nez A a A bude uz setrizene
 
 % d)
 % melo by jit o bubble sort - postupne se swapuji prvky, ktere nejsou ve spravnem poradi
