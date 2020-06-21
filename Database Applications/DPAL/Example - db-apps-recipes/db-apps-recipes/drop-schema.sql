@@ -1,0 +1,31 @@
+DROP PROCEDURE Register;
+DROP PROCEDURE AddFoodstuffToShoppingList;
+DROP PROCEDURE RemoveFoodstuffToShoppingList;
+DROP PROCEDURE Share;
+DROP PROCEDURE AddRecipeToShoppingList;
+DROP PROCEDURE RemoveRecipeFromShoppingList;
+DROP PROCEDURE ClearShoppingList;
+DROP PROCEDURE Cook;
+DROP FUNCTION SearchRecipes;
+DROP FUNCTION SearchFoodstuffs;
+
+DROP VIEW FoodstuffInOwnedShoppingLists;
+DROP VIEW RecipesInOwnedShoppingLists;
+DROP VIEW FoodstuffInAllShoppingLists;
+DROP VIEW RecipesInAllShoppingLists;
+DROP VIEW RecipesThatCanBeCooked;
+DROP VIEW SharedShoppingLists;
+DROP VIEW RecipeIndex;
+DROP VIEW FoodstuffIndex;
+DROP VIEW MostBoughtFoodstuffs;
+DROP VIEW MostBoughtRecipes;
+DROP VIEW MostUsedFoodstuffs;
+
+DROP TABLE Ingredient;
+DROP TABLE FoodstuffShoppingListItem;
+DROP TABLE RecipeShoppingListItem;
+DROP TABLE SharedShoppingList;
+DROP TABLE Recipe;
+DROP TABLE ShoppingList;
+DROP TABLE Foodstuff;
+DROP TABLE Account;
