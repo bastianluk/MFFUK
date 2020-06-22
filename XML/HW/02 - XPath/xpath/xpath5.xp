@@ -1,0 +1,2 @@
+(: Find a room type with at least 3 features :)
+//roomType[.//features[count(child::*) >= 3]]

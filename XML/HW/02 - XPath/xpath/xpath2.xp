@@ -1,0 +1,3 @@
+(: Find contact info to enterprises in San Francisco :)
+(: The city condition can be modified to find it anywhere (if present) :)
+//enterprise/contact[address/city="San Francisco"]

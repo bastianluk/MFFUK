@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chain SYSTEM "data.dtd">
+
+<chain chainId="c1" ownerId-ref="o1">
+	<?php echo "Angelina&apos;s Hotels"?>
+	<name>Angelina&apos;s Hotels</name>
+	<owner oId="o1">
+		<name>Angelina Jolie</name>
+    	<contact>
+    		<email>angelina@ajhotel.com</email>
+    		<phone>123 456 789</phone>
+    		<website>
+    		    <![CDATA[
+            		<a href="www.angelina.com">Chain website</a>
+    			]]>
+    		</website>
+    		
+	    	<address>
+	            <line1>8433 Sunset Blvd</line1>
+	            <city>LA</city>
+	            <postalCode>90001</postalCode>
+	            <country>USA</country>
+	            <state>California</state>
+	        </address>
+    	</contact>
+	</owner>
+	
+	<enterprises>
+		<enterprise chainId-ref="c1" ownerId-ref="o2" type="hotel">
+	    	<name>Hotel Angel Jr.</name>
+	    	
+	    	<contact>
+	    		<email>angel-jr@ajhotel.com</email>
+	    		<phone>666 666 666</phone>
+    			<website>
+    		 		<![CDATA[
+            			<a href="www.angel-jr.com">Hotel website</a>
+    				]]>
+    			</website>
+	    		
+		    	<address>
+			        <line1>8162 Melrose Ave</line1>
+			        <city>LA</city>
+			        <postalCode>90001</postalCode>
+			        <country>USA</country>
+		        </address>
+	    	</contact>
+	    	
+	    	<owner oId="o2">
+	    		<name>Angelina Jolie Jr.</name>
+	    		<contact>
+    				<email>angelinaJr@ajhotel.com</email>
+    				<phone>987 654 321</phone>
+    				<website>
+    		 		    <![CDATA[
+            				<a href="www.angelinajr.com">Website</a>
+    					]]>
+    				</website>
+
+		    		
+			    	<address>
+			            <line1>200 Santa Monica Pier</line1>
+			            <city>LA</city>
+			            <postalCode>90001</postalCode>
+			            <country>USA</country>
+			        </address>
+		    	</contact>
+	    	</owner>
+	    		
+	        <roomTypes>
+	            <roomType rtId="rt1" capacity="4" rateMultiplier="1.5">
+					<name>Quadrouple room</name>
+					<descriptionWithFeature>
+						Room type for up to 4 people featuring:
+						<featureReference fId-ref="f1">Small kitchen</featureReference>
+						and
+						<featureReference fId-ref="f2">Bath tub</featureReference>.
+						Ideal for families.
+					</descriptionWithFeature>
+					<features>
+						<feature fId="f1">
+							<name>Small kitchen</name>
+						</feature>
+						<feature fId="f2">
+							<name>Bath tub</name>
+						</feature>
+					</features>
+	            </roomType>
+	            <roomType rtId="rt2" capacity="1">
+					<name>Single room</name>
+					<descriptionWithFeature>
+						Room type for 1 person featuring:
+						<featureReference fId-ref="f3">Shower</featureReference>
+						and
+						<featureReference fId-ref="f4">Desk (workspace)</featureReference>.
+						Ideal for traveling businessman.
+					</descriptionWithFeature>
+					<features>
+						<feature fId="f3">
+							<name>Shower</name>
+						</feature>
+						<feature fId="f4">
+							<name>Desk (workspace)</name>
+						</feature>
+					</features>
+	            </roomType>
+	            <roomType rtId="rt3" capacity="2" rateMultiplier="1.3">
+					<name>Double room</name>
+					<descriptionWithFeature>
+						Room type for up to 2 people featuring:
+						<featureReference fId-ref="f5">Minibar</featureReference>
+						and
+						<featureReference fId-ref="f6">TV</featureReference>.
+						Ideal for couples.
+					</descriptionWithFeature>
+					<features>
+						<feature fId="f5">
+							<name>Minibar</name>
+						</feature>
+						<feature fId="f6">
+							<name>TV</name>
+						</feature>
+					</features>
+	            </roomType>
+	        </roomTypes>
+	        <rooms>
+	        	<room roomId="r1" rtId-reference="rt1" roomNumber="101"></room>
+	        	<room roomId="r2" rtId-reference="rt1" roomNumber="102"></room>
+	        	<room roomId="r3" rtId-reference="rt1" roomNumber="103"></room>
+	        	<room roomId="r4" rtId-reference="rt2" roomNumber="104"></room>
+	        	<room roomId="r5" rtId-reference="rt2" roomNumber="105"></room>
+	        	<room roomId="r6" rtId-reference="rt1" roomNumber="201"></room>
+	        	<room roomId="r7" rtId-reference="rt1" roomNumber="202"></room>
+	        	<room roomId="r8" rtId-reference="rt1" roomNumber="203"></room>
+	        	<room roomId="r9" rtId-reference="rt3" roomNumber="204"></room>
+	        	<room roomId="r10" rtId-reference="rt3" roomNumber="205"></room>
+	        </rooms>
+	
+	        <visit>
+	            <rate rateId="rate1" name="Flexible" amount="100"></rate>
+	            <rate rateId="rate2" name="Non-refundable" amount="90"></rate>
+	            <productCategory pcId="pc1" name="food">
+	                <product pcId-ref="pc1" name="breakfast" amount="10"></product>
+	                <product pcId-ref="pc1" name="lunch" amount="15"></product>
+	                <product pcId-ref="pc1" name="dinner" amount="20"></product>
+	            </productCategory>
+	        </visit>
+	    </enterprise>
+	</enterprises>
+</chain>

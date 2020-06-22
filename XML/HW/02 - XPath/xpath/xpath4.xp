@@ -1,0 +1,2 @@
+(: Find the first rate in the last enterprise :)
+//enterprise[position() = last()]/.//rate[position() = 1]

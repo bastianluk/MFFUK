@@ -1,0 +1,3 @@
+(: Find an enterprise without its owner specified :)
+(: That means that the owner is the owner the chain :)
+//enterprise[not(owner)]

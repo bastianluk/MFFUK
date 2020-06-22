@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
+  <xs:element name="chain" type="TChain">
+    <xs:key name="KChain">
+			<xs:selector xpath="chain"></xs:selector>
+			<xs:field xpath="@chainId"></xs:field>
+		</xs:key>
+		<xs:keyref name="FKEnterprise_Chain" refer="KChain">
+			<xs:selector xpath="chain/enterprises/enterprise"></xs:selector>
+			<xs:field xpath="@chainId-ref"></xs:field>
+		</xs:keyref>
+
+		<xs:key name="KChainOwner">
+			<xs:selector xpath="chain/owner"></xs:selector>
+			<xs:field xpath="@oId"></xs:field>
+		</xs:key>
+		<xs:keyref name="FKChain_Owner" refer="KChainOwner">
+			<xs:selector xpath="chain"></xs:selector>
+			<xs:field xpath="@ownerId-ref"></xs:field>
+		</xs:keyref>
+		
+		<xs:key name="KEnterpriseOwner">
+			<xs:selector xpath="chain/owner"></xs:selector>
+			<xs:field xpath="@oId"></xs:field>
+		</xs:key>
+		<xs:keyref name="FKEnterprise_Owner" refer="KEnterpriseOwner">
+			<xs:selector xpath="chain/enterprises/enterprise"></xs:selector>
+			<xs:field xpath="@ownerId-ref"></xs:field>
+		</xs:keyref>
+		
+		<xs:key name="KFeature">
+			<xs:selector xpath="chain/enterprises/enterprise/roomTypes/roomType/features/feature"></xs:selector>
+			<xs:field xpath="@fId"></xs:field>
+		</xs:key>
+		<xs:keyref name="FKFeatureReference_Feature" refer="KFeature">
+			<xs:selector xpath="chain/enterprises/enterprise/roomTypes/roomType/descriptionWithFeature/featureReference"></xs:selector>
+			<xs:field xpath="@fId-ref"></xs:field>
+		</xs:keyref>
+
+		<xs:key name="KRoomType">
+			<xs:selector xpath="chain/enterprises/enterprise/roomTypes/roomType"></xs:selector>
+			<xs:field xpath="@rtId"></xs:field>
+		</xs:key>
+		<xs:keyref name="FKRoom_RoomType" refer="KRoomType">
+			<xs:selector xpath="chain/enterprises/enterprise/rooms/room"></xs:selector>
+			<xs:field xpath="@rtId-reference"></xs:field>
+		</xs:keyref>
+
+		<xs:key name="KRoom">
+			<xs:selector xpath="chain/enterprises/enterprise/rooms/room"></xs:selector>
+			<xs:field xpath="@roomId"></xs:field>
+		</xs:key>
+
+		<xs:key name="KRate">
+			<xs:selector xpath="chain/enterprises/enterprise/visit/rate"></xs:selector>
+			<xs:field xpath="@rateId"></xs:field>
+		</xs:key>
+		
+		<xs:key name="KProductCategory">
+			<xs:selector xpath="chain/enterprises/visit/productCategory"></xs:selector>
+			<xs:field xpath="@pcId"></xs:field>
+		</xs:key>
+		<xs:keyref name="FKProduct_ProductCategory" refer="KProductCategory">
+			<xs:selector xpath="chain/enterprises/visit/productCategory/product"></xs:selector>
+			<xs:field xpath="@pcId-ref"></xs:field>
+		</xs:keyref>
+
+  </xs:element>
+  <xs:complexType name="TChain">
+    <xs:complexContent>
+      <xs:extension base="name">
+        <xs:sequence>
+        	<xs:element minOccurs="1" maxOccurs="1" ref="owner"/>
+          <xs:element ref="enterprises"/>
+        </xs:sequence>
+        <xs:attribute name="chainId" use="required" type="xs:ID"/>
+        <xs:attribute name="ownerId-ref" use="required" type="xs:IDREF"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="enterprises">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="enterprise"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="enterprise" type="TEnterprise"/>
+  <xs:complexType name="TEnterprise">
+    <xs:complexContent>
+      <xs:extension base="name">
+        <xs:sequence>
+          <xs:element ref="contact"/>
+          <xs:element minOccurs="1" maxOccurs="1" ref="owner"/>
+          <xs:element ref="roomTypes"/>
+          <xs:element ref="rooms"/>
+          <xs:element ref="visit"/>
+        </xs:sequence>
+        <xs:attribute name="chainId-ref" use="required" type="xs:IDREF"/>
+        <xs:attribute name="ownerId-ref" use="required" type="xs:IDREF"/>
+        <xs:attribute name="type" use="required" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="roomTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="roomType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="roomType" type="TRoomType"/>
+	<xs:complexType name="TRoomType">
+	  <xs:complexContent>
+	    <xs:extension base="name">
+	      <xs:sequence>
+	        <xs:element ref="descriptionWithFeature"/>
+	        <xs:element ref="features"/>
+	      </xs:sequence>
+	      <xs:attribute name="capacity" use="required" type="xs:integer"/>
+	      <xs:attribute name="rateMultiplier" type="xs:decimal"/>
+	      <xs:attribute name="rtId" use="required" type="xs:ID"/>
+	    </xs:extension>
+	  </xs:complexContent>
+	</xs:complexType>
+  
+  <xs:element name="descriptionWithFeature">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="featureReference"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element> 
+  <xs:element name="featureReference">
+    <xs:complexType mixed="true">
+      <xs:attribute name="fId-ref" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="features">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="2" maxOccurs="unbounded" ref="feature"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element> 
+  <xs:element name="feature">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="name">
+          <xs:attribute name="fId" use="required" type="xs:ID"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="rooms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="10" maxOccurs="unbounded" ref="room"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="room" type="TRoom"/>
+  <xs:complexType name="TRoom">
+    <xs:attribute name="roomId" use="required" type="xs:ID"/>
+    <xs:attribute name="roomNumber" use="required" type="xs:integer"/>
+    <xs:attribute name="rtId-reference" use="required" type="xs:IDREF"/>
+  </xs:complexType>
+  
+  
+  <xs:element name="visit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="rate"/>
+        <xs:element ref="productCategory"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="rate">
+    <xs:complexType>    	
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+		      <xs:attribute name="amount" use="required" type="xs:integer"/>
+		      <xs:attribute name="name" use="required" type="xs:string"/>
+		      <xs:attribute name="rateId" use="required" type="xs:ID"/>
+				</xs:extension>
+			</xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="productCategory" type="TProductCategory"/>
+  <xs:complexType name="TProductCategory">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="product"/>
+    </xs:sequence>
+    <xs:attribute name="name" use="required" type="xs:string"/>
+    <xs:attribute name="pcId" use="required" type="xs:ID"/>
+  </xs:complexType>
+  <xs:element name="product" type="TProduct"/>  
+  <xs:complexType name="TProduct">
+    <xs:attribute name="amount" use="required" type="xs:integer"/>
+    <xs:attribute name="name" use="required" type="xs:string"/>
+    <xs:attribute name="pcId-ref" use="required" type="xs:IDREF"/>
+  </xs:complexType>
+
+
+  <!--Common for multiple elements-->
+  <xs:complexType name="name">
+    <xs:sequence>
+      <xs:element ref="name"/>
+    </xs:sequence>   
+  </xs:complexType>
+
+  <xs:element name="name" type="xs:string"/>
+
+
+  <xs:element name="owner" type="TOwner"/>
+  <xs:complexType name="TOwner">
+    <xs:complexContent>
+      <xs:extension base="name">
+        <xs:sequence>
+          <xs:element ref="contact"/>
+        </xs:sequence>
+        <xs:attribute name="oId" use="required" type="xs:ID"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="contact" type="TContact"/>
+  <xs:complexType name="TContact">
+    <xs:all>
+      <xs:element ref="email"/>
+      <xs:element ref="phone"/>
+      <xs:element ref="website"/>
+      <xs:element ref="address"/>
+    </xs:all>
+  </xs:complexType>  
+  <xs:element name="email" type="xs:string"/>
+  <xs:element name="phone" type="TPhone"/>
+  <xs:simpleType name="TPhone">
+    <xs:restriction base="xs:string">
+         <xs:pattern value="[0-9]{3} [0-9]{3} [0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="website" type="xs:string"/>
+  <xs:element name="address" type="TAdddress"/>
+  <xs:complexType name="TAdddress">
+    <xs:sequence>
+		  <xs:element name="line1" type="xs:string"/>
+		  <xs:element name="city" type="xs:string"/>
+		  <xs:element name="postalCode" type="xs:integer"/>
+		  <xs:element name="country" type="xs:string"/>
+		  <xs:element name="state" minOccurs="0" type="xs:string"/> 
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

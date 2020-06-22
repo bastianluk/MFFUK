@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT chain (name, owner, enterprises)>
+<!ATTLIST chain
+	chainId ID #REQUIRED
+	ownerId-ref IDREF #REQUIRED
+	legalEnvironment CDATA #FIXED "us-US">
+
+
+<!ELEMENT enterprises (enterprise)+>
+<!ELEMENT enterprise (name, contact, owner?, roomTypes, rooms, visit)>
+<!ATTLIST enterprise
+	chainId-ref IDREF #REQUIRED
+	ownerId-ref IDREF #IMPLIED
+	type (hotel | hostel | resort) "hotel">
+
+<!ELEMENT owner (name, contact?)>
+<!ATTLIST owner oId ID #REQUIRED>
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT contact (email, phone, website, address)>
+
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT phone (#PCDATA)>
+<!ELEMENT website (#PCDATA)>
+
+<!ELEMENT address (line1, line2?, city, postalCode, country?, state?)>
+<!ELEMENT line1 (#PCDATA)>
+<!ELEMENT line2 (#PCDATA)>
+<!ELEMENT city (#PCDATA)>
+<!ELEMENT postalCode (#PCDATA)>
+<!ELEMENT country (#PCDATA)>
+<!ELEMENT state (#PCDATA)>
+
+
+<!--MODES-->
+<!ENTITY % standardMode "INCLUDE">
+<!ENTITY % verboseMode "IGNORE">
+
+<![ %standardMode; [
+    <!ELEMENT room EMPTY>
+    <!ELEMENT feature (name)>
+]]>
+
+<![ %verboseMode; [
+    <!ELEMENT room (descriptionWithFeature)>
+	<!ELEMENT feature (name, description)>
+]]>
+    
+
+<!ELEMENT roomTypes (roomType)*>
+<!ELEMENT roomType (name, descriptionWithFeature, features)>
+<!ATTLIST roomType
+	rtId ID #REQUIRED
+	capacity CDATA #REQUIRED
+	rateMultiplier CDATA #IMPLIED>
+<!ELEMENT features (feature, feature+)>
+<!--feature is described in the different modes-->
+<!ATTLIST feature
+	fId ID #REQUIRED>
+
+<!ELEMENT rooms (room, room, room, room, room, room, room, room, room, room+)>
+<!--room is described in the different modes-->
+<!ATTLIST room
+	roomId ID #REQUIRED
+	rtId-reference IDREF #REQUIRED
+	roomNumber CDATA #REQUIRED>
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT descriptionWithFeature (#PCDATA | featureReference)*>
+<!ELEMENT featureReference (#PCDATA)>
+<!ATTLIST featureReference
+    fId-ref IDREF #REQUIRED>
+
+
+<!ELEMENT visit (rate+, productCategory*)>
+<!ELEMENT rate EMPTY>
+<!ATTLIST rate
+	rateId ID #REQUIRED
+	name CDATA #REQUIRED
+	amount CDATA #REQUIRED>
+
+<!ELEMENT productCategory (product)+>
+<!ATTLIST productCategory
+	pcId ID #REQUIRED
+	name CDATA #IMPLIED>
+
+<!ELEMENT product (#PCDATA)>
+<!ATTLIST product
+	pcId-ref IDREF #REQUIRED
+	name CDATA #REQUIRED
+	amount CDATA #REQUIRED>
