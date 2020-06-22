@@ -96,13 +96,12 @@ VALUES
 	--Col HS
 	('USA', 'Sottle', 6, 13)
 
--- TODO
+--YYYY-MM-DD HH:MI:SS
 INSERT INTO Tournament([Name], [Location], [Type], [StartUtc], [EndUtc], [GameId])
 VALUES
-	('The International 2019', 'Shanghai', 'Major', [StartUtc], [EndUtc], 1),
-	('WePlay Winter', 'Ukraine', 'Minor', [StartUtc], [EndUtc], 1),
-	('Boston Major', 'Boston', 'Major', [StartUtc], [EndUtc], 2),
-	('HS GranPrix', 'LA', 'Major', [StartUtc], [EndUtc], 3)
+	('The International 2019', 'Shanghai', 'Major', '2019-08-15 00:00:00', '2019-08-25 23:59:59', 1),
+	('Boston Major', 'Boston', 'Major', '2018-01-12 00:00:00', '2019-01-28 23:59:59', 2),
+	('2017 Hearthstone WC', 'Amsterdam', 'Major', '2018-01-18 00:00:00', '2018-01-21 23:59:59', 3)
 
 INSERT INTO TournamentParticipant([TournamentId], [TeamId])
 VALUES
@@ -110,34 +109,26 @@ VALUES
 	(1,6),
 	(1,8),
 	(1,9),
-	(2,3),
-	(2,6),
-	(2,9),
-	(2,12),
-	(3,1),
-	(3,4),
-	(3,10),
-	(3,11),
-	(4,2),
-	(4,5),
-	(4,7),
-	(4,13)
+	(2,1),
+	(2,4),
+	(2,10),
+	(2,11),
+	(3,2),
+	(3,5),
+	(3,7),
+	(3,13)
 
--- TODO
-INSERT INTO TournamentSeries([TournamentId], [StartUtc], [EndUtc], [Stage], [FormatBestOf], [State], [Result], [SideATeamId], [SideBTeamId])
+INSERT INTO TournamentSeries([TournamentId], [StartUtc], [EndUtc], [Stage], [FormatBestOf], [Result], [SideATeamId], [SideBTeamId])
 VALUES
-	(1, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(1, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(1, [StartUtc], [EndUtc], [Stage], 5, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(2, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(2, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(2, [StartUtc], [EndUtc], [Stage], 5, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(3, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(3, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(3, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(4, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(4, [StartUtc], [EndUtc], [Stage], 3, [State], [Result], [SideATeamId], [SideBTeamId]),
-	(4, [StartUtc], [EndUtc], [Stage], 5, [State], [Result], [SideATeamId], [SideBTeamId])
+	(1, '2019-08-24 20:59:59', '2019-08-24 23:59:59', 'Semifinals', 3, 1, 3, 6),
+	(1, '2019-08-24 20:59:59', '2019-08-24 23:59:59', 'Semifinals', 5, 1, 3, 8),
+	(1, '2019-08-25 20:59:59', '2019-08-25 23:59:59', 'Finals', 3, 1, 8, 9),
+	(2, '2019-01-27 20:59:59', '2019-01-27 23:59:59', 'Semifinals', 3, 1, 1, 4),
+	(2, '2019-01-27 20:59:59', '2019-01-27 23:59:59', 'Semifinals', 3, 1, 10, 11),
+	(2, '2019-01-28 20:59:59', '2019-01-28 23:59:59', 'Finals', 5, 1, 1, 10),
+	(3, '2018-01-20 20:59:59', '2018-01-20 23:59:59', 'Semifinals', 3, 1, 2, 5),
+	(3, '2018-01-20 20:59:59', '2018-01-20 23:59:59', 'Semifinals', 3, 1, 7, 13),
+	(3, '2018-01-21 20:59:59', '2018-01-21 23:59:59', 'Finals', 3, 1, 2, 7)
 
 INSERT INTO MatchType([Name])
 VALUES
@@ -145,17 +136,44 @@ VALUES
 	('1v1'),
 	('6v6')
 
--- TODO
-INSERT INTO Match([MatchTypeId], [TournamentSeriesId], [Result], [StartUtc], [EndUtc], [A1Id], [A2Id], [A3Id], [A4Id], [A5Id], [A6Id], [B1Id], [B2Id], [B3Id], [B4Id], [B5Id], [B6Id])
+INSERT INTO Match([MatchTypeId], [TournamentSeriesId], [Result], [AScore], [BScore], [A1Id], [A2Id], [A3Id], [A4Id], [A5Id], [B1Id], [B2Id], [B3Id], [B4Id], [B5Id])
 VALUES
-	(1, [TournamentSeriesId], [Result], [StartUtc], [EndUtc], [A1Id], [A2Id], [A3Id], [A4Id], [A5Id], [A6Id], [B1Id], [B2Id], [B3Id], [B4Id], [B5Id], [B6Id])
+	(1, 4, 1, 16, 10, 1, 2, 3, 4, 5, 13, 14, 15, 16, 17),
+	(1, 4, 1, 16, 12, 1, 2, 3, 4, 5, 13, 14, 15, 16, 17),
+	(1, 5, 1, 16, 13, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44),
+	(1, 5, 1, 16, 5, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44),
+	(1, 6, 1, 16, 5, 1, 2, 3, 4, 5, 35, 36, 37, 38, 39),
+	(1, 6, 1, 16, 14, 1, 2, 3, 4, 5, 35, 36, 37, 38, 39)
 
--- TODO
-INSERT INTO MatchPlayerStats([MatchId], [PlayerId], [K], [D], [A], [Objective], [NetWorth], [Rating], [Class], [Deck])
+INSERT INTO MatchPlayerStats([MatchId], [PlayerId], [K], [D], [A])
 VALUES
-	(1, [PlayerId], [K], [D], [A], [Objective], [NetWorth], [Rating], [Class], [Deck])
+	--fm1
+	(1, 1, 28, 13, 2),
+	(1, 2, 17, 13, 2),
+	(1, 3, 20, 13, 2),
+	(1, 4, 20, 13, 2),
+	(1, 5, 14, 13, 2),
+	(1, 35, 18, 16, 3),
+	(1, 36, 7, 16, 3),
+	(1, 37, 10, 16, 3),
+	(1, 38, 10, 16, 3),
+	(1, 39, 4, 16, 3),
+	--fm2
+	(1, 1, 23, 13, 2),
+	(1, 2, 14, 13, 2),
+	(1, 3, 23, 13, 2),
+	(1, 4, 25, 13, 2),
+	(1, 5, 11, 13, 2),
+	(1, 35, 13, 16, 3),
+	(1, 36, 2, 16, 3),
+	(1, 37, 17, 16, 3),
+	(1, 38, 12, 16, 3),
+	(1, 39, 3, 16, 3)
 
--- TODO
-INSERT INTO MatchStats([MatchTypeId], [A1StatsId], [A2StatsId], [A3StatsId], [A4StatsId], [A5StatsId], [A6StatsId], [B1StatsId], [B2StatsId], [B3StatsId], [B4StatsId], [B5StatsId], [B6StatsId])
+--Needed if the match stats are being added independantly
+SET IDENTITY_INSERT MatchStats ON;  
+INSERT INTO MatchStats([Id], [MatchTypeId], [A1StatsId], [A2StatsId], [A3StatsId], [A4StatsId], [A5StatsId], [B1StatsId], [B2StatsId], [B3StatsId], [B4StatsId], [B5StatsId])
 VALUES
-	(1, [A1StatsId], [A2StatsId], [A3StatsId], [A4StatsId], [A5StatsId], [A6StatsId], [B1StatsId], [B2StatsId], [B3StatsId], [B4StatsId], [B5StatsId], [B6StatsId])
+	(5, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+	(6, 1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+SET IDENTITY_INSERT MatchStats OFF;  

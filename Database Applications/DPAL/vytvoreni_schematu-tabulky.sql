@@ -1,6 +1,5 @@
 -- Esports database
 
--- TODO
 -- Specification and table creation
 
 /*
@@ -60,8 +59,8 @@ CREATE TABLE Tournament (
 	[Name] NVARCHAR(32) NOT NULL,
 	[Location] NVARCHAR(32) NOT NULL,
 	[Type] NVARCHAR(32) NOT NULL, -- Major, Minor, Online, Qualifier
-	[StartUtc] DATE NOT NULL,
-	[EndUtc] DATE,
+	[StartUtc] DATETIME NOT NULL,
+	[EndUtc] DATETIME,
 	[GameId] INT
 		FOREIGN KEY REFERENCES [Game]([Id]),
 )
@@ -81,12 +80,11 @@ CREATE TABLE TournamentSeries (
 		PRIMARY KEY,
 	[TournamentId] INT
 		FOREIGN KEY REFERENCES [Tournament]([Id]),
-	[StartUtc] DATE NOT NULL,
-	[EndUtc] DATE,
+	[StartUtc] DATETIME NOT NULL,
+	[EndUtc] DATETIME,
 	[Stage] NVARCHAR(32) NOT NULL, -- Groups, Lower/Upper bracket, Playoffs
 	[FormatBestOf] INT NOT NULL DEFAULT 1, -- storing just the BoX value
-	[State] INT NOT NULL DEFAULT 0,
-	[Result] INT NULL DEFAULT 0,
+	[Result] INT NULL,
 	[SideATeamId] INT
 		FOREIGN KEY REFERENCES [Team]([Id]), -- Handle "is one of the participants" via a trigger
 	[SideBTeamId] INT
@@ -108,8 +106,8 @@ CREATE TABLE [Match] (
 	[TournamentSeriesId] INT
 		FOREIGN KEY REFERENCES [TournamentSeries]([Id]),
 	[Result] INT DEFAULT 0,
-	[StartUtc] DATE NOT NULL, -- Handle "is actually played in the tournament span" via a trigger
-	[EndUtc] DATE,
+	[AScore] INT NULL DEFAULT NULL ,
+	[BScore] INT NULL DEFAULT NULL ,
 	[A1Id] BIGINT -- SideA player 1
 		FOREIGN KEY REFERENCES [Player]([Id]),
 	[A2Id] BIGINT NULL DEFAULT NULL
