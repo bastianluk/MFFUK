@@ -152,7 +152,7 @@ VALUES
 
 INSERT INTO MatchPlayerStats([MatchId], [PlayerId], [K], [D], [A])
 VALUES
-	--fm1
+	--finalsmatch1
 	(1, 1, 28, 13, 2),
 	(1, 2, 17, 13, 2),
 	(1, 3, 20, 13, 2),
@@ -163,7 +163,7 @@ VALUES
 	(1, 37, 10, 16, 3),
 	(1, 38, 10, 16, 3),
 	(1, 39, 4, 16, 3),
-	--fm2
+	--finalsmatch2
 	(1, 1, 23, 13, 2),
 	(1, 2, 14, 13, 2),
 	(1, 3, 23, 13, 2),
