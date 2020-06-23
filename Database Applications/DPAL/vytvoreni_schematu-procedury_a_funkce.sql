@@ -1,18 +1,18 @@
 -- Adding new game with a valid format.
 create procedure RegisterGame
-	@Name nvarchar(32) NOT NULL,
-	@Format nvarchar(3) NOT NULL
+	@Name nvarchar(32),
+	@Format nvarchar(3)
 as
 	begin transaction;
 		begin try
 			-- Could be separate format table and just a simple if it can be selected from the table
 			if ( not (@Format IN (select [Name] from MatchType)))
 			begin
-				RAISERROR('Invalid format value.', 10 , 1);				
+				RAISERROR('Invalid format value.', 11 , 1);				
 			end
 
 			-- Multiple formats for one game are supported
-			insert into Game (Name, Format) values (@Name, @Format);
+			insert into Game([Name], [DefaultFormat]) values (@Name, @Format);
 
 		end try
 		begin catch
@@ -22,16 +22,15 @@ as
   commit;
 go
 
-
 --Creates a tournament series only if two teams are actual and two unique participants of the tournament
 create procedure CreateTournamentSeries
-	@TournamentId INT NOT NULL,
-	@StartUtc DATE NOT NULL,
+	@TournamentId INT,
+	@StartUtc DATE,
 	@EndUtc DATE,
-	@Stage NVARCHAR(32) NOT NULL, -- Group stage, Lower/Upper bracket round, X round of playoffs, Finals
-	@FormatBestOf INT NOT NULL, -- storing just the BoX value
-	@SideATeamId INT NOT NULL,
-	@SideBTeamId INT NOT NULL
+	@Stage NVARCHAR(32), -- Group stage, Lower/Upper bracket round, X round of playoffs, Finals
+	@FormatBestOf INT, -- storing just the BoX value
+	@SideATeamId INT,
+	@SideBTeamId INT
 as
 	begin transaction;
 		begin try
@@ -43,13 +42,13 @@ as
 			) and @SideATeamId != @SideBTeamId
 			))
 			begin
-				RAISERROR('Teams have to be unique and participants of the tournament.', 10 , 1);
+				RAISERROR('Teams have to be unique, existing and participants of the tournament.', 11 , 1);
 			end
 			
 			-- Always at least one game has to be played.
 			if (@FormatBestOf < 1)
 			begin
-				RAISERROR('BestOfX can only be positive integer', 10 , 1);
+				RAISERROR('BestOfX can only be positive integer', 11 , 1);
 			end
 			
 			insert into TournamentSeries (TournamentId, StartUtc, EndUtc, Stage, FormatBestOf, SideATeamId, SideBTeamId)
@@ -64,23 +63,23 @@ as
 go
 
 --Create 1v1 Match
-
 create procedure Create1v1Match
 	@MatchTypeId INT,
 	@TournamentSeriesId INT,
 	@Result INT,
-	@StartUtc DATE NOT NULL, -- Handle "is actually played in the tournament span" via a trigger
+	@StartUtc DATE,
 	@EndUtc DATE,
 	@A1Id BIGINT,
 	@B1Id BIGINT
 as
 	begin transaction;
 		begin try
-
+			
+			declare select PlayingForTeamId from Player where Id = @A1id
 		-- Check all players in org or contracted to play for team
-			if ( not ( True ))
+			if ( not ( select PlayingForTeamId from Player where Id = @A1id))
 			begin
-				RAISERROR('Teams have to be unique and participants of the tournament.', 10 , 1);
+				RAISERROR('Teams have to be unique and participants of the tournament.', 11 , 1);
 			end
 			
 			
@@ -95,24 +94,37 @@ as
   commit;
 go
 
---Create 5v5 Match
+CREATE FUNCTION PlaysForTeam (@PId BigInt, @TId Int)
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @PlayingForTeamId Table;
+    SET @PlayingForTeamId = select top(1) PlayingForTeamId from Player where Id = @A1id;
+	DECLARE @Answer BIT;
+    SET @ISOweek=1;
+    RETURN(@ISOweek);
+END;
+GO
 
+	select PlayingForTeamId from Player where Id = @A1id
+
+--Create 5v5 Match
 create procedure Create5v5Match
-	@MatchTypeId INT NOT NULL,
-	@TournamentSeriesId INT NOT NULL, 
+	@MatchTypeId INT,
+	@TournamentSeriesId INT, 
 	@Result INT,
-	@StartUtc DATE NOT NULL, -- Handle "is actually played in the tournament span" via a trigger
+	@StartUtc DATE, -- Handle "is actually played in the tournament span" via a trigger
 	@EndUtc DATE,
-	@A1Id BIGINT NOT NULL, 
-	@A2Id BIGINT NOT NULL, 
-	@A3Id BIGINT NOT NULL, 
-	@A4Id BIGINT NOT NULL, 
-	@A5Id BIGINT NOT NULL, 
-	@B1Id BIGINT NOT NULL, 
-	@B2Id BIGINT NOT NULL, 
-	@B3Id BIGINT NOT NULL, 
-	@B4Id BIGINT NOT NULL, 
-	@B5Id BIGINT NOT NULL
+	@A1Id BIGINT, 
+	@A2Id BIGINT, 
+	@A3Id BIGINT, 
+	@A4Id BIGINT, 
+	@A5Id BIGINT, 
+	@B1Id BIGINT, 
+	@B2Id BIGINT, 
+	@B3Id BIGINT, 
+	@B4Id BIGINT, 
+	@B5Id BIGINT
 as
 	begin transaction;
 		begin try
@@ -121,10 +133,10 @@ as
 			-- Check all players in org or contracted to play for team
 			if ( not ( True ))
 			begin
-				RAISERROR('Teams have to be unique and participants of the tournament.', 10 , 1);
+				RAISERROR('Teams have to be unique and participants of the tournament.', 11 , 1);
 			end
 			
-			insert into [Match] (MatchTypeId, TournamentSeriesId, Result, StartUtc, EndUtc, A1Id, A2Id, A3Id, A4Id, A5Id, B1Id, B2Id, B3Id, B4Id, B5Id)
+			insert into [Match](MatchTypeId, TournamentSeriesId, Result, StartUtc, EndUtc, A1Id, A2Id, A3Id, A4Id, A5Id, B1Id, B2Id, B3Id, B4Id, B5Id)
 				values (@MatchTypeId, @TournamentSeriesId, @Result, @StartUtc, @EndUtc, @A1Id, @A2Id, @A3Id, @A4Id, @A5Id, @B1Id, @B2Id, @B3Id, @B4Id, @B5Id);
 
 		end try
@@ -138,8 +150,6 @@ go
 -- TODO
 --search matches by team
 
--- TODO
---MarkLastMatch of TeamId as won
 
 -- TODO
 --Retire a player

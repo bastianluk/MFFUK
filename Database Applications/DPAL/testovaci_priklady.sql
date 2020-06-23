@@ -1,39 +1,30 @@
--- TODO
+-- Integrity constraints tests
+------------------------------
 
--- Testy integritních omezení
------------------------------
+-- Procedur and function tests
+------------------------------
 
-
--- Testy triggerù
------------------
-
-
--- Testy procedur a funkcí
---------------------------
-
--- Cannot share already shared shopping list
+-- Cannot Register invalid format game
 
 begin try
-	execute Share @HonzaShoppingListId, @LukasId
-print 'Test failed'
+  execute RegisterGame 'Dead by Daylight', '1v4'
+  print 'Test failed'
 end try
 begin catch
 	print 'Test succeeded'
 end catch
 
--- Cannot share shopping list with the owner
+-- Can register a valid format game
 
 begin try
-	execute Share @LukasShoppingListId, @LukasId
-print 'Test failed'
+  execute RegisterGame 'Quake Tournament', '1v1'
+  print 'Test succeeded'
 end try
 begin catch
-	print 'Test succeeded'
+	print 'Test failed'
 end catch
 
 
+-- View tests
+-------------
 
-
-
--- Testy pohledù
-----------------
