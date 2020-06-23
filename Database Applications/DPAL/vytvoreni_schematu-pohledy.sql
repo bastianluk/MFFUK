@@ -19,7 +19,7 @@ CREATE VIEW ClosestTournamentPerTeam AS
     closest.Location as [Location]
   FROM Team t
   INNER JOIN (
-		SELECT TOP(1)
+	  SELECT TOP(1)
       tour.StartUtc AS [StartUtc],
       tour.[Location] AS [Location],
       p.TeamId AS [TeamId],
@@ -44,7 +44,7 @@ CREATE VIEW ClosestTournamentPerTeam AS
     case 
 			when s.[SideATeamId] = t.Id then s.[SideBTeamId]
 			when s.[SideBTeamId] = t.Id then s.[SideATeamId]
-		end as [OpponentId]
+	end as [OpponentId]
     from TournamentSeries s
     where Result IS NOT NULL
     ORDER BY StartUtc

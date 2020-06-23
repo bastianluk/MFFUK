@@ -62,109 +62,103 @@ as
   commit;
 go
 
---Create 1v1 Match
-create procedure Create1v1Match
-	@MatchTypeId INT,
-	@TournamentSeriesId INT,
-	@Result INT,
-	@StartUtc DATE,
-	@EndUtc DATE,
-	@A1Id BIGINT,
-	@B1Id BIGINT
-as
-	begin transaction;
-		begin try
-			
-			declare select PlayingForTeamId from Player where Id = @A1id
-		-- Check all players in org or contracted to play for team
-			if ( not ( select PlayingForTeamId from Player where Id = @A1id))
-			begin
-				RAISERROR('Teams have to be unique and participants of the tournament.', 11 , 1);
-			end
-			
-			
-			insert into [Match] (MatchTypeId, TournamentSeriesId, Result, StartUtc, EndUtc, A1Id, B1Id)
-				values (@MatchTypeId, @TournamentSeriesId, @Result, @StartUtc, @EndUtc, @A1Id, @B1Id);
 
-		end try
-		begin catch
-			rollback transaction;
-			throw;
-		end catch
-  commit;
+--Search matches of a team by its (partial) name
+create function GetMatchesByTeam(
+	@Name nvarchar(128)
+) returns table
+as
+	return (
+		select m.*
+		from Match m
+		join TournamentSeries t on t.Id = m.TournamentSeriesId 
+		where (
+			t.SideATeamId in (
+				select Id
+				from Team
+				where [Name] like (@Name + '%')
+			) OR
+			t.SideBTeamId in (
+				select Id
+				from Team
+				where [Name] like (@Name + '%')
+			)
+		)
+	)
 go
 
-CREATE FUNCTION PlaysForTeam (@PId BigInt, @TId Int)
-RETURNS BIT
-AS
-BEGIN
-    DECLARE @PlayingForTeamId Table;
-    SET @PlayingForTeamId = select top(1) PlayingForTeamId from Player where Id = @A1id;
-	DECLARE @Answer BIT;
-    SET @ISOweek=1;
-    RETURN(@ISOweek);
-END;
-GO
-
-	select PlayingForTeamId from Player where Id = @A1id
-
---Create 5v5 Match
-create procedure Create5v5Match
-	@MatchTypeId INT,
-	@TournamentSeriesId INT, 
-	@Result INT,
-	@StartUtc DATE, -- Handle "is actually played in the tournament span" via a trigger
-	@EndUtc DATE,
-	@A1Id BIGINT, 
-	@A2Id BIGINT, 
-	@A3Id BIGINT, 
-	@A4Id BIGINT, 
-	@A5Id BIGINT, 
-	@B1Id BIGINT, 
-	@B2Id BIGINT, 
-	@B3Id BIGINT, 
-	@B4Id BIGINT, 
-	@B5Id BIGINT
-as
-	begin transaction;
-		begin try
-			declare @MatchTypeId INT;
-			--select Id from [MatchType] where Name = '5v5'
-			-- Check all players in org or contracted to play for team
-			if ( not ( True ))
-			begin
-				RAISERROR('Teams have to be unique and participants of the tournament.', 11 , 1);
-			end
-			
-			insert into [Match](MatchTypeId, TournamentSeriesId, Result, StartUtc, EndUtc, A1Id, A2Id, A3Id, A4Id, A5Id, B1Id, B2Id, B3Id, B4Id, B5Id)
-				values (@MatchTypeId, @TournamentSeriesId, @Result, @StartUtc, @EndUtc, @A1Id, @A2Id, @A3Id, @A4Id, @A5Id, @B1Id, @B2Id, @B3Id, @B4Id, @B5Id);
-
-		end try
-		begin catch
-			rollback transaction;
-			throw;
-		end catch
-  commit;
-go
-
--- TODO
---search matches by team
-
-
--- TODO
---Retire a player
-
--- TODO
---Transfer plyer
-
--- TODO
---Load player
-
--- TODO
---Player results (can be used by a view)
-
--- TODO
 --Get player by name
+create function GetPlayer(
+	@Nickname nvarchar(128)
+) returns table
+as
+	return (
+		select *
+		from Player
+		where [Nickname] like (@Nickname + '%')
+	)
+go
 
+--Search stats of a player by its (partial) nickname
+create function GetPlayerStats(
+	@Nickname nvarchar(128)
+) returns table
+as
+	return (
+		select *
+		from MatchPlayerStats
+		where PlayerId in (select Id from GetPlayer(@Nickname))
+	)
+go
 
---Schéma by mělo být rozumně indexované, aby dotazy na všechny data pohledů nevyžadovaly více než jeden FULL-SCAN (na řídící tabulku). SQL příkazy v procedurách a funkcích by kromě odůvodněných situací neměly vyžadovat žádný FULL-SCAN, protože se manipuluje s omezenou sadou řádek. 
+--Player will play for a different team.
+create procedure LoanPlayerTo
+	@PId BIGINT,
+	@TeamId INT
+as
+	begin transaction;
+		begin try
+			if ( exists (
+			    select * from Player where PlayingForTeamId = @TeamId and Id = @PId
+			) )
+			begin
+				RAISERROR('Player already on that team.', 11 , 1);
+			end
+						
+			update Player
+			set PlayingForTeamId = @TeamId
+			where Id = @PId
+
+		end try
+		begin catch
+			rollback transaction;
+			throw;
+		end catch
+  commit;
+go
+
+--Players contracted will be moved to a different org.
+create procedure TransferPlayerTo
+	@PId BIGINT,
+	@OrgId INT
+as
+	begin transaction;
+		begin try
+			if ( exists (
+			    select * from Player where ContractedOrgId = @OrgId and Id = @PId
+			) )
+			begin
+				RAISERROR('Player already contracted to that org.', 11 , 1);
+			end
+						
+			update Player
+			set ContractedOrgId = @OrgId
+			where Id = @PId
+
+		end try
+		begin catch
+			rollback transaction;
+			throw;
+		end catch
+  commit;
+go
