@@ -1,4 +1,9 @@
-﻿--Add Games
+﻿INSERT INTO MatchType([Name])
+VALUES
+	('5v5'),
+	('1v1'),
+	('6v6')
+
 INSERT INTO Game([Name], [DefaultFormat])
 VALUES
 	('DOTA2', '5v5'),

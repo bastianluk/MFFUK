@@ -6,9 +6,9 @@ as
 	begin transaction;
 		begin try
 			-- Could be separate format table and just a simple if it can be selected from the table
-			if ( not (@Format IN ('5v5', '1v1')))
+			if ( not (@Format IN (select [Name] from MatchType)))
 			begin
-				raiseerror('Invalid format value.', 10 , 1);				
+				RAISERROR('Invalid format value.', 10 , 1);				
 			end
 
 			-- Multiple formats for one game are supported
@@ -43,13 +43,13 @@ as
 			) and @SideATeamId != @SideBTeamId
 			))
 			begin
-				raiseerror('Teams have to be unique and participants of the tournament.', 10 , 1);
+				RAISERROR('Teams have to be unique and participants of the tournament.', 10 , 1);
 			end
 			
 			-- Always at least one game has to be played.
 			if (@FormatBestOf < 1)
 			begin
-				raiseerror('BestOfX can only be positive integer', 10 , 1);
+				RAISERROR('BestOfX can only be positive integer', 10 , 1);
 			end
 			
 			insert into TournamentSeries (TournamentId, StartUtc, EndUtc, Stage, FormatBestOf, SideATeamId, SideBTeamId)
@@ -80,7 +80,7 @@ as
 		-- Check all players in org or contracted to play for team
 			if ( not ( True ))
 			begin
-				raiseerror('Teams have to be unique and participants of the tournament.', 10 , 1);
+				RAISERROR('Teams have to be unique and participants of the tournament.', 10 , 1);
 			end
 			
 			
@@ -121,7 +121,7 @@ as
 			-- Check all players in org or contracted to play for team
 			if ( not ( True ))
 			begin
-				raiseerror('Teams have to be unique and participants of the tournament.', 10 , 1);
+				RAISERROR('Teams have to be unique and participants of the tournament.', 10 , 1);
 			end
 			
 			insert into [Match] (MatchTypeId, TournamentSeriesId, Result, StartUtc, EndUtc, A1Id, A2Id, A3Id, A4Id, A5Id, B1Id, B2Id, B3Id, B4Id, B5Id)
