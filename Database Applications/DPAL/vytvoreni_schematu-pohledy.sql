@@ -60,28 +60,16 @@ GO
 
 
 -- TODO
--- TOP10 Best players in rated games
-CREATE VIEW Top100Players AS
-  SELECT TOP(100)
-    p.Name,
-    (SELECT AVG(
-      CASE
-        when m.[A1Id] = p.Id then m5.[A1Rating]
-        when m.[A2Id] = p.Id then m5.[A2Rating]
-        when m.[A3Id] = p.Id then m5.[A3Rating]
-        when m.[A4Id] = p.Id then m5.[A4Rating]
-        when m.[A5Id] = p.Id then m5.[A5Rating]
-        when m.[B1Id] = p.Id then m5.[B1Rating]
-        when m.[B2Id] = p.Id then m5.[B2Rating]
-        when m.[B3Id] = p.Id then m5.[B3Rating]
-        when m.[B4Id] = p.Id then m5.[B4Rating]
-        when m.[B5Id] = p.Id then m5.[B5Rating]
-      END
-      )
-        FROM Match m
-        JOIN MatchStats m5 on m.Id = m5d
-        where m.StartUtc > DATEADD(month, -2, GETDATE())) as Avg
+-- TOP25 Best players in rated games
+CREATE VIEW Top25Players AS
+  SELECT TOP(25)
+    p.Nickname,
+    (SELECT AVG(Rating)
+        FROM MatchPlayerStats s
+		JOIN Match m on m.Id = s.MatchId 
+        where m.StartUtc > DATEADD(month, -2, GETDATE())) as AvgRating
   FROM Player
+  ORDER BY AvgRating DESC
 GO
 
 -- TOP10 Most active teams - most matches played.
