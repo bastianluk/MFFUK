@@ -9,84 +9,102 @@ CREATE VIEW TeamsByGames AS
   INNER JOIN Game g on g.Id = t.GameId
 GO
 
--- Closest future tournament
-CREATE VIEW ClosestTournamentPerTeam AS
+-- Last tournament
+CREATE VIEW LastTournamentPerTeam AS
   SELECT
     t.Name AS [TeamName],
-    closest.Name AS [TournamentName],
-    closest.StartUtc as [StartUtc],
-    closest.Location as [Location]
+    tour.Name AS [TournamentName],
+    MAX(tour.StartUtc) as [StartUtc],
+    tour.Location as [Location]
   FROM Team t
-  INNER JOIN (
-	SELECT TOP(1)
-    tour.StartUtc AS [StartUtc],
-    tour.[Location] AS [Location],
-    p.TeamId AS [TeamId],
-    tour.Name AS [Name]
-    FROM TournamentParticipant p
-    INNER JOIN Tournament tour on tour.Id = p.TournamentId
-		GROUP BY p.TeamId
-		ORDER BY tour.StartUtc ASC
-	) closest
-	on closest.TeamId = t.Id
+  INNER JOIN TournamentParticipant p on p.TeamId = t.Id
+  INNER JOIN Tournament tour on tour.Id = p.TournamentId
+  WHERE tour.StartUtc < GETDATE()
+  GROUP BY t.Name, tour.Name, tour.Location
 GO
 
--- Team history (stats plus VS who)
-CREATE VIEW TeamHistory AS
-  SELECT 
-    t.Name,
-    s.Result,
-    s.TournamentSeries
-  FROM Team t
-  INNER JOIN (
-    SELECT
-    case 
-			when s.[SideATeamId] = t.Id then s.[SideBTeamId]
-			when s.[SideBTeamId] = t.Id then s.[SideATeamId]
-	  end as [OpponentId]
-    from TournamentSeries s
-    where Result IS NOT NULL
-    ORDER BY StartUtc
-  ) oppenent on --finish
-GO
-
--- TODO
--- Player history (stats plus VS who)
+-- Player history (past matches, vs what opponent/team)
 CREATE VIEW PlayerHistory AS
+	select
+		p.Nickname,
+		p.Id as PlayerId,
+		s.MatchId as MatchId,
+		s.K,
+		s.D,
+		s.A,
+		s.Objective,
+		s.NetWorth,
+		s.Rating,
+		s.Class,
+		s.Deck,
+		case
+			when p.PlayingForTeamId = series.SideATeamId then series.SideBTeamId
+			when p.PlayingForTeamId = series.SideBTeamId then series.SideATeamId
+		end as OpponentId
+	from MatchPlayerStats s
+	join Player p on p.Id = s.PlayerId
+	join Match m on m.Id = s.MatchId
+	join TournamentSeries series on series.Id = m.TournamentSeriesId
+	where series.StartUtc < GETDATE()
 GO
 
--- TODO
--- TOP10 Best teams per game (most wins in last 2 months)
+-- TOP10 Best teams per game (most wins in last 24 months)
 CREATE VIEW Top10Teams AS
+	SELECT * FROM (
+	  SELECT TOP(10)
+		t.Name,
+		(SELECT COUNT(*)
+			from Match m
+			JOIN TournamentSeries series on series.Id = m.TournamentSeriesId
+			where
+				series.StartUtc > DATEADD(month, -24, GETDATE()) AND 
+				(CASE
+					WHEN t.Id = series.SideATeamId AND series.Result = 1 THEN 1
+					WHEN t.Id = series.SideBTeamId AND series.Result = 2 THEN 1
+					ELSE 0
+				END) = 1
+		) as Wins,
+		t.Id as TeamId
+	  FROM Team t
+	  ORDER BY Wins DESC
+	) result
+	WHERE result.Wins IS NOT NULL
 GO
 
--- TODO
--- TOP25 Best players in rated games
+-- TOP25 Best players (best avg rating in games in last 24 months)
 CREATE VIEW Top25Players AS
-  SELECT TOP(25)
-    p.Nickname,
-    (SELECT AVG(Rating)
-        FROM MatchPlayerStats s
-		JOIN Match m on m.Id = s.MatchId 
-        where m.StartUtc > DATEADD(month, -2, GETDATE())) as AvgRating
-  FROM Player
-  ORDER BY AvgRating DESC
+	SELECT * FROM (
+	  SELECT TOP(25)
+		p.Nickname,
+		(SELECT AVG(s.Rating)
+			FROM TournamentSeries series
+			JOIN Match m on m.TournamentSeriesId = series.Id
+			JOIN MatchPlayerStats s on s.MatchId = m.Id
+			where series.StartUtc > DATEADD(month, -24, GETDATE()) and s.PlayerId = p.Id and Rating IS NOT NULL
+		) as AvgRating,
+		p.Id as PlayerId
+	  FROM Player p
+	  ORDER BY AvgRating DESC
+	) result
+	WHERE result.AvgRating IS NOT NULL
 GO
 
--- TOP10 Most active teams - most matches played.
-CREATE VIEW Top10ActivePlayers AS
-  SELECT TOP(10)
-    t.Name,
-    (SELECT Count(*)
-      FROM Match m
-      JOIN TournamentSeries s on s.Id = m.TournamentSeriesId
-      where (
-        m.StartUtc > DATEADD(month, -2, GETDATE()) AND (
-          s.SideATeamId = t.Id OR
-          s.SideBTeamId = t.Id
-        )
-      )
-    ) as Count
-  FROM Team t
-  ORDER BY Count DESC
+-- TOP20 Most active teams (most matches played in last 24 months)
+CREATE VIEW Top20ActivePlayers AS
+	SELECT * FROM (
+	  SELECT TOP(20)
+		p.Nickname,
+		(SELECT COUNT(*)
+			from Match m
+			JOIN TournamentSeries series on series.Id = m.TournamentSeriesId
+			where p.Id IN (m.A1Id, m.A2Id, m.A3Id, m.A4Id, m.A5Id, m.A6Id, m.B1Id, m.B2Id, m.B3Id, m.B4Id, m.B5Id, m.B6Id)
+		) as GamesPlayed,
+		g.Name as Game,
+		p.Id as PlayerId
+	  FROM Player p
+	  JOIN Team t on t.Id = p.PlayingForTeamId
+	  JOIN Game g on g.Id = t.GameId
+	  ORDER BY GamesPlayed DESC
+	) result
+	WHERE result.GamesPlayed IS NOT NULL
 GO

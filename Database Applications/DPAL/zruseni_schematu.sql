@@ -1,11 +1,10 @@
 -- Drop Views
 DROP VIEW TeamsByGames;
-DROP VIEW ClosestTournamentPerTeam;
-DROP VIEW TeamHistory;
+DROP VIEW LastTournamentPerTeam;
 DROP VIEW PlayerHistory;
 DROP VIEW Top10Teams;
 DROP VIEW Top25Players;
-DROP VIEW Top10ActivePlayers;
+DROP VIEW Top20ActivePlayers;
 
 -- Drop Procedures
 DROP PROCEDURE RegisterGame;
