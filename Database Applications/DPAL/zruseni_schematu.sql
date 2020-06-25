@@ -5,6 +5,8 @@ DROP VIEW PlayerHistory;
 DROP VIEW Top10Teams;
 DROP VIEW Top25Players;
 DROP VIEW Top20ActivePlayers;
+DROP VIEW TournamentParticipantIndex;
+DROP VIEW MatchIndex;
 
 -- Drop Procedures
 DROP PROCEDURE RegisterGame;
