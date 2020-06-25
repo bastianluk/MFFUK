@@ -93,3 +93,7 @@ select * from Top25Players
 select * from Top20ActivePlayers
 
 -- Tournament Index - get only participants of HS tournaments
+select * from TournamentParticipantIndex where Game = 'HS'
+
+-- MatchIndex - human friendly way of viewing matches
+select * from MatchIndex

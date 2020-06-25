@@ -109,17 +109,38 @@ CREATE VIEW Top20ActivePlayers AS
 	WHERE result.GamesPlayed IS NOT NULL
 GO
 
--- 
-CREATE VIEW TournamentIndex AS
+-- User friendly way of viewing tournament info.
+CREATE VIEW TournamentParticipantIndex AS
 	SELECT
 		team.Name as Team,
 		team.Id as Id,
 		g.Name as [Game],
 		t.Name as Tournament,
 		t.Location as Locastion,
-		t.StartUtc as [Start]
+		t.StartUtc as [Start],
+		case
+			when t.EndUtc IS NOT NULL then t.EndUtc
+			else 'Uknown or has not ended.'
+		end as [END]
 	FROM TournamentParticipant p
 	INNER JOIN Tournament t on t.Id = p.TournamentId
 	INNER JOIN Team team on team.Id = p.TeamId
 	INNER JOIN Game g on g.Id = t.GameId
+GO
+
+
+CREATE VIEW MatchIndex AS
+	select
+		m.Id as MatchId,
+		CONCAT('Bo', CAST(s.FormatBestOf AS varchar(3))) as BestOfX,
+		m.Result as Result,
+		s.SideATeamId as TeamAId,
+		(select [Name] from Team where Id = s.SideATeamId) as TeamA,
+		m.AScore as TeamAScore,
+		m.BScore as TeamBScore,
+		(select [Name] from Team where Id = s.SideBTeamId) as TeamB,
+		s.SideBTeamId as TeamBId,
+		s.Id as SeriesId
+	from Match m
+	inner join TournamentSeries s on s.Id = m.TournamentSeriesId
 GO
