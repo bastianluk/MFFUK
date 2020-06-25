@@ -55,15 +55,15 @@ begin catch
 end catch
 
 -- Cannot loan to same team
-declare @PlayerId INT;
-select top(1) @PlayerId = p.Id from Player p inner join Team t on t.Id = p.ContractedOrgId inner join Game g ON g.Id = t.GameId where g.Name = 'HS'
+declare @Player2Id INT;
+select top(1) @Player2Id = p.Id from Player p inner join Team t on t.Id = p.ContractedOrgId inner join Game g ON g.Id = t.GameId where g.Name = 'HS'
 declare @PlayerOrgId BIGINT;
-select top(1) @PlayerOrgId = p.ContractedOrgId from Player p where p.Id = @PlayerId;
+select top(1) @PlayerOrgId = p.ContractedOrgId from Player p where p.Id = @Player2Id;
 declare @OrgId BIGINT;
 select top(1) @OrgId = o.Id from Organization o where o.Id != @PlayerOrgId;
 
 begin try
-  execute TransferPlayerTo @PlayerId, @OrgId
+  execute TransferPlayerTo @Player2Id, @OrgId
   print 'Test succeeded'
 end try
 begin catch
