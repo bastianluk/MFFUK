@@ -128,7 +128,7 @@ CREATE VIEW TournamentParticipantIndex AS
 	INNER JOIN Game g on g.Id = t.GameId
 GO
 
-
+-- User friendly way of viewing match info.
 CREATE VIEW MatchIndex AS
 	select
 		m.Id as MatchId,
