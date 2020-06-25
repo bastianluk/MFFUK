@@ -9,7 +9,7 @@ CREATE VIEW TeamsByGames AS
   INNER JOIN Game g on g.Id = t.GameId
 GO
 
--- Last tournament
+-- Last tournament of a team
 CREATE VIEW LastTournamentPerTeam AS
   SELECT
     t.Name AS [TeamName],
@@ -107,4 +107,19 @@ CREATE VIEW Top20ActivePlayers AS
 	  ORDER BY GamesPlayed DESC
 	) result
 	WHERE result.GamesPlayed IS NOT NULL
+GO
+
+-- 
+CREATE VIEW TournamentIndex AS
+	SELECT
+		team.Name as Team,
+		team.Id as Id,
+		g.Name as [Game],
+		t.Name as Tournament,
+		t.Location as Locastion,
+		t.StartUtc as [Start]
+	FROM TournamentParticipant p
+	INNER JOIN Tournament t on t.Id = p.TournamentId
+	INNER JOIN Team team on team.Id = p.TeamId
+	INNER JOIN Game g on g.Id = t.GameId
 GO

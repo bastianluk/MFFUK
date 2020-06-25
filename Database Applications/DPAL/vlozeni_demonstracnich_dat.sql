@@ -38,9 +38,9 @@ VALUES
 INSERT INTO Player([Country], [Nickname], [ContractedOrgId], [PlayingForTeamId])
 VALUES
 	--G2 CSGO
-	('France', 'Jackz', 1, 1),
+	('France', 'jackz', 1, 1),
 	('France', 'kennys', 1, 1),
-	('France', '', 1, 1),
+	('France', 'amenek', 1, 1),
 	('Serbia', 'nexa', 1, 1),
 	('Bosnia', 'hunter', 1, 1),
 	--G2 HS
