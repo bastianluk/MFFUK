@@ -7,6 +7,7 @@ import Control.Monad.ST
 import Data.STRef
 import Data.Char
 import Data.List
+
 -- for random seed purposes
 import System.IO.Unsafe
 
@@ -113,7 +114,12 @@ filterBombs = filter isBomb
 
 --Main
 playDevilMines :: IO ()
-playDevilMines = playGame 1 (getGameReady (mkStdGen getSeed))
+playDevilMines = playGame 1 (getGameReady mineCount width height bombIndexes)
+  where
+    mineCount = 10
+    width = 8
+    height = 8
+    bombIndexes = getRandomBombIndexes mineCount 0 ((width*height)-1) (mkStdGen getSeed)
 
 playGame :: Int -> Field -> IO ()
 playGame turn (Field field bombCount height width) = do {
@@ -150,8 +156,7 @@ nextTurn turn field = if (checkWin field)
 checkWin :: Field -> Bool
 checkWin (Field field bombCount _ _) = (bombCount == notShownCount)
   where
-    flattenedField = concat field
-    notShownCount = length (filterHidden flattenedField)
+    notShownCount = length (getNotRevealed field)
 
 
 -- Prints the info for a turn and the current field.
@@ -163,30 +168,58 @@ devil :: Int -> FieldCell -> Field -> Bool
 devil turn (FieldCell state count position) field = if (count==(-1))
   then True
   -- After a set amount of turns - devil comes out.
-  else if (turn > 10)
+  else if (devilCondition field)
     then devilTurn (FieldCell state count position) field
     else False
 
+
+devilCondition :: Field -> Bool
+devilCondition (Field field bombCount height width) = (div notRevealedCount size) < 30
+  where
+    notRevealedCount = length (getNotRevealed field) * 100
+    size = height * width
+
 -- Devils logic - will be backtracking based - from Field, initial seed of cell, try to find a cover for board that is possible
 devilTurn :: FieldCell -> Field -> Bool
-devilTurn cell (Field field bombCount height width) = backtracking cell (copyRevealed (Field field bombCount height width)) bombCount
+devilTurn cell (Field field bombCount height width) = backtracking cell (Field field bombCount height width)
 
-backtracking :: FieldCell -> Field -> Int -> Bool
-backtracking _ _ _ = False
---backtracking needs to assign bombs to unrevealed neighbours of revelead places such that it satisfies their values
+backtracking :: FieldCell -> Field -> Bool
+backtracking cell (Field field bombCount height width) = foldr (||) False (map (isMatching (Field field bombCount height width)) (combinationsWithCell cell bombCount (getNotRevealed field)))
 
-copyRevealed :: Field -> Field
-copyRevealed field = newField
+isMatching :: Field -> [FieldCell] -> Bool
+isMatching (Field field bombCount height width) bombCells = compareFields (Field field bombCount height width) newField
   where
-  newField = mapField field update
-  update = keepOnlyRevealed Shown
+    bombIndexes = getIndexesFromCells width bombCells
+    newField = getGameReady bombCount width height bombIndexes
 
-keepOnlyRevealed :: State -> FieldCell -> FieldCell
-keepOnlyRevealed desiredState (FieldCell state count position) = (FieldCell state newCount position)
-  where 
-    newCount = if desiredState==Shown
-                 then count
-                 else 0
+
+getIndexesFromCells :: Int -> [FieldCell] -> [Int]
+getIndexesFromCells width = map (getIndex width)
+
+getIndex :: Int -> FieldCell -> Int
+getIndex width (FieldCell state count (x, y)) = x*width + y
+
+getNotRevealed :: [[FieldCell]] -> [FieldCell]
+getNotRevealed = filterHidden . concat
+
+combinationsWithCell :: FieldCell -> Int -> [FieldCell] -> [[FieldCell]]
+combinationsWithCell _ 0 _  = [ [] ]
+combinationsWithCell cell n xs = map (\xs -> cell:xs) (combinations (n-1) (delete cell xs))
+
+combinations :: Int -> [a] -> [[a]]
+combinations 0 _  = [ [] ]
+combinations n xs = [ y:ys | y:xs' <- tails xs, ys <- combinations (n-1) xs']
+
+compareFields :: Field -> Field -> Bool
+compareFields (Field revealedField _ _ _) (Field field _ _ _) = foldr (&&) True (map revealedEquals (zip (concat revealedField) (concat field)))
+
+revealedEquals :: (FieldCell, FieldCell) -> Bool
+revealedEquals ((FieldCell stateRevealed countRevealed positionRevealed), (FieldCell state count position))
+ = if stateRevealed == Shown then
+    countRevealed == count && positionRevealed == position
+   else True
+
+--backtracking needs to assign bombs to unrevealed neighbours of revelead places such that it satisfies their values
 
 -- Updates all the nodes that are supposed to be revealed.
 updateField :: Field -> FieldCell -> Field
@@ -243,12 +276,17 @@ getCell (Field field _ _ _) (row, col) = field!!row!!col
 ----
 
 -- Prepare precalculated and game ready (mine) field.
-getGameReady :: StdGen -> Field
-getGameReady gen = mapField field updateBombs
+getGameReady :: Int -> Int -> Int -> [Int] -> Field
+getGameReady mineCount width height bombIndexes = mapField field updateBombs
   where
-    field = getNewField 10 8 8 gen
+    field = getNewField mineCount width height bombIndexes
     updateBombs = countBombNeighbours field
 
+--
+getRandomBombIndexes :: Int -> Int -> Int -> StdGen -> [Int]
+getRandomBombIndexes count from to gen= take count (shuffle [from .. to] gen)
+
+--
 countBombNeighbours :: Field -> FieldCell -> FieldCell
 countBombNeighbours field (FieldCell state count position) = (FieldCell state newCount position)
   where 
@@ -258,12 +296,8 @@ countBombNeighbours field (FieldCell state count position) = (FieldCell state ne
                  else length (filterBombs (map f (neighbours field position)))
 
 -- Gets a field with bombs - the adjecency values need to be calculated.
-getNewField :: Int -> Int -> Int -> StdGen -> Field
-getNewField mineCount height width gen = (Field [ getRow bombIndexes index width | index <- [0..height-1], let bombIndexes = getRandomBombIndexes mineCount 0 ((width*height)-1) gen] mineCount height width)
-
---
-getRandomBombIndexes :: Int -> Int -> Int -> StdGen -> [Int]
-getRandomBombIndexes count from to gen= take count (shuffle [from .. to] gen)
+getNewField :: Int -> Int -> Int -> [Int] -> Field
+getNewField mineCount height width indexes = (Field [ getRow indexes index width | index <- [0..height-1]] mineCount height width)
 
 -- For now just "per build" seed getter
 getSeed :: Int
