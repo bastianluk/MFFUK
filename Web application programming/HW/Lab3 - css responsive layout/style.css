@@ -1,0 +1,53 @@
+#content {
+  min-width: 400px;
+}
+
+img {
+  max-width: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 1000px) {
+  #sidebar {
+    position: fixed;
+    background: white;
+    padding: 20px;
+    text-align: center;
+  }
+
+  #sidebar li {
+    display: inline-block;
+  }
+
+  #sidebar a {
+    padding: 10px;
+  }
+
+  #content {
+    margin-top: 150px;
+  }
+}
+
+@media (min-width: 1000px) {
+  #sidebar {
+    position: absolute;
+    height: 100%;
+    width: 200px;
+  }
+
+  body {
+    padding-left: 200px;
+  }
+
+  #content {
+    width: 800px;
+    margin: 0 auto;
+  }
+  .floatright {
+    float: right;
+  }
+  .floatleft {
+    float: left;
+  }
+}

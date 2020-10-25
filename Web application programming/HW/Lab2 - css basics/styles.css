@@ -1,0 +1,39 @@
+h1:hover ~ p {
+  background-color: lightgray;
+}
+
+img#potato.farewellmessage {
+  transform: scaleX(-1);
+}
+
+img[id="logo"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+li {
+  border: 2pt;
+  border-style: inset;
+}
+
+
+ul li:first-child {
+  font-style: italic;
+}
+
+section {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  text-align: justify;
+  padding: 2%;
+}
+
+p {
+  background-color: white;
+  margin: 2%;
+}
+
+body {
+  background-image: url("tile-bcg.jpg");  
+}
