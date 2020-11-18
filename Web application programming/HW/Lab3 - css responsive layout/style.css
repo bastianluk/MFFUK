@@ -11,17 +11,20 @@ img {
 @media (max-width: 1000px) {
   #sidebar {
     position: fixed;
-    background: white;
     padding: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
     text-align: center;
+    background: white;
+  }
+
+  #sidebar a {
+    padding: 20px;
   }
 
   #sidebar li {
     display: inline-block;
-  }
-
-  #sidebar a {
-    padding: 10px;
   }
 
   #content {
@@ -31,9 +34,12 @@ img {
 
 @media (min-width: 1000px) {
   #sidebar {
-    position: absolute;
-    height: 100%;
+    position: fixed;
     width: 200px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
   }
 
   body {
@@ -44,9 +50,11 @@ img {
     width: 800px;
     margin: 0 auto;
   }
+
   .floatright {
     float: right;
   }
+
   .floatleft {
     float: left;
   }
