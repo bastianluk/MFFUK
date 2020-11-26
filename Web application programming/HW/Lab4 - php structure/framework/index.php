@@ -33,6 +33,7 @@ function recodex_run(&$argv) {
     $proc = new ConfigPreprocessor($input);
   }
   catch (Exception $e) {
+    echo $e;
     echo "Exception thrown from constructor!\n";
     exit(0);
   }
