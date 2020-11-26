@@ -1,0 +1,7 @@
+PHP
+
+Prefix methods from other classes
+
+Return types
+
+isXYZ methods - useful for validation
