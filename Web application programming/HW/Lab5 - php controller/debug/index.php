@@ -1,64 +1,111 @@
 <?php
 
-/*
- * Your code goes here...
- */
+main();
 
-// Copy paste from Lab solutions on Webik
-// Possibly extract to a separate file
-function loadCsv($filePath)
+function main()
 {
-    $result = [];
-    if ($file = fopen($filePath, 'r')) {
-        while (($data = fgetcsv($file))) { // the assignment is intentional (it is not a comparison)
-            $result[$data[0]] = $data; // first cell is ISBN, lets use it as a key
+    // Try get valid page param value.
+    $page = safeGetPage();
+    if (!isset($page))
+    {
+        http_response_code(400);
+        return;
+    }
+
+    // Try find template path.
+    $path = safeGetIndexTemplatePath($page);
+    $path = !isset($path) ? safeGetNamedTemplatePath($page) : $path;
+    if (!isset($path))
+    {
+        http_response_code(404);
+        return;
+    }
+
+    setParametersAndGenerate($path);
+}
+
+function safeGetPage()
+{
+    $page = safeGet($_GET, 'page');
+    $page = isset($page) ? validateComposition($page) : NULL;
+    return $page;
+}
+
+function safeGet(array $array, string $name, $default = null)
+{
+    if (!array_key_exists($name, $array)) {
+        return $default;
+    }
+    return $array[$name];
+}
+
+function validateComposition($value)
+{
+    $matchResult = preg_match('/^([a-zA-Z]+)(\/[a-zA-Z]+)*$/', $value);
+    return $matchResult ? $value : NULL;
+}
+
+function safeGetIndexTemplatePath(string $page)
+{
+    return safeGetTemplatePath("$page/index.php");
+}
+
+function safeGetNamedTemplatePath(string $page)
+{
+    return safeGetTemplatePath("$page.php");
+}
+
+function safeGetTemplatePath($suffix)
+{
+    $path = __DIR__ . "/templates/$suffix";
+    return file_exists($path) ? "$suffix" : NULL;
+}
+
+function setParametersAndGenerate(string $relativePath)
+{
+    $path = __DIR__ . "/parameters/$relativePath";
+    $parameters = file_exists($path) ? require $path : [];
+    foreach ($parameters as $key => $param)
+    {
+        $value = safeGet($_GET, $key);
+        $checkResult = checkParameterValue($param, $value);
+        if (!$checkResult)
+        {
+            http_response_code(400);
+            return;
         }
-    }
-    return $result;
-}
 
-function addHeader()
-{
-    require __DIR__ . '/templates/_header.php';
-}
+        if ($param == 'int')
+        {
+            $value = (int)$value;
+        }
 
-function addFooter()
-{
-    require __DIR__ . '/templates/_footer.php';
-}
-
-// This is both white list for existing pages and list of titles.
-$titles = [
-    "index"   => "Welcome",
-    "cart"    => "Cart",
-    "catalog" => "Catalog",
-];
-
-// Safely get the query parameter 'page' ...
-$page = isset($_GET['page']) ? $_GET['page'] : "index";
-
-if (array_key_exists($page, $titles)) { // isset would be also fine
-    // Global variable $title will be available also in included files...
-    $title = $titles[$page];
-
-    // This will dump the common prefix (header.php will use $title)
-    addHeader();
-
-    // Data handling should not be in templates (so we will do it here).
-    if ($page == 'catalog') {
-        $products = loadCsv('./products.csv');
+        $$key = $value;
     }
 
-    // Print out the selected contents of the page.
-    require __DIR__ . "/templates/$page.php";
+    require __DIR__ . "/templates/_header.php";
+    require __DIR__ . "/templates/$relativePath";
+    require __DIR__ . "/templates/_footer.php";
+}
 
-    // And finally, print out common suffix (footer) of all pages.
-    addFooter();
-} else {
-    // Invalid page parameter - print out error message.
-    http_response_code(408);
-    $title = 'Error';
-    addHeader();
-    echo "Page does not exist";
-    addFooter();
+function checkParameterValue($param, $value)
+{
+    if (!isset($value))
+    {
+        return false;
+    }
+
+    if (is_array($param))
+    {
+        return in_array($value, $param);
+    }
+
+    switch ($param) {
+        case 'int':
+            return is_numeric($value);
+        case 'string':
+            return is_string($value);
+        default:
+            return false;
+    }
 }
