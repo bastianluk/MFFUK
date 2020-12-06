@@ -326,37 +326,7 @@ db.customer.update(
     { upsert: true }
 );
 
-// FIND (5)
-// Find all customers not born after the year 1970.
-db.customer.find( { birth_year: { $not: { $gt: 1970 } }} ).forEach(printjson);
-// Find reservation that ordereded expensive dinners.
-db.reservation.find(
-    { additionalExpenses: { $elemMatch: { type: "dinner", price: { $gte: 40 } } } }
-).forEach(printjson);
-// Find room numbers and capacities of rooms with ocean view or terrace
-db.room.find(
-    { features: { $in: ["ocean view", "terrace"] } },
-    {
-        number: 1,
-        capacity: 1
-    }
-).forEach(printjson);
-// Find "rooms to clean" - rooms of reservations that are marked as processed -> meaning the guest left.
-db.reservation.find(
-    { state: { $in: ["processed"] } },
-    {
-        period: 0,
-        price: 0,
-        customer_id: 0,
-        additionalExpenses: 0
-    }
-).forEach(printjson);
-//Return 3 most expensive reservations (high to low).
-db.reservation.find().sort( { price: -1 }).limit(3).forEach(printjson);
-
-
 // MAPREDUCE (1)
-// Per product type sum up the prices which can help finding the best performing products.
 db.reservation.mapReduce(
     function() {
         if (Array.isArray(this.additionalExpenses)) {
@@ -376,7 +346,7 @@ db.reservation.mapReduce(
         query: { additionalExpenses: { $exists: true } },
         out: { inline: 1 }
     }
-);
+).forEach(printjson);
 
 
 // CLEANUP
