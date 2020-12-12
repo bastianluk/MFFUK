@@ -1,3 +1,39 @@
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS movies;
+
+CREATE TABLE actors (
+	id TEXT PRIMARY KEY,
+	data JSON,
+	movies TEXT[]
+);
+
+
+CREATE TABLE movies (
+	id TEXT PRIMARY KEY,
+	data JSONB
+);
+
+INSERT INTO actors (id,data,movies) VALUES ('trojan','{ "name": { "first": "Ivan", "last": "Trojan" }, "year": 1964}', ARRAY[ 'samotari', 'medvidek', 'karamazovi' ]);
+INSERT INTO actors (id,data,movies) VALUES ('machacek','{"name": { "first": "Jiri", "last": "Machacek" }, "year": 1966}', ARRAY[ 'medvidek', 'vratnelahve', 'samotari' ]);
+INSERT INTO actors (id,data,movies) VALUES ('schneiderova','{"name": { "first": "Jitka", "last": "Schneiderova" }, "year": 1973}', ARRAY[ 'samotari' ]);
+INSERT INTO actors (id,data,movies) VALUES ('sverak','{"name": { "first": "Zdenek", "last": "Sverak" }, "year": 1936}', ARRAY[ 'vratnelahve' ]);
+INSERT INTO actors (id,data) VALUES ('geislerova','{"name": { "first": "Anna", "last": "Geislerova" }, "year": 1976}');
+INSERT INTO actors (id,data,movies) VALUES ('vilhelmova','{"name": { "first": "Tatiana", "last": "Vilhelmova" }, "year": 1978}', ARRAY[ 'medvidek' ]);
+INSERT INTO actors (id,data,movies) VALUES ('menzel','{   "name": { "last": "Menzel", "first": "Jiri" }, "year": 1938}', ARRAY[ 'medvidek' ]);
+
+INSERT INTO movies (id,data)
+	VALUES ('samotari','{ "title": { "cs": "Samotari", "en": "Loners" }, "year": 2000, "rating": 84, "length": 103, "actors": [ "trojan", "machacek", "schneiderova" ], "genres": [ "comedy", "drama" ], "country": [ "CZ", "SI" ] }');
+INSERT INTO movies (id,data)
+	VALUES ('medvidek','{ "title" : "Medvidek", "year": 2007, "rating": 53, "length": 100, "director": { "first": "Jan", "last": "Hrebejk" }, "actors": [ "trojan", "machacek", "vilhelmova", "issova", "menzel" ], "genres": [ "comedy", "drama" ], "country": [ "CZ" ] }');
+INSERT INTO movies (id,data)
+	VALUES ('vratnelahve','{ "title": { "cs": "Vratne lahve", "en": "Empties" }, "year": 2006, "rating":76, "length":99, "director": { "first": "Jan", "last": "Sverak" }, "actors": [ "sverak", "machacek", "schneiderova" ], "genres": "comedy", "country": "CZ" }');
+INSERT INTO movies (id,data)
+	VALUES ('zelary','{ "title": "Zelary", "year": 2003, "rating":81, "length":142, "director": { "last": "Trojan", "first": "Ondrej" }, "actors": [ ], "genres": [ "romance", "drama" ], "country": [ "CZ", "SK", "AT" ] }');
+INSERT INTO movies (id,data)
+	VALUES ('stesti','{ "title": "Stesti", "year": 2005, "rating": 72, "length": 100, "director": { "last": "Slama", "first": "Bohdan" }, "awards": [ { "type": "Czech Lion", "year": 2005 } ] }');
+INSERT INTO movies (id,data)
+	VALUES ('kolja','{ "title": "Kolja", "year": 1996, "rating":86, "length":105, "awards": [ { "type": "Czech Lion", "year": 1996 }, { "type": "Academy Awards", "category": "A", "year": 1996 } ] }');
+
 -- Page 7 --
 
 SELECT '{           "title": { "cs": "Samotari", "en": "Loners" }, "year": 2.0e+3, "rating": 84, "length": 103, "actors": [ "trojan", "machacek", "schneiderova" ], "genres": [ "comedy", "drama" ], "country": [ "CZ", "SI" ] }'::json;

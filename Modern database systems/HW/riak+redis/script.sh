@@ -16,11 +16,11 @@
 # Buckets
 
 # Bucket 1 - Rooms
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 1, "category" : "Single room", "capacity" : 1, "extraCapacity" : 0 "features" : [ "workplace" ], "price" : 150}' http://localhost:10011/buckets/$1_rooms/keys/room1
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 1, "category" : "Single room", "capacity" : 1, "extraCapacity" : 0, "features" : [ "workplace" ], "price" : 150}' http://localhost:10011/buckets/$1_rooms/keys/room1
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 2, "category" : "Double room", "capacity" : 2, "extraCapacity" : 3, "features" : [ "tv", "ocean view" ], "price" : 200}' http://localhost:10011/buckets/$1_rooms/keys/room2
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 3, "category" : "Double room", "capacity" : 2, "extraCapacity" : 3 "features" : [ "tv" ], "price" : 200}' http://localhost:10011/buckets/$1_rooms/keys/room3
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 4, "category" : "Quadruple room", "capacity" : 4, "extraCapacity" : 0 "features" : [ "tv", "ocean view", "terrace" ], "price" : 250}' http://localhost:10011/buckets/$1_rooms/keys/room4
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 5, "category" : "Apartment", "capacity" : 4, "extraCapacity" : 2 "features" : [ "living room", "bar", "workplace", "tv" ], "price" : 400}' http://localhost:10011/buckets/$1_rooms/keys/room5
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 3, "category" : "Double room", "capacity" : 2, "extraCapacity" : 3, "features" : [ "tv" ], "price" : 200}' http://localhost:10011/buckets/$1_rooms/keys/room3
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 4, "category" : "Quadruple room", "capacity" : 4, "extraCapacity" : 0, "features" : [ "tv", "ocean view", "terrace" ], "price" : 250}' http://localhost:10011/buckets/$1_rooms/keys/room4
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 5, "category" : "Apartment", "capacity" : 4, "extraCapacity" : 2, "features" : [ "living room", "bar", "workplace", "tv" ], "price" : 400}' http://localhost:10011/buckets/$1_rooms/keys/room5
 
 # Bucket 2 - Customers
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"name" : "Jake Gyllenhaal", "birthYear": 1980, "country" : "USA" }' http://localhost:10011/buckets/$1_customers/keys/gyllenhaalj
@@ -54,7 +54,7 @@ curl -i -X GET http://localhost:10011/buckets/$1_reservations/keys/res2
 # ---
 # Update
 
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 4, "category" : "Quadruple room", "capacity" : 4, "extraCapacity" : 1 "features" : [ "tv", "ocean view", "terrace", "minibar" ], "price" : 300}' http://localhost:10011/buckets/$1_rooms/keys/room4
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"number" : 4, "category" : "Quadruple room", "capacity" : 4, "extraCapacity" : 1, "features" : [ "tv", "ocean view", "terrace", "minibar" ], "price" : 300}' http://localhost:10011/buckets/$1_rooms/keys/room4
 
 # ---
 # Link walking
