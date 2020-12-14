@@ -112,16 +112,19 @@ CREATE INDEX customer_index ON customer ((data -> 'name' ->> 'last');
 
 
 
---   Vyjádřete alespoň 4 dotazy
---     Použijte klauzule WHERE, GROUP BY, HAVING a ORDER BY, a to každou z nich alespoň 1x
---     Alespoň 1x realizujte vnořený dotaz
---     Alespoň 2x reprezentujte výsledek celého dotazu v datovém typu jsonb, přičemž pokaždé k tomuto účelu použijte jinou funkci, např. to_json[b], array_to_json, row_to_json anebo json[b]_object
 --
 -- SELECT
 --
-
+SELECT
+    jsonb_object((data->>'state'), COUNT (data) AS reservation_count)
+FROM reservation;
+GROUP BY (data->>'state');
 --
-
+SELECT
+    to_jsonb(data->>'country'), COUNT (data) AS nonseniors_count)
+FROM customer;
+GROUP BY (data->>'country')
+HAVING data->>'year';
 -- Find future reservations by start.
 SELECT
     c->data->'name'->>'last' AS lastName,
