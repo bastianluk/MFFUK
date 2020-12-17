@@ -1,7 +1,7 @@
 class Position
 {
-    ValueX
-    ValueY
+    ValueX;
+    ValueY;
 
     constructor (x, y)
     {
@@ -22,8 +22,8 @@ class Position
 
 class Tile
 {
-    Element
-    Position
+    Element;
+    Position;
 
     constructor (element, position)
     {
@@ -51,9 +51,9 @@ class Tile
 
 class LoydBoard
 {
-    Tiles
-    EmptyTilePosition
-    Width
+    Tiles;
+    EmptyTilePosition;
+    Width;
 
     constructor (board)
     {
@@ -151,5 +151,6 @@ document.addEventListener("DOMContentLoaded", gameOn)
 
 function gameOn() {
     let gameState = new LoydBoard(document.getElementById("game-board"));
+    // Debug
     // console.log(gameState);
 }
