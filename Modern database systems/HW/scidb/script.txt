@@ -1,0 +1,85 @@
+-- bastianl - theme - hotel
+
+-- Zadání:
+--   Vytvořte script (textový soubor), který obsahuje sekvenci buď AQL, nebo AFL výrazů ilustrující práci s databází SciDB
+--   Tzn. nekombinujte AQL a AFL výrazy v jednoum scriptu
+--   Definujte schéma pro 2 pole reprezentující entity různých typů
+--   Všechny buňky polí (angl. array cells) musí obsahovat alespoň 3 atributy
+--   Alespoň v jednom případě definujte dvě nebo více dimenze
+--   Do každého pole vložte alespoň 5 neprázdných záznamů
+--   Pro vložení použijte výraz LOAD FROM nebo jeho AFL ekvivalent load
+--   Vyjádřete alespoň 3 výrazy typu update
+--     Alespoň 1x pro tento účel použijte výraz INSERT INTO nebo jeho AFL ekvivalent insert
+--     Alespoň 1x použijte výraz SELECT INTO nebo jeho AFL ekvivalent store
+--     Alespoň 1x vykonejte výraz UPDATE SET nebo vhodně vyjádřete pomocí AFL operátorů (dobrovolné v případě AFL)
+--   Vyjádřete alespoň 4 dotazy
+--     Alespoň 2x vhodně realizujte spojení polí, a to pokaždé za použití jiného operátoru (join, merge, cross_join) nebo jeho AQL ekvivalentu
+--     Alespoň 1x použijte binární operátory (project, filter, between, slice) nebo jejich ekvivalentní AQL výraz
+--     Alespoň 1x použijte agregační operátor spolu (aggregate, regrid, window) s vhodnou agregační funkcí (min, max, sum, ...) nebo realizujte ekvivalentní AQL výraz
+--     Alespoň 1x použijte operátor sort nebo AQL klauzuli SORT
+--   Vhodně používejte tzv. aliasing (AS)
+--   Alespoň 1x realizujte vnořený dotaz
+--   Nezapomeňte na konci scriptu vymazat všechna vytvořená (i dočasná) pole
+-- Požadavky:
+--   V komentáři v přirozeném jazyce popište, co Vaše dotazy dělají a za jakým účelem používáte vybrané operátory (filtrování, spojení, agregace, ...), a to pomocí -- komentářů
+--   Uvnitř scriptu nepřepínejte mezi AQL a AFL, tzn. nevolejte příkaz set lang AQL | AFL;
+--   Odevzdávané soubory:
+--   script.txt: Textový soubor obsahující sekvenci AQL nebo AFL výrazů
+--   data1.scidb: Datový soubor obsahující definice dat prvního z entitních typů
+--   data2.scidb: Datový soubor obsahující definice dat druhého z entitních typů
+-- Vykonání:
+--   V případě AQL vykonejte následující shell přikaz: iquery -f $ScriptFile -r $OutputFile
+--   V případě AFL vykonejte následující shell přikaz: iquery -af $ScriptFile -r $OutputFile
+--   $ScriptFile je souborem s AQL nebo AFL výrazy, např. script.txt
+--   $OutputFile je souborem, do kterého mají být zapsány výsledky, např. output.txt
+
+
+-- Called just once
+set lang AQL;
+
+-- Create AND Load (2)
+CREATE ARRAY customers <customer:string, firstName:string, lastName:string, year:int16, email:string, country:string> [i=0:*];
+LOAD customers FROM './data1.scidb';
+CREATE ARRAY reservations <reservation:int32, customer:string, room:string, state:string, start:datetime, end:datetime, price:int32> [j=0:9, k=0:*];
+LOAD reservations FROM './data2.scidb';
+
+
+--   Vyjádřete alespoň 3 výrazy typu update
+--     Alespoň 1x pro tento účel použijte výraz INSERT INTO nebo jeho AFL ekvivalent insert
+--     Alespoň 1x použijte výraz SELECT INTO nebo jeho AFL ekvivalent store
+--     Alespoň 1x vykonejte výraz UPDATE SET nebo vhodně vyjádřete pomocí AFL operátorů
+
+-- Update (3)
+-- New reservation by a customer.
+INSERT INTO reservations '[ (), (), (), (), (), ( 6, "cage", "d201", "confirmed",  "2021-05-15", "2021-05-23", 225) ]';
+-- Keep american customers separately.
+SELECT * INTO americanCustomers FROM customers WHERE customers.country = "USA";
+-- Mass discount on pricier reservations.
+UPDATE reservations SET price = price * 0.80 WHERE price > 300;
+
+--   Vyjádřete alespoň 4 dotazy
+--     Alespoň 2x vhodně realizujte spojení polí, a to pokaždé za použití jiného operátoru (join, merge, cross_join) nebo jeho AQL ekvivalentu
+--     Alespoň 1x použijte binární operátory (project, filter, between, slice) nebo jejich ekvivalentní AQL výraz
+--     Alespoň 1x použijte agregační operátor spolu (aggregate, regrid, window) s vhodnou agregační funkcí (min, max, sum, ...) nebo realizujte ekvivalentní AQL výraz
+--     Alespoň 1x použijte operátor sort nebo AQL klauzuli SORT
+--   Vhodně používejte tzv. aliasing (AS)
+--   Alespoň 1x realizujte vnořený dotaz
+--   Nezapomeňte na konci scriptu vymazat všechna vytvořená (i dočasná) pole
+
+-- Select (4)
+-- Upcoming reservation report - customer name, the start of their reservation and assigned room.
+SELECT c.firstName, c.lastName, r.start, r.room FROM customers AS c JOIN reservations AS r ON c.customer = r.customer WHERE r.start >= now_dt() ;
+-- b join cross_join slice
+SELECT * FROM cross_join(customers, reservations)
+-- Reservation report - to see how big of a gap is between all the reservations (reservation density per 10 reservations, or rather the time frame per 10) go per slices and make it possible to observ the change in start date.
+SELECT * FROM slice(reservations, j, 0);
+-- For customers from the US, there are special taxes if you give them a room - find customers from the US, their reservations and sum the money you have to tax.
+SELECT sum(r.price) AS profitToTax FROM reservations AS r WHERE r.customer IN (SELECT customer FROM americanCustomers);
+-- Customer report - customers from what countries visit the most:
+SELECT country, count(*) AS customerCount FROM customers GROUP BY country ORDER BY customerCount;
+
+
+-- Delete
+DROP ARRAY americanCustomers;
+DROP ARRAY customers;
+DROP ARRAY reservations;
