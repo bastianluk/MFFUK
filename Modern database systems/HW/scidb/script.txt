@@ -1,59 +1,37 @@
 -- bastianl - theme - hotel
 
--- Zadání:
---   Definujte schéma pro 2 pole reprezentující entity různých typů
---   Vyjádřete alespoň 4 dotazy
---     Alespoň 1x vhodně realizujte spojení polí, a to pokaždé za použití jiného operátoru (merge, cross_join) nebo jeho AQL ekvivalentu
---     Alespoň 1x použijte binární operátory (project, filter, between, slice) nebo jejich ekvivalentní AQL výraz
---     Alespoň 1x použijte operátor sort nebo AQL klauzuli SORT
---   Vhodně používejte tzv. aliasing (AS)
---   Alespoň 1x realizujte vnořený dotaz
---   Nezapomeňte na konci scriptu vymazat všechna vytvořená (i dočasná) pole
--- Vykonání:
---   V případě AQL vykonejte následující shell přikaz: iquery -f $ScriptFile -r $OutputFile
---   V případě AFL vykonejte následující shell přikaz: iquery -af $ScriptFile -r $OutputFile
---   $ScriptFile je souborem s AQL nebo AFL výrazy, např. script.txt
---   $OutputFile je souborem, do kterého mají být zapsány výsledky, např. output.txt
-
-
--- Called just once to make sure it is AQL.
+-- Called just once
 set lang AQL;
 
+-- DEBUG
+--DROP ARRAY customers;
+--DROP ARRAY reservations;
+--DROP ARRAY americanCustomers;
+
 -- Create AND Load (2)
+-- Might have to edit path to data files when run on different machine.
 CREATE ARRAY customers <customer:string, firstName:string, lastName:string, year:int16, email:string, country:string> [i=0:*];
 LOAD customers FROM '/home/scidb/Documents/data1.scidb';
-CREATE ARRAY reservations <reservation:int32, customer:string, room:string, state:string, start:datetime, end:datetime, price:int32> [j=0:9, k=0:*];
+CREATE ARRAY reservations <reservation:int32, customer:string, room:string, state:string, start:datetime, end:datetime, price:int32> [j=0:*];
 LOAD reservations FROM '/home/scidb/Documents/data2.scidb';
 
-
 -- Update (3)
--- New reservation by a customer.
-INSERT INTO reservations '[ (), (), (), (), (), ( 6, "cage", "d201", "confirmed",  "2021-05-15", "2021-05-23", 225) ]';
+-- New reservation but without an assigned customer - e.g. a company reserved a room for someone on a business trip.
+INSERT INTO reservations '[ (), (), (), (), (), ( 6, "", "d201", "confirmed",  "2021-05-15", "2021-05-23", 225) ]';
 -- Keep american customers separately.
-SELECT * INTO americanCustomers FROM customers WHERE customers.country = "USA";
+SELECT * INTO americanCustomers FROM customers WHERE customers.country = 'USA';
 -- Mass discount on pricier reservations.
-UPDATE reservations SET price = price * 0.80 WHERE price > 300;
+UPDATE reservations SET price = price - 50 WHERE price > 300;
 
---   Vyjádřete alespoň 4 dotazy
---     Alespoň 2x vhodně realizujte spojení polí, a to pokaždé za použití jiného operátoru (join, merge, cross_join) nebo jeho AQL ekvivalentu
---     Alespoň 1x použijte binární operátory (project, filter, between, slice) nebo jejich ekvivalentní AQL výraz
---     Alespoň 1x použijte agregační operátor spolu (aggregate, regrid, window) s vhodnou agregační funkcí (min, max, sum, ...) nebo realizujte ekvivalentní AQL výraz
---     Alespoň 1x použijte operátor sort nebo AQL klauzuli SORT
---   Vhodně používejte tzv. aliasing (AS)
---   Alespoň 1x realizujte vnořený dotaz
---   Nezapomeňte na konci scriptu vymazat všechna vytvořená (i dočasná) pole
-
--- Select (5)
+-- Select (4)
 -- Upcoming reservation report - customer name, the start of their reservation and assigned room.
-SELECT c.firstName, c.lastName, r.start, r.room FROM customers AS c JOIN reservations AS r ON c.customer = r.customer WHERE r.start >= now_dt() ;
--- b join cross_join slice
--- SELECT * FROM cross_join(customers, reservations)
--- Reservation report - to see how big of a gap is between all the reservations (reservation density per 10 reservations, or rather the time frame per 10) go per slices and make it possible to observ the change in start date.
-SELECT * FROM slice(reservations, j, 0);
--- For customers from the US, there are special taxes if you give them a room - find customers from the US, their reservations and sum the money you have to tax.
-SELECT sum(r.price) AS profitToTax FROM reservations AS r WHERE r.customer IN (SELECT customer FROM americanCustomers);
--- Customer report - customers from what countries visit the most:
-SELECT country, count(*) AS customerCount FROM customers GROUP BY country ORDER BY customerCount;
+SELECT c.firstName, c.lastName, r.start, r.room FROM customers AS c JOIN reservations AS r ON c.customer = r.customer WHERE r.start >= now() ORDER BY r.start;
+-- Find possible assignments of reservation without a customer - someone lost track of who ordered it and now it needs to be assigned.
+SELECT * FROM cross_join(customers, (SELECT * FROM reservations WHERE customer = ''));
+-- Find first 3 reservations.
+SELECT * FROM between(reservations, 0, 2);
+-- For customers from the US, there are special taxes if you give them a room - get customers from the US, their reservations and sum the money you have to tax.
+SELECT sum(r.price) AS profitToTax FROM reservations AS r JOIN americanCustomers AS ac on r.customer = ac.customer;
 
 
 -- Delete
