@@ -6,7 +6,7 @@ Basics:
  - implements all things: unless I missed something, technically no - missing two different "to jsonb" conversions of a result in select statements
 
 Comment:
-When compared to my own solution this is much more readable and also explicitly says what operator is being used where (so comapring to the requirements was easier than expected). Also I wouldnt duck a point for what was mentioned above as the author used a different to jsonb conversion in a sub-query in his update statements which is enough in my opinion. Also, given the domain (Public transport), the data and select statements were adequate in my opinion.
-I liked the use of the row to json construct which I would use in my solution.
+When compared to my own solution this is much more readable and also explicitly says what operator is being used where (so comapring to the requirements was easier than expected). Also I wouldnt duck a point for what was mentioned above as the author used a different to jsonb conversion in a sub-query in his update statements which is enough in my opinion.
+Also, given the domain (Public transport), the data and select statements were adequate in my opinion. I liked the use of the row to json construct which I would use in my solution.
 
 Points (0-3): 3
