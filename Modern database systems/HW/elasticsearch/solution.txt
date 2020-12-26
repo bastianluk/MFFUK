@@ -1,0 +1,468 @@
+%%%%% Separate %%%%%
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/trojan?pretty" -H "Content-Type: application/json" -d '{
+	"name": { "first": "Ivan", "last": "Trojan" },
+	"year": 1964,
+	"movies": [ "samotari", "medvidek", "karamazovi" ]
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/machacek?pretty" -H 'Content-Type: application/json' -d '{
+	"name": { "first": "Jiri", "last": "Machacek" },
+	"year": 1966,
+	"movies": [ "medvidek", "vratnelahve", "samotari" ]
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/schneiderova?pretty" -H 'Content-Type: application/json' -d '{
+	"name": { "first": "Jitka", "last": "Schneiderova" },
+	"year": 1973,
+	"movies": [ "samotari" ]
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/sverak?pretty" -H 'Content-Type: application/json' -d '{
+	"name": { "first": "Zdenek", "last": "Sverak" },
+	"year": 1936,
+	"movies": [ "vratnelahve" ]
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/geislerova?pretty" -H 'Content-Type: application/json' -d '{
+	"name": { "first": "Anna", "last": "Geislerova" },
+	"year": 1976
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/vilhelmova?pretty" -H 'Content-Type: application/json' -d '{
+	"name": { "first": "Tatiana", "last": "Vilhelmova" },
+	"year": 1978,
+	"movies": [ "medvidek"]
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/menzel?pretty" -H 'Content-Type: application/json' -d '{
+	"name": { "last": "Menzel", "first": "Jiri" },
+	"year": 1938,
+	"movies": "medvidek"
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies/_doc/samotari?pretty" -H 'Content-Type: application/json' -d '{
+	"title": { "cs": "Samotari", "en": "Loners" },
+	"year": 2000,
+	"rating": 84,
+	"actors": [ "trojan", "machacek", "schneiderova" ],
+	"genres": [ "comedy", "drama" ],
+	"country": [ "CZ", "SI" ],
+	"length": 103,
+    "text": "Sedm mladých lidí prožívá v průběhu několika dní události, které radikálně ovlivní jejich budoucí život. Rozhlasový moderátor malého pražského rádia Petr se rozchází se svou dlouholetou přítelkyní Hankou. Tu chce získat pro sebe neurotický doktor Ondřej, který dívku už léta pronásleduje svou vtíravou pozorností. Ondřejova manželka Lenka si však odmítá připustit, že by otec jejích dětí mohl zradit jejich úhledný maloměšťácký život. Do osudů obou dvojic zasáhnou i křehká makedonská barmanka Vesna hledající v Čechách ztraceného otce, cynický manipulátor Robert a oddaný milovník marihuany Jakub. Kontrast k osudům osamělých mladých lidí, kteří se více či méně úspěšně pokoušejí vyznat sami v sobě, tvoří Hančini usedlí rodiče a skupinka japonských turistů toužících poznat \"typickou\" českou rodinu... Příběhy samotářů uprostřed davu, kteří si připadají bezmocně vláčení zlomyslným osudem uvnitř svých ekonomicky pohodlných životů, vyprávějí autoři v tragikomické poloze.(oficiální text distributora)"
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies/_doc/medvidek?pretty" -H 'Content-Type: application/json' -d '{
+	"title": { "cs":"Medvidek"},
+	"year": 2007,
+	"director": { "first": "Jan", "last": "Hrebejk" },
+	"rating": 53,
+	"actors": [ "trojan", "machacek", "vilhelmova", "issova", "menzel" ],
+	"genres": [ "comedy", "drama" ],
+	"country": [ "CZ" ],
+	"length": 100,
+    "text": "Přes poetický název půjde opět o tragikomedii sázející především na skvěle napsané postavy a jejich dialogy. \"Pokud bychom měli žánrově film přirovnat k některému dílu světové kinematografie, mohla by to být Americká krása nebo Hana a její sestry. Je to hodně konverzační film, který zkoumá z mnoha úhlů fenomén manželství a vše, co k němu patří. Tedy mateřství, otcovství, nevěry… To, jak je někdy manželství rozkládáno plíživě, nebo naopak, jak i velké zásahy zvenčí ho nerozklíží. Těžiště je tedy v postavách a jejich psychologii,\" vysvětluje Jan Hřebejk. Petr Jarchovský k tomu podotýká, že kdyby neexistoval film Tajnosti a lži, jeden z jejich nejoblíbenějších filmů, nynější Medvídek by se takto mohl jmenovat. \"Zajímají mě příběhy, ve kterých věci nejsou pod povrchem takové, jaké se jeví navenek,\" dodává Jan Hřebejk. V příběhu o trojici kamarádů a jejich partnerkách se opět sešlo několik herců, se kterými režisér již spolupracoval: Nataša Burger, Jiří Macháček a také Aňa Geislerová a Roman Luknár. Ti budou stejně jako v Krásce v nesnázích hrát partnery. Autoři ovšem pro ně vymysleli naprosto odlišné postavy, a tak bude pro diváky jistě velice zajímavé sledovat, jak se může vztah mezi dvěma herci na plátně vyvíjet. Šestici uzavírají Táňa Vilhelmová a Ivan Trojan.(oficiální text distributora)"
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies/_doc/vratnelahve?pretty" -H 'Content-Type: application/json' -d '{
+	"title": { "cs": "Vratne lahve", "en": "Empties" },
+	"year": 2006,
+	"director": { "first": "Jan", "last": "Sverak" },
+	"rating": 76,
+	"actors": [ "sverak", "machacek", "schneiderova" ],
+	"genres": "comedy",
+	"country": "CZ",
+	"length": 99,
+    "text": "Snímek podle scénáře Zdeňka Svěráka. Hrdinou příběhu je učitel v důchodu, který přijme brigádnické místo ve výkupu lahví v jednom pražském supermarketu. \"Nová verze scénáře se víc točí kolem hlavní postavy a jeho rodiny. Táta zapojil do příběhu osobní zkušenost s podzimem života a teď to funguje - je to osobní, pravdivé a je to smutnoveselé,\" charakterizuje obnovený projekt filmu Vratné lahve režisér a producent Jan Svěrák.(oficiální text distributora)"
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies/_doc/zelary?pretty" -H 'Content-Type: application/json' -d '{
+	"title": { "cs": "Zelary"},
+	"year": 2003,
+	"director": { "last": "Trojan", "first": "Ondrej" },
+	"rating": 81,
+	"actors": [ ],
+	"genres": [ "romance", "drama" ],
+	"country": [ "CZ", "SK", "AT" ],
+	"length": 142,
+    "text": "Píší se čtyřicátá léta, doba okupace a protektorátu. Eliška je mladá dívka, toho času z důvodu uzavření vysokých škol nedostudovaná lékařka. Pracuje jako zdravotní sestra v městské nemocnici, má milostný poměr se sympatickým a úspěšným chirurgem Richardem. Eliška i Richard, stejně jako jejich společný přítel, doktor Chládek, jsou zapojeni do domácího odboje. Jedné noci přivezou na chirurgickou kliniku těžce poraněného muže, venkovana ze vzdálených pohraničních hor. Muž potřebuje nutně transfúzi. Má stejnou krevní skupinu jako Eliška. Ta mu svým dárcovstvím zachrání život. Tak se krví naváže pouto, které v našem příběhu vyústí ve zvláštní, neobyčejně silný milostný vztah mezi moderní, městskou, vzdělanou Eliškou a barbarským, přírodním mužem s dětskou duší - Jozou. Odbojová skupina, v níž jsou lékaři zapojeni, je dekonspirována a pronásledována gestapem. Všem hrozí smrt. Zatímco vedoucí skupiny, primář Richard, milenec Elišky, přes noc zmizí do ilegality, pro Elišku její spolubojovníci za jejími zády narychlo vymyslí jiný, zdánlivě bezpečný úkryt. Dohodnou se s pacientem Jozou, aby Elišku ukryl ve své dřevěnici daleko v horách. S falešnými dokumenty, s novou identitou, je Eliška, nyní Hana, donucena ze dne na den opustit městský život a stát se ženou horala. Žít uprostřed divoké přírody, v horské vesnici, kde se zastavil čas před sto padesáti lety. Tato vesnice sluje tajemným názvem Želary.(oficiální text distributora)"
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies/_doc/stesti?pretty" -H 'Content-Type: application/json' -d '{
+	"title": { "cs": "Stesti"},
+	"year": 2005,
+	"director": { "last": "Slama", "first": "Bohdan" },
+	"rating": 72,
+	"length": 100,
+	"awards": [
+		{ "type": "Czech Lion", "year": 2005 }
+	],
+    "text": "Nový film režiséra Bohdana Slámy Štěstí je dojemným příběhem o křehkém vztahu dvou mladých lidí, jenž postupně přeroste v opravdovou lásku. Herecké obsazení i atmosféra filmu navazuje na Slámův úspěšný debut Divoké včely, který měl mimořádný ohlas u českých diváků a přinesl mu i řadu cen na mezinárodních filmových festivalech. Hrdinka příběhu Monika (Tatiana Vilhelmová) se musí rozhodnout, zda obětuje vysněnou cestu do Ameriky za svým přítelem, aby se mohla postarat o děti svojí nejlepší kamarádky. Největší oporou se jí stane Toník (Pavel Liška), s nímž se snaží dětem nahradit chybějící rodinu ,a najde u něj nejen oporu, ale i opravdovou lásku. Film je hereckým koncertem obou hlavních představitelů, které doplňují skvělými výkony ve vedlejších rolích Aňa Geislerová, Bolek Polívka, Simona Stašová, Zuzana Krónerová, Marek Daniel a další.(oficiální text distributora)"
+}'
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies/_doc/kolja?pretty" -H 'Content-Type: application/json' -d '{
+	"title": { "cs": "Kolja"},
+	"year": 1996, "rating": 86,
+	"length": 105,
+	"awards": [
+		{ "type": "Czech Lion", "year": 1996 },
+		{ "type": "Academy Awards", "category": "A", "year": 2005 }
+	],
+    "text": "Laskavá komedie o muži, který se domníval, že už nemůže být hůře a netušil, že právě prožívá nejkrásnější chvíle svého života. Františkovi už prošedivěly vousy. Kolja ještě nedosáhl školního věku a setkali se díky tragikomické životní situaci. Ti dva zůstali nakonec sami.Starý mládenec a kluk, kteří si navzájem nerozumějí a to ve všech směrech. Čeká je dlouhá a složitá cesta za úsměvem a láskou...(oficiální text distributora)"
+}'
+
+
+%%%%% Bulk %%%%%
+
+{ "index" : { "_index" : "actors", "_id" : "trojan" } }
+{ "name": { "first": "Ivan", "last": "Trojan" },"year": 1964,"movies": [ "samotari", "medvidek", "karamazovi" ]}
+{ "index" : { "_index" : "actors", "_id" : "machacek" } }
+{"name": { "first": "Jiri", "last": "Machacek" },"year": 1966,"movies": [ "medvidek", "vratnelahve", "samotari" ]}
+{ "index" : { "_index" : "actors", "_id" : "schneiderova" } }
+{"name": { "first": "Jitka", "last": "Schneiderova" },"year": 1973,"movies": [ "samotari" ]}
+{ "index" : { "_index" : "actors", "_id" : "sverak" } }
+{"name": { "first": "Zdenek", "last": "Sverak" },"year": 1936,"movies": [ "vratnelahve" ]}
+{ "index" : { "_index" : "actors", "_id" : "geislerova" } }
+{"name": { "first": "Anna", "last": "Geislerova" },"year": 1976}
+{ "index" : { "_index" : "actors", "_id" : "vilhelmova" } }
+{"name": { "first": "Tatiana", "last": "Vilhelmova" },"year": 1978,"movies": [ "medvidek"]}
+{ "index" : { "_index" : "actors", "_id" : "menzel" } }
+{"name": { "last": "Menzel", "first": "Jiri" },"year": 1938,"movies": "medvidek"}
+{ "index" : { "_index" : "movies", "_id" : "samotari" } }
+{"title": { "cs": "Samotari", "en": "Loners" },"year": 2000,"rating": 84,"actors": [ "trojan", "machacek", "schneiderova" ],"genres": [ "comedy", "drama" ],"country": [ "CZ", "SI" ],"length": 103,"text": "Sedm mladých lidí prožívá v průběhu několika dní události, které radikálně ovlivní jejich budoucí život. Rozhlasový moderátor malého pražského rádia Petr se rozchází se svou dlouholetou přítelkyní Hankou. Tu chce získat pro sebe neurotický doktor Ondřej, který dívku už léta pronásleduje svou vtíravou pozorností. Ondřejova manželka Lenka si však odmítá připustit, že by otec jejích dětí mohl zradit jejich úhledný maloměšťácký život. Do osudů obou dvojic zasáhnou i křehká makedonská barmanka Vesna hledající v Čechách ztraceného otce, cynický manipulátor Robert a oddaný milovník marihuany Jakub. Kontrast k osudům osamělých mladých lidí, kteří se více či méně úspěšně pokoušejí vyznat sami v sobě, tvoří Hančini usedlí rodiče a skupinka japonských turistů toužících poznat \"typickou\" českou rodinu... Příběhy samotářů uprostřed davu, kteří si připadají bezmocně vláčení zlomyslným osudem uvnitř svých ekonomicky pohodlných životů, vyprávějí autoři v tragikomické poloze.(oficiální text distributora)"}
+{ "index" : { "_index" : "movies", "_id" : "medvidek" } }
+{"title": { "cs":"Medvidek"},"year": 2007,"director": { "first": "Jan", "last": "Hrebejk" },"rating": 53,"actors": [ "trojan", "machacek", "vilhelmova", "issova", "menzel" ],"genres": [ "comedy", "drama" ],"country": [ "CZ" ],"length": 100,"text": "Přes poetický název půjde opět o tragikomedii sázející především na skvěle napsané postavy a jejich dialogy. \"Pokud bychom měli žánrově film přirovnat k některému dílu světové kinematografie, mohla by to být Americká krása nebo Hana a její sestry. Je to hodně konverzační film, který zkoumá z mnoha úhlů fenomén manželství a vše, co k němu patří. Tedy mateřství, otcovství, nevěry… To, jak je někdy manželství rozkládáno plíživě, nebo naopak, jak i velké zásahy zvenčí ho nerozklíží. Těžiště je tedy v postavách a jejich psychologii,\" vysvětluje Jan Hřebejk. Petr Jarchovský k tomu podotýká, že kdyby neexistoval film Tajnosti a lži, jeden z jejich nejoblíbenějších filmů, nynější Medvídek by se takto mohl jmenovat. \"Zajímají mě příběhy, ve kterých věci nejsou pod povrchem takové, jaké se jeví navenek,\" dodává Jan Hřebejk. V příběhu o trojici kamarádů a jejich partnerkách se opět sešlo několik herců, se kterými režisér již spolupracoval: Nataša Burger, Jiří Macháček a také Aňa Geislerová a Roman Luknár. Ti budou stejně jako v Krásce v nesnázích hrát partnery. Autoři ovšem pro ně vymysleli naprosto odlišné postavy, a tak bude pro diváky jistě velice zajímavé sledovat, jak se může vztah mezi dvěma herci na plátně vyvíjet. Šestici uzavírají Táňa Vilhelmová a Ivan Trojan.(oficiální text distributora)"}
+{ "index" : { "_index" : "movies", "_id" : "vratnelahve" } }
+{"title": { "cs": "Vratne lahve", "en": "Empties" },"year": 2006,"director": { "first": "Jan", "last": "Sverak" },"rating": 76,"actors": [ "sverak", "machacek", "schneiderova" ],"genres": "comedy","country": "CZ","length": 99,"text": "Snímek podle scénáře Zdeňka Svěráka. Hrdinou příběhu je učitel v důchodu, který přijme brigádnické místo ve výkupu lahví v jednom pražském supermarketu. \"Nová verze scénáře se víc točí kolem hlavní postavy a jeho rodiny. Táta zapojil do příběhu osobní zkušenost s podzimem života a teď to funguje - je to osobní, pravdivé a je to smutnoveselé,\" charakterizuje obnovený projekt filmu Vratné lahve režisér a producent Jan Svěrák.(oficiální text distributora)"}
+{ "index" : { "_index" : "movies", "_id" : "zelary" } }
+{"title": { "cs": "Zelary"},"year": 2003,"director": { "last": "Trojan", "first": "Ondrej" },"rating": 81,"actors": [ ],"genres": [ "romance", "drama" ],"country": [ "CZ", "SK", "AT" ],"length": 142,"text": "Píší se čtyřicátá léta, doba okupace a protektorátu. Eliška je mladá dívka, toho času z důvodu uzavření vysokých škol nedostudovaná lékařka. Pracuje jako zdravotní sestra v městské nemocnici, má milostný poměr se sympatickým a úspěšným chirurgem Richardem. Eliška i Richard, stejně jako jejich společný přítel, doktor Chládek, jsou zapojeni do domácího odboje. Jedné noci přivezou na chirurgickou kliniku těžce poraněného muže, venkovana ze vzdálených pohraničních hor. Muž potřebuje nutně transfúzi. Má stejnou krevní skupinu jako Eliška. Ta mu svým dárcovstvím zachrání život. Tak se krví naváže pouto, které v našem příběhu vyústí ve zvláštní, neobyčejně silný milostný vztah mezi moderní, městskou, vzdělanou Eliškou a barbarským, přírodním mužem s dětskou duší - Jozou. Odbojová skupina, v níž jsou lékaři zapojeni, je dekonspirována a pronásledována gestapem. Všem hrozí smrt. Zatímco vedoucí skupiny, primář Richard, milenec Elišky, přes noc zmizí do ilegality, pro Elišku její spolubojovníci za jejími zády narychlo vymyslí jiný, zdánlivě bezpečný úkryt. Dohodnou se s pacientem Jozou, aby Elišku ukryl ve své dřevěnici daleko v horách. S falešnými dokumenty, s novou identitou, je Eliška, nyní Hana, donucena ze dne na den opustit městský život a stát se ženou horala. Žít uprostřed divoké přírody, v horské vesnici, kde se zastavil čas před sto padesáti lety. Tato vesnice sluje tajemným názvem Želary.(oficiální text distributora)"}
+{ "index" : { "_index" : "movies", "_id" : "stesti" } }
+{"title": { "cs": "Stesti"},"year": 2005,"director": { "last": "Slama", "first": "Bohdan" },"rating": 72,"length": 100,"awards": [{ "type": "Czech Lion", "year": 2005 }],"text": "Nový film režiséra Bohdana Slámy Štěstí je dojemným příběhem o křehkém vztahu dvou mladých lidí, jenž postupně přeroste v opravdovou lásku. Herecké obsazení i atmosféra filmu navazuje na Slámův úspěšný debut Divoké včely, který měl mimořádný ohlas u českých diváků a přinesl mu i řadu cen na mezinárodních filmových festivalech. Hrdinka příběhu Monika (Tatiana Vilhelmová) se musí rozhodnout, zda obětuje vysněnou cestu do Ameriky za svým přítelem, aby se mohla postarat o děti svojí nejlepší kamarádky. Největší oporou se jí stane Toník (Pavel Liška), s nímž se snaží dětem nahradit chybějící rodinu ,a najde u něj nejen oporu, ale i opravdovou lásku. Film je hereckým koncertem obou hlavních představitelů, které doplňují skvělými výkony ve vedlejších rolích Aňa Geislerová, Bolek Polívka, Simona Stašová, Zuzana Krónerová, Marek Daniel a další.(oficiální text distributora)"}
+{ "index" : { "_index" : "movies", "_id" : "kolja" } }
+{"title": { "cs": "Kolja"},"year": 1996, "rating": 86,"length": 105,"awards": [{ "type": "Czech Lion", "year": 1996 },{ "type": "Academy Awards", "category": "A", "year": 2005 }],"text": "Laskavá komedie o muži, který se domníval, že už nemůže být hůře a netušil, že právě prožívá nejkrásnější chvíle svého života. Františkovi už prošedivěly vousy. Kolja ještě nedosáhl školního věku a setkali se díky tragikomické životní situaci. Ti dva zůstali nakonec sami.Starý mládenec a kluk, kteří si navzájem nerozumějí a to ve všech směrech. Čeká je dlouhá a složitá cesta za úsměvem a láskou...(oficiální text distributora)"}
+
+
+%%%%% Page 7: Index API %%%%%
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors"
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies"
+
+curl -X GET "localhost:9200/_all?pretty"
+curl -X GET "localhost:9200/_cat/indices?v&pretty"
+
+curl -I "localhost:9200/$(whoami)_actors?pretty"
+
+%%%%% Page 8: Index API %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_actors/_close?pretty"
+curl -X POST "localhost:9200/$(whoami)_actors/_open?pretty"
+
+curl -X GET "localhost:9200/$(whoami)_actors/_settings?pretty"
+
+curl -X GET "localhost:9200/$(whoami)_actors/_stats?pretty"
+
+curl -X PUT "localhost:9200/$(whoami)_actors/_alias/$(whoami)_czechactors?pretty"
+
+curl -X DELETE "localhost:9200/$(whoami)_actors,$(whoami)_movies"
+
+%%%%% Page 10: Example: Mappings
+
+curl -X PUT "localhost:9200/$(whoami)_actors?pretty" -H 'Content-Type: application/json' -d "{
+  \"mappings\": {
+    \"properties\": {
+      \"name\": {
+        \"properties\" : { \"first\" : {\"type\" : \"text\"}, \"last\" : {\"type\" : \"text\"} }
+      },
+      \"year\": { \"type\": \"integer\", \"index\": true }
+    } },
+  \"aliases\": { \"$(whoami)_actors1966\": { \"filter\": { \"term\": { \"year\": 1966 } } } }
+}"
+
+curl -X PUT "localhost:9200/$(whoami)_actors/_mapping?pretty" -H 'Content-Type: application/json' -d '{
+  "properties": { "movies": { "type": "keyword" } }
+}'
+
+curl -X GET "localhost:9200/$(whoami)_actors/_mapping?pretty"
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_movies"
+
+%%%%% Page 11: Document API: Index %%%%%
+
+curl -X PUT "127.0.0.1:9200/$(whoami)_actors/_doc/trojan?pretty" -H "Content-Type: application/json" -d '{
+	"name": { "first": "Ivan", "last": "Trojan" },
+	"year": 1964,
+	"movies": [ "samotari", "medvidek", "karamazovi" ]
+}'
+
+%%%%% Page 13: Example: GET %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_actors/_doc/sverak?_source=name.first,year&pretty"
+curl -X GET "localhost:9200/$(whoami)_actors/_source/machacek/?_source_excludes=year&pretty"
+curl -I "localhost:9200/$(whoami)_actors/_doc/trojan"
+curl -I "localhost:9200/$(whoami)_movies/_source/zelary"
+
+curl -X GET "localhost:9200/_mget?pretty" -H 'Content-Type: application/json' -d "{
+  \"docs\": [
+    { \"_index\": \"$(whoami)_actors\", \"_id\": \"trojan\" },
+    { \"_index\": \"$(whoami)_actors\", \"_id\": \"machacek\" }
+  ]
+}"
+
+curl -X GET "localhost:9200/_mget?pretty" -H 'Content-Type: application/json' -d "{
+  \"docs\": [
+    { \"_index\": \"$(whoami)_actors\", \"_id\": \"trojan\" },
+    { \"_index\": \"$(whoami)_movies\", \"_id\": \"zelary\" }
+  ]
+}"
+
+curl -X GET "localhost:9200/$(whoami)_movies/_mget?pretty" -H 'Content-Type: application/json' -d '{
+  "ids" : ["medvidek", "zelary", "kolja"]
+}'
+
+%%%%% Page 15: Example: Update %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_movies/_update/medvidek?pretty" -H 'Content-Type: application/json' -d '{
+  "script" : "ctx._source.remove(\u0027year\u0027)"
+}'
+
+curl -X POST "localhost:9200/$(whoami)_movies/_update/medvidek?pretty" -H 'Content-Type: application/json' -d '{
+  "script" : {
+    "source": "ctx._source.rating += params.increment",
+    "lang": "painless",
+    "params" : { "increment" : 10 } }, "upsert": { "counter": 1 }
+}'
+
+curl -X POST "localhost:9200/$(whoami)_movies/_update_by_query?pretty" -H 'Content-Type: application/json' -d '{
+  "script": {
+    "source": "ctx._source.rating++",
+    "lang": "painless"
+  },
+  "query": { "term": { "year": 2000 } }
+}'
+
+%%%%% Page 17: Example: Delete %%%%%
+
+curl -X DELETE "localhost:9200/$(whoami)_actors/_doc/geislerova?pretty"
+
+curl -X POST "localhost:9200/$(whoami)_actors/_delete_by_query?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "match": { "name.last": "Vilhelmova" } }
+}'
+
+curl -X POST "localhost:9200/$(whoami)_actors,$(whoami)_movies/_delete_by_query?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "range" : { "year" : { "gte" : 2008 } } }
+}'
+
+%%%%% Page 18: Document API: Bulk %%%%%
+
+curl -s -H "Content-Type: application/x-ndjson" -XPOST localhost:9200/_bulk --data-binary "@bulk.txt";
+
+%%%%% Page 19: Document API: Reindex %%%%%
+
+curl -X POST "localhost:9200/_reindex?pretty" -H "Content-Type: application/json" -d "{
+  \"source\": {
+    \"index\": \"$(whoami)_actors\",
+    \"query\": { \"range\" : { \"year\" : { \"gte\" : 1970 } } }
+  },
+  \"dest\": { \"index\": \"$(whoami)_youngactors\" }
+}"
+
+%%%%% Page 22: Match All, Match None %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?filter_path=hits.hits._source&pretty" -H 'Content-Type: application/json' -d '{
+  "query" : { "match_all" : { } } ,
+  "from" : 2,
+  "size" : 2,
+  "_source" : [ "name", "year" ],
+  "sort" : { "year" : { "order" : "asc" } }
+}'
+
+curl -X GET "localhost:9200/$(whoami)_actors1966/_search?filter_path=hits.hits._source&pretty" -H 'Content-Type: application/json' -d '{
+  "query" : { "match_all" : { } } ,
+  "_source" : [ "name", "year" ]
+}'
+
+curl -X GET "localhost:9200/$(whoami)_actors1966/_search?filter_path=hits.hits._source&pretty" -H 'Content-Type: application/json' -d '{
+  "query" : { "match_none" : { } }
+}'
+
+%%%%% Page 24: Example: Full Text Queries %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "match": { "name.first" : "Ivan" } } }'
+
+curl -X GET "localhost:9200/$(whoami)_*/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "multi_match": { "query" : "medvidek", "fields": ["title.cs", "movies"] } } }'
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "query_string": { "query": "Jiri OR Ivan",  "default_field": "name.first" } } }'
+
+curl -X POST "localhost:9200/$(whoami)_movies/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "intervals" : { "text" : { "all_of" : {
+          "intervals" : [ { "match" : { "query" : "vztah" } }, { "match" : { "query" : "poetický" } } ],
+          "ordered": false
+  } } } } }'
+
+%%%%% Page 26: Example: Term-level queries %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_movies/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "exists": { "field": "actors" } }
+}'
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "ids" : { "values" : ["machacek", "trojan", "schneiderova"] } }
+}'
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "prefix": { "movies": { "value": "med" } } }
+}'
+
+curl -X GET "localhost:9200/$(whoami)_*/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": { "range": { "year": { "gte": 1970, "lte": 1980 } } }
+}'
+
+%%%%% Page 28: Example: Compound Queries %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": {
+    "bool" : {
+      "must" : { "term" : { "movies" : "medvidek" } },
+      "must_not" : { "term" : { "movies" : "karamazovi" } },
+	  "filter" : { "range" : { "year" : { "gte" : 1960, "lte" : 1978 } } },
+      "should" : [
+        { "term" : { "movies" : "samotari" } },
+        { "term" : { "movies" : "kolja" } }
+      ] } } }'
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": {
+    "boosting": {
+      "positive": { "match": { "name.first": "Jiri" } },
+      "negative": { "range" : { "year" : { "gte" : 1960 } } },
+      "negative_boost": 0.0
+    } } }'
+
+%%%%% Page 29: Example: Compoung Queries %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "query": {
+    "function_score": {
+      "query": { "match_all": {} },
+      "boost": "5",
+      "functions": [
+        { "filter": { "match": { "name.first": "Jiri" } }, "weight": 30 },
+        { "filter": { "match": { "movies": "medvidek" } }, "random_score": {}, "weight": 10 },
+        { "filter": { "match": { "movies": "samotari" } }, "random_score": {}, "weight": 10 },
+        { "filter": { "match": { "movies": "vratnelahve" } }, "random_score": {},  "weight": 10 }
+      ],
+      "max_boost": 500,
+      "score_mode": "sum",
+      "boost_mode": "avg",
+      "min_score": 5
+    }
+  }
+}'
+
+%%%%% Page 30: Aggregations %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_actors/_search?size=0&pretty" -H 'Content-Type: application/json' -d '{
+  "aggs": {
+    "minYear": { "min": { "field": "year" } },
+    "maxYear": { "max": { "field": "year" } },
+    "aveYear": { "avg": { "field": "year" } },
+    "sumYear": { "sum": { "field": "year" } },
+    "values": { "value_count": { "field": "year" } }
+  }
+}'
+
+%%%%% Page 31: Aggregations %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d '{
+  "size": 0,
+  "aggs": { "actorsInMovies": { "terms": { "field": "movies" } } }
+}'
+
+%%%%% Page 32: Exercise 1 %%%%%
+
+curl -X GET "localhost:9200/$(whoami)_actors/_search?filter_path=hits.hits._source&pretty" -H 'Content-Type: application/json' -d '{
+  "query": {
+    "query_string": { "query": "(Jiri OR Ivan) AND movies:(medvidek AND samotari)",  "default_field": "name.first" }
+  },"_source" : [ "name", "movies" ]
+}'
+
+%%%%% Page 33: Exercise 2 %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_actors/_search?size=0&pretty" -H 'Content-Type: application/json' -d'
+{
+  "aggs": {
+    "playsInMedvidek": {
+      "filter": { "term": { "movies": "medvidek" } },
+      "aggs": {
+        "averageYear": { "avg": { "field": "year" } }
+      }
+    }
+  }
+}'
+
+curl -X POST "localhost:9200/$(whoami)_actors/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size" : 0,
+  "aggs": {
+    "playsInMedvidek": {
+      "filter": { "term": { "movies": "medvidek" } },
+      "aggs": {
+        "averageYear": { "avg": { "field": "year" } }
+      }
+    }
+  }
+}'
+
+%%%%% Page 34: Exercise 3 %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_movies/_search?filter_path=hits.hits._source&pretty" -H 'Content-Type: application/json' -d '{
+  "query" : {
+    "bool" : {
+      "must" : { "exists" : { "field" : "director" } },
+      "must_not" : {"match" : { "genres" : "romance" } },
+      "filter" : { "range" : { "year" : { "gte" : 2000, "lte" : 2006 } } },
+      "should" : [
+        { "term" : { "genres" : "drama" } },
+        { "term" : { "genres" : "comedy" } }
+      ]
+    }
+  },
+  "_source" : [ "title" ],
+  "sort" : {
+    "rating" : { "order" : "desc" },
+    "year" : { "order" : "asc" }
+  }
+}'
+
+%%%%% Page 35: Exercise 4 %%%%%
+
+curl -X POST "localhost:9200/$(whoami)_movies/_search?filter_path=hits.hits._source&pretty" -H 'Content-Type: application/json' -d '{
+  "query": {
+    "intervals" : {
+      "text" : {
+        "all_of" : {
+          "intervals" : [
+            { "match" : { "query" : "vztah" } },
+            { "any_of" : {
+              "intervals" : [
+                { "match" : { "query" : "milenec" } },
+                { "match" : { "query" : "vyvíjet" } }
+                ]
+              }
+            }
+          ],
+          "ordered" : true
+        }
+      }
+    }
+  },
+  "_source" : [ "title", "text" ],
+  "sort" : { "title.cs.keyword" : { "order" : "desc" } }
+}'
+
+%%%%% Delete indices %%%%%
+
+curl -X DELETE "localhost:9200/$(whoami)_*"

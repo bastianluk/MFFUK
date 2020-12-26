@@ -1,0 +1,9 @@
+{ "index" : { "_index" : "space", "_id" : "beach_app" } }
+{ "name": { "first": "Ivan", "last": "Trojan" },"year": 1964,"movies": [ "samotari", "medvidek", "karamazovi" ]}
+
+
+
+
+
+{ "index" : { "_index" : "customer", "_id" : "gyllj" } }
+{"title": { "cs": "Samotari", "en": "Loners" },"year": 2000,"rating": 84,"actors": [ "trojan", "machacek", "schneiderova" ],"genres": [ "comedy", "drama" ],"country": [ "CZ", "SI" ],"length": 103,"text": "Sedm mladých lidí prožívá v průběhu několika dní události, které radikálně ovlivní jejich budoucí život. Rozhlasový moderátor malého pražského rádia Petr se rozchází se svou dlouholetou přítelkyní Hankou. Tu chce získat pro sebe neurotický doktor Ondřej, který dívku už léta pronásleduje svou vtíravou pozorností. Ondřejova manželka Lenka si však odmítá připustit, že by otec jejích dětí mohl zradit jejich úhledný maloměšťácký život. Do osudů obou dvojic zasáhnou i křehká makedonská barmanka Vesna hledající v Čechách ztraceného otce, cynický manipulátor Robert a oddaný milovník marihuany Jakub. Kontrast k osudům osamělých mladých lidí, kteří se více či méně úspěšně pokoušejí vyznat sami v sobě, tvoří Hančini usedlí rodiče a skupinka japonských turistů toužících poznat \"typickou\" českou rodinu... Příběhy samotářů uprostřed davu, kteří si připadají bezmocně vláčení zlomyslným osudem uvnitř svých ekonomicky pohodlných životů, vyprávějí autoři v tragikomické poloze.(oficiální text distributora)"}
