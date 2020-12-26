@@ -1,8 +1,11 @@
-Filename:
- -
+Archive name: 2929_2.zip
 
 Basics:
- - runs:
- - implements all things:
+ - executes: yes
+ - executes twice in a row without error: yes
+ - implements all things: unless I missed something, technically no - missing two different "to jsonb" conversions of a result in select statements
 
 Comment:
+
+
+Points (0-3):

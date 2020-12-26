@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <title>Requirements</title>
+    </head>
+    <body>
+        <a class="anchor" name="homeworkPostgreSQL"></a>
+        <h3><a class="link" href="#homeworkPostgreSQL">PostgreSQL</a></h3>
+        <ul>
+            <li>Body: 10</li>
+            <li>Deadline: 16. prosince 2020 23:59 CET</li>
+            <li>Zadání:
+                <ul>
+                    <li>Vytvořte script (textový soubor), který obsahuje sekvenci <span class="italic">SQL/JSON výrazů</span> ilustrující práci s relačním a zároveň dokumentovým modelem</li>
+                    <li>Definujte schéma pro 2 tabulky reprezentující entity různých typů
+                        <ul>
+                            <li>Definujte alespoň jeden sloupec pro každý z následujících datových typů: json, jsonb</li>
+                            <li>Definujte referenční integritní omezení mezi tabulkami</li>
+                        </ul>
+                    </li>
+                    <li>Do každé tabulky vložte alespoň 5 řádků</li>
+                    <li>Ilustujte, že umíte používat operátory a funkce pracující s datovými typy json/jsonb
+                        <ul>
+                            <li>Alespoň 1x použijte každý z následujících json/jsonb operátorů: <span class="sourceCode">-></span>, <span class="sourceCode">->></span>, <span class="sourceCode">#></span>, <span class="sourceCode">#>></span></li>
+                            <li>Vhodně aplikujte zřetězení operátorů <span class="sourceCode">-></span> a <span class="sourceCode">->></span></li>
+                            <li>Použijte alespoň 2 z následujících jsonb operátorů: <span class="sourceCode">@></span>, <span class="sourceCode"><@</span>, <span class="sourceCode">?</span>, <span class="sourceCode">?|</span>, <span class="sourceCode">?&</span></li>
+                        </ul>
+                    </li>
+                    <li>Vyjádřete alespoň 4 výrazy typu update
+                        <ul>
+                            <li>Nenahrazujte celý dokument, ale použijte k tomuto účelu vhodné operátory, např. <span class="sourceCode">||</span>, <span class="sourceCode">-</span>, <span class="sourceCode">#-</span></li>
+                            <li>Alespoň 1x použijte každou z následujících funkcí: <span class="sourceCode">jsonb_set</span>, <span class="sourceCode">jsonb_insert</span></li>
+                            <li>Alespoň 1x vykonejte update výraz nad vnořeným dokumentem</li>
+                            <li>Alespoň 1x vykonejte update výraz nad polem</li>
+                        </ul>
+                    </li>
+                    <li>Vyjádřete alespoň 4 dotazy
+                        <ul>
+                            <li>Použijte klauzule <span class="sourceCode">WHERE</span>, <span class="sourceCode">GROUP BY</span>, <span class="sourceCode">HAVING</span> a <span class="sourceCode">ORDER BY</span>, a to každou z nich alespoň 1x</li>
+                            <li>Alespoň 1x realizujte vnořený dotaz</li>
+                            <li>Alespoň 2x reprezentujte výsledek celého dotazu v datovém typu jsonb, přičemž pokaždé k tomuto účelu použijte jinou funkci, např. <span class="sourceCode">to_json[b]</span>, <span class="sourceCode">array_to_json</span>, <span class="sourceCode">row_to_json</span> anebo <span class="sourceCode">json[b]_object</span></li>
+                            <li>Alespoň 1x použijte přetypování (angl. type casting)</li>
+                            <li>Alespoň 1x použijte agregační funkci</li>
+                            <li>Vhodně používejte tzv. aliasing (<span class="sourceCode">AS</span>)</li>
+                        </ul>
+                    </li>
+                    <li>Vytvořte alespoň jeden index nad sloupcem typu jsonb</li>
+                </ul>
+            </li>
+            <li>Požadavky:
+                <ul>
+                    <li>Pracujte pouze se svou databází a defaultním schématem
+                        <ul>
+                            <li>Jméno této databáze je shodné s Vaším loginem, např. m201_student</li>
+                            <li>Defaultním schématem je "public"</li>
+                            <li>Nevytvářejte ani nepoužívejte žádné další schéma uvnitř Vašeho odevzdávaného skriptu</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Odevzdávané soubory:
+                <ul>
+                    <li>script.sql: Textový soubor obsahující SQL/JSON výrazy</li>
+                </ul>
+            </li>
+            <li>Vykonání scriptu:
+                <ul>
+                    <li>Vykonejte následující shell přikaz: <span class="sourceCode">psql -d $DatabaseName -f $ScriptFile</span></li>
+                    <li><span class="sourceCode">$DatabaseName</span> je jménem Vaší (existující) databáze, např. m201_student</li>
+                    <li><span class="sourceCode">$ScriptFile</span> je jménem souboru s SQL/JSON výrazy, např. script.sql</li>
+                </ul>
+            </li>
+            <li>Nástroje:
+                <ul>
+                    <li><a class="link" href="https://www.postgresql.org">PostgreSQL 11.10</a> (verze nainstalovaná na NoSQL serveru)</li>
+                </ul>
+            </li>
+            <li>Reference:
+                <ul>
+                    <li><a class="link" href="https://www.postgresql.org/docs/current/datatype-json.html">JSON Types</a></li>
+                    <li><a class="link" href="https://www.postgresql.org/docs/11/functions-json.html">JSON Functions and Operators</a></li>
+                    <li><a class="link" href="https://www.postgresql.org/docs/11/functions-aggregate.html">Aggregate Functions</a></li>
+                </ul>
+            </li>
+            <li>Server: nosql.ms.mff.cuni.cz (port 42222)</li>
+            <li>Nezapomeňte spustit submit skript</li>
+        </ul>
+    </body>
+</html>
