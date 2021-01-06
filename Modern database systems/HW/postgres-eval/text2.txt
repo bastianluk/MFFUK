@@ -2,10 +2,11 @@ Archive name: 2929_2.zip
 
 Basics:
  - executes: yes
- - executes twice in a row without error: yes
- - implements all things: unless I missed something, technically no - missing two different "to jsonb" conversions of a result in select statements
+ - executes twice in a row without error: no, doesnt drop tables if they exists or otherwise prevent issues
+ - implements all things: no, missing: ->+->>; ->; one of: @>, <@, ?, ?&;
 
 Comment:
+A big contrast to the first solution I was evaluating and even my own - no human readable explanations of what the query represents. What I do like is that the data in the games is actually different and some json properties are not there for some games, makes the dataset a better example to test behavior on.
+There were several missing things from the requirements but I think the data set was ready for them to be used so just misreading the assignment or time constraints lead to it missing. One thing that might be suboptimal is creating the index after all the queries were run - beats the purpose of having the index in the first place but that is probably due to the position of the requirement at the end of the list.
 
-
-Points (0-3):
+Points (0-3): 2
