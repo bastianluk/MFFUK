@@ -1,0 +1,42 @@
+[
+	{
+		"id": 1,
+		"caption": "Self-development",
+		"hours": 0
+	},
+	{
+		"id": 2,
+		"caption": "Answering e-mails",
+		"hours": 0
+	},
+	{
+		"id": 3,
+		"caption": "Bureaucracy",
+		"hours": 0
+	},
+	{
+		"id": 4,
+		"caption": "Chit chat around the water cooler/coffe machine",
+		"hours": 0
+	},
+	{
+		"id": 5,
+		"caption": "Procrastination",
+		"hours": 0
+	},
+	{
+		"id": 6,
+		"caption": "Bullying and trash-talking",
+		"hours": 0
+	},
+	{
+		"id": 7,
+		"caption": "Flirting with colleagues",
+		"hours": 0
+	},
+	{
+		"id": 8,
+		"caption": "Actual work",
+		"hours": 0
+	}
+]
