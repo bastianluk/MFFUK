@@ -40,17 +40,17 @@ class DataModel
 
         let emptyParameters = {};
         let actionResult = this.callAction('GET', emptyParameters);
-        let test = actionResult.then(categories =>
+        let handledActionResult = actionResult.then(categories =>
         {
             let count = categories.length;
-            let completeCategories = []
+            let completeCategories = [];
             for (let category of categories)
             {
-                handleCategory(callback, completeCategories, category, count)
+                this.handleCategory(callback, completeCategories, category, count);
             }
         });
 
-        test.catch(reason => callback(null, reason));
+        handledActionResult.catch(reason => callback(null, reason));
     }
 
     handleCategory(callback, completeCategories, category, categoryCount)
@@ -67,7 +67,7 @@ class DataModel
 
     completeCategoryAction(callback, completeCategories, completeCategory, categoryCount)
     {
-        completeCategories.push(completeCategory)
+        completeCategories.push(completeCategory);
         let allCategoriesDone = completeCategories.length === categoryCount;
         if (allCategoriesDone)
         {
@@ -81,7 +81,7 @@ class DataModel
         this.Cache = {};
         for (const category of categories)
         {
-          this.Cache[category.id] = category;
+            this.Cache[category.id] = category;
         }
     }
 
@@ -106,16 +106,17 @@ class DataModel
     {
         let parameters = {
             action: 'hours',
-            id,
-            hours
+            id: id,
+            hours: hours
         };
         let actionResult = this.callAction('POST', parameters);
         let cachedResult = actionResult.then(() =>
         {
-            if (this.cache !== null) {
-              this.cache[id].hours = hours
+            if (this.Cache !== null)
+            {
+                this.Cache[id].hours = hours;
             }
-            callback()
+            callback();
         });
         cachedResult.catch(callback);
     }
@@ -123,11 +124,10 @@ class DataModel
     callAction(method, parameters)
     {
         let url = this.createUrl(parameters);
-
         let promise = new Promise((resolve, reject) =>
         {
             let fetchResult = fetch(url, { method });
-            let reseolvedResult = fetchResult.then(response =>
+            let resolvedResult = fetchResult.then(response =>
             {
                 if (!response.ok)
                 {
@@ -137,9 +137,9 @@ class DataModel
 
                 let jsonResponse = response.json().then(json => this.jsonResultHandler(json, resolve, reject));
                 jsonResponse.catch(reject);
-          })
+            });
 
-          reseolvedResult.catch(reject);
+            resolvedResult.catch(reject);
         });
 
         return promise;
@@ -151,8 +151,9 @@ class DataModel
         let parameterKVPs = Object.entries(parameters);
         for (let [key, value] of parameterKVPs)
         {
-          url += key + '=' + value + '&';
+            url += key + '=' + value + '&';
         }
+
         // Remove the trailing '&'
         return url.slice(0, -1);
     }

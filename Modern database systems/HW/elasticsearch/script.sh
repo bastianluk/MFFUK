@@ -3,13 +3,6 @@
 # bastian - theme: hotel
 
 # Zadání:
-#   Vytvořte script (bash script), který pracuje s Elasticsearch přes rozhraní HTTP pomocí nátroje cURL
-#   Definujte tzv. mappings pro 1 index, do kterého budete indexovat dokumenty (reprezentující jeden entitní typ)
-#   Indexujte alespoň 10 netriviálních dokumentů do každého indexu, který vytvoříte
-#     Alespoň 1 property musí obsahovat souvislou textovou hodnotu, např. větu, abyste mohli ilustrovat vyhledávání v textu (angl. full text search)
-#     Alespoň 1 property musí být vnořeným dokumentem
-#     Alespoň 1 property musí být polem
-#   Všechny hodnoty vložte zavoláním jediného bulk
 #   Vyjádřete alespoň 4 různé složené dotazy (angl. compound query), přičemž použijte alespoň 4 z následujících klauzulí: bool, boosting, constant_score, dis_max, function_score
 #   Vyjádřete alespoň jeden agregační dotaz
 #   Nezapomeňte na konci scriptu vymazat všechny vytvořené indexy
@@ -27,6 +20,22 @@
 #   Vykonejte následující shell přikaz: ./script.sh $IndexPrefix
 #   $IndexPrefix zastupuje prefix jmen Vašich indexů, např. m201_login\
 
+# MAPPING
+curl -X PUT "localhost:9200/$1_reservation?pretty" -H 'Content-Type: application/json' -d "{
+  \"mappings\": {
+    \"properties\": {
+      \"customer\": {
+        \"properties\" : { \"name\" : {\"type\" : \"text\", \"index\": true }, \"year\": { \"type\": \"integer\" }, \"country\" : {\"type\" : \"text\"} }
+      },
+      \"startDate\": { \"type\": \"integer\", \"index\": true },
+      \"endDate\": { \"type\": \"integer\", \"index\": true },
+      \"rooms\": { \"type\": \"keyword\" },
+      \"state\": { \"type\": \"text\" },
+      \"price\": { \"type\": \"integer\" }
+    } }
+}"
+
+
 # LOAD
 curl -s -H "Content-Type: application/x-ndjson" -XPOST localhost:9200/_bulk --data-binary "@data.txt";
 
@@ -43,4 +52,4 @@ curl -s -H "Content-Type: application/x-ndjson" -XPOST localhost:9200/_bulk --da
 
 
 # CLEANUP
-curl -X DELETE "localhost:9200/$(whoami)_*"
+curl -X DELETE "localhost:9200/$1_*"
