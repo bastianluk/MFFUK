@@ -2031,12 +2031,260 @@ more clusters
 
 How to?
  - The ideal case is rare
- - To get close to it we have to ensure that data that is
-accessed together is stored together
+ - To get close to it we have to ensure that data that is accessed together is stored together
  - How to arrange the nodes:
-    A One user mostly gets data from a single server
-    b. Based on a physical location
-    c. Distribute across the nodes with equal amounts of the load
+    1. One user mostly gets data from a single server
+    2. Based on a physical location
+    3. Distribute across the nodes with equal amounts of the load
  - Many NoSQL databases offer auto-sharding
  - A node failure makes shard’s data unavailable
- Sharding is often combined with replication
+   - Sharding is often combined with replication
+
+### Replication
+
+#### Master-slave
+
+ - We replicate data across multiple nodes
+ - One node is designed as primary (master), others as secondary (slaves)
+ - Master is responsible for processing any updates to that data
+ - For scaling a read-intensive dataset
+   - More read requests → more slave nodes
+   - The master fails → the slaves can still handle read requests
+     - A slave can be appointed a new master quickly (it is a replica)
+ - Limited by the ability of the master to process updates
+ - Masters are appointed manually or automatically
+   - User-defined vs. cluster-elected
+
+![spark-struct](notes-img/replic-ms.png)
+
+
+#### Peer-to-peer
+
+ - Problems of master-slave replication:
+   - Does not help with scalability of writes
+     - The master is still a bottleneck
+   - Provides resilience against failure of a slave, but not of a master
+
+ - Peer-to-peer replication: no master
+   - All the replicas have equal weight
+ - Problem: consistency
+   - We can write at two different places: a write-write conflict
+ - Solutions:
+   - Whenever we write data, the replicas coordinate to ensure that we avoid a conflict
+ - At the cost of network traffic
+   - But we do not need all the replicas to agree on the write, just a majority
+
+![spark-struct](notes-img/replic-p2p.png)
+
+### Combining Sharding and Replication
+
+ - Master-slave replication and sharding:
+   - We have multiple masters, but each data item only has a single master
+   - A node can be a master for some data and a slave for others
+ - Peer-to-peer replication and sharding:
+   - A common strategy, e.g., for column-family databases
+   - A good starting point for peer-to-peer replication is to have a replication factor of 3, so each shard is present on three nodes
+
+### Consistency
+
+#### Write (update) Consistency
+
+ - Problem: two users want to update the same record (write-write conflict)
+   - Issue: lost update
+     - A second transaction writes a second value on top of a first value written by a first concurrent transaction
+     - The first value is lost to other transactions running concurrently which need, by their precedence, to read the first value
+     - The transactions that have read the wrong value end with incorrect results
+ - Pessimistic (preventing conflicts from occurring) vs. optimistic solutions (lets conflicts occur, but detects them and takes actions to sort them out)
+   - Write locks, conditional update, save both updates and record that they are in conflict, …
+
+#### Read Consistency
+
+ - Problem: one user reads, other writes (read-write conflict)
+   - Issue: inconsistent read
+ - When a transaction reads object x twice and x has different values
+ - Between the two reads another transaction has modified the value of x
+ - Relational databases support ACID transactions
+ - NoSQL databases usually support atomic updates within a single aggregate
+   - But not all data can be put in the same aggregate
+ - Update that affects multiple aggregates leaves open a time when clients could perform an inconsistent read
+   - Inconsistency window
+ - Another issue: replication consistency
+   - A special type of inconsistency in case of replication
+   - Ensuring that the same data item has the same value when read from different replicas
+
+#### Quorums
+
+ - How many nodes need to be involved to get strong consistency?
+ - Write quorum: W > N/2
+   - N = the number of nodes involved in replication (replication factor)
+   - W = the number of nodes participating in the write
+     - The number of nodes confirming successful write
+   - “If you have conflicting writes, only one can get a majority.”
+ - How many nodes do we need to contact to be sure we have the most up-to-date change?
+ - Read quorum: R + W > N
+   - R = the number of nodes we need to contact for a read
+   - „Concurrent read and write cannot happen.“
+
+## Key-value store
+
+Basic characteristics
+ - The simplest NoSQL data store
+   - A hash table (map)
+   - When all access to the database is via primary key
+ - Like a table in RDBMS with two columns:
+   - ID = key
+   - NAME = value
+ - BLOB with any data
+ - Basic operations:
+   - get the value for a key
+   - put a value for a key
+     - If the value exists, it is overwritten
+   - delete a key from the data store
+ - simple --> great performance, easily scaled
+ - simple --> not for complex queries, aggregation needs,
+
+Suitable Use Cases; When Not to Use - see before
+
+### Query
+
+ - We can query by the key
+ - To query using some attribute of the value column is (typically) not possible
+   - We need to read the value to figure out if the attribute meets the conditions
+ - What if we do not know the key?
+   - Some systems enable to retrieve the list of all keys
+     - Expensive
+   - Some support searching inside the value
+     - Using, e.g., a kind of full-text index
+       - The data must be indexed first
+       - Riak search (see later)
+
+ - How to design the key?
+   - Generated by some algorithm
+   - Provided by the user
+     - e.g., userID, e-mail
+   - Derived from time-stamps (or other data)
+ - Typical candidates for storage: session data (with the session ID as the key), shopping cart data (user ID), user profiles (user ID), …
+ - Expiration of keys
+   - After a certain time interval
+   - Useful for session/shopping cart objects
+
+### Riak
+
+ - Open source, distributed database
+   - First release: 2009
+   - Implementing principles from Amazon's Dynamo
+ - OS: Linux, BSD, Mac OS X, Solaris
+ - Language: Erlang, C, C++, some parts in JavaScript
+ - Built-in MapReduce support
+ - Stores keys into buckets = a namespace for keys
+   - Like tables in a RDBMS, directories in a file system, …
+   - Have a set of common properties for its contents
+     - e.g., number of replicas
+
+![spark-struct](notes-img/riak-bucket.png)
+
+```java
+Bucket bucket = getBucket(bucketName);
+IRiakObject riakObject = bucket.store(key, value).execute();
+
+Bucket bucket = getBucket(bucketName);
+IRiakObject riakObject = bucket.fetch(key).execute();
+byte[] bytes = riakObject.getValue();
+String value = new String(bytes);
+```
+
+#### Usage
+
+ - HTTP – default interface
+   - GET (retrieve), PUT (update), POST (create), DELETE (delete)
+   - Other interfaces: Protocol Buffers, Erlang interface
+   - We will use curl (curl --help)
+ - Command-line tool for transferring data using various protocols
+ - Keys and buckets in Riak:
+   - Keys are stored in buckets (= namespaces) with common properties
+     - `n_val` – replication factor
+     - `allow_mult` – allowing concurrent updates
+     - …
+   - If a key is stored into a non-existing bucket, it is created
+   - Keys may be user-specified or generated by Riak
+ - Paths:
+   - `/riak/<bucket>`
+   - `/riak/<bucket>/<key>`
+
+##### Examples
+
+ - List all buckets:
+   - `curl http://localhost:10011/riak?buckets=true`
+ - Get properties of bucket foo:
+   - `curl http://localhost:10011/riak/foo/`
+ - Get all keys in bucket foo:
+   - `curl http://localhost:10011/riak/foo?keys=true`
+ - Change properties of bucket foo:
+   - `curl -X PUT http://localhost:10011/riak/foo -H "Content-Type: application/json" -d '{"props" : { "n_val" : 2 } }'`
+
+ - Storing a plain text into bucket foo using a generated key:
+   - `curl -i -H "Content-Type: plain/text" -d "My text" http://localhost:10011/riak/foo/`
+ - Storing a JSON file into bucket artists with key Bruce:
+   - `curl -i -H "Content-Type: application/json" -d '{"name":"Bruce"}' http://localhost:10011/riak/artists/Bruce`
+ - Getting an object:
+   - `curl http://localhost:10011/riak/artists/Bruce`
+
+ - Updating an object:
+   - `curl -i -X PUT -H "Content-Type: application/json" -d '{"name":"Bruce", "nickname":"The Boss"}' http://localhost:10011/riak/artists/Bruce`
+ - Deleting an object:
+   - `curl -i -X DELETE http://localhost:10011/riak/artists/Bruce`
+
+#### Links
+
+ - Allow to create relationships between objects
+   - Like, e.g., foreign keys in relational databases, or associations in UML
+ - Attached to objects via Link header
+ - Add albums and links to the performer:
+   - `curl -H "Content-Type: text/plain" -H 'Link: </riak/artists/Bruce>; riaktag="performer"' -d "The River" http://localhost:10011/riak/albums/TheRiver`
+   - `curl -H "Content-Type: text/plain" -H 'Link: </riak/artists/Bruce>; riaktag="performer"' -d "Born To Run" http://localhost:10011/riak/albums/BornToRun`
+
+ - Find the artist who performed the album The River
+   - `curl -i http://localhost:10011/riak/albums/TheRiver/artists,performer,1`
+     - Restrict to bucket artists
+     - Restrict to tag performer
+     - 1 = include this step to the result
+ - Which artists collaborated with the artist who performed The River
+   - `curl -i http://localhost:10011/riak/albums/TheRiver/artists,_,0/artists,collaborator,1`
+     - _ = wildcard (any relationship)
+     - 0 = do not include this step to the result
+
+#### Riak Search
+
+ - A distributed, full-text search engine
+ - Provides the most advanced query capability next to MapReduce
+ - Key features:
+   - Support for various mime types
+     - JSON, XML, plain text, …
+   - Support for various analyzers (to break text into tokens)
+     - A white space analyzer, an integer analyzer, a no-op analyzer, …
+   - Exact match queries
+   - Scoring and ranking for most relevant results
+   - …
+
+ - First the data must be indexed:
+    1. Reading a document
+    2. Splitting the document into one or more fields
+    3. Splitting the fields into one or more terms
+    4. Normalizing the terms in each field
+    5. Writing `{Field, Term, DocumentID}` to an index
+ - Indexing: `index <INDEX> <PATH>`
+ - Searching: `search <INDEX> <QUERY>`
+
+ - Queries:
+   - Wildcards: Bus*, Bus?
+   - Range queries:
+     - `[red TO rum]` = documents with words containing "red" and "rum", plus any words in between
+     - `{red TO rum}` = documents with words in between "red" and "rum"
+   - AND/OR/NOT and grouping: `(red OR blue) AND NOT yellow`
+   - Prefix matching
+   - Proximity searches
+     - "See spot run"~20 = documents with words within a block of 20
+words
+
+### Redis
+
