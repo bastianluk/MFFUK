@@ -788,3 +788,609 @@ fields in the aggregate
  - Multi-model stores
    - Combine various data models, including aggreagateoriented
    - Support references and queries across the models
+
+## Apache Hadoop
+
+Distributed filesystem
+
+ - Open-source software framework
+ - Running of applications on large clusters of commodity hardware
+   - Multi-terabyte data-sets
+   - Thousands of nodes
+ - Derived from Google's MapReduce and Google File System (GFS)
+   - Not open-source
+
+### Modules
+
+ - Hadoop Common
+   - Common utilities
+   - Support for other Hadoop modules
+ - **Hadoop Distributed File System (HDFS)**
+   - Distributed file system
+   - High-throughput access to application data
+ - Hadoop YARN
+   - Framework for job scheduling and cluster resource management
+ - **Hadoop MapReduce**
+   - System for parallel processing of large data sets
+
+### Related projects
+
+ - Avro – a data serialization system
+ - **Cassandra** – a scalable multi-master database with no single points
+of failure
+ - Chukwa – a data collection system for managing large distributed
+systems
+ - **HBase** – a scalable, distributed column-family database that
+supports structured data storage for large tables
+ - **Hive** – data warehouse infrastructure that provides data
+summarization and ad hoc querying
+ - Mahout – scalable machine learning and data mining library
+ - Pig – high-level data-flow language and execution framework for
+parallel computation
+ - ZooKeeper – high-performance coordination service for distributed
+applications
+
+### HDFS
+
+ - Free and open source
+ - Crossplatform
+   - Pure Java
+   - Has bindings for non-Java programming languages
+ - Fault-tolerant
+ - Highly scalable
+
+#### Idea
+
+**“failure is the norm rather than exception”**
+
+ - A HDFS instance may consist of thousands of machines
+   - Each storing a part of the file system’s data
+ -  Each component has non-trivial probability of failure
+ - → **Assumption: “There is always some component that is non-functional.”**
+   -  Detection of faults
+   -  Quick, automatic recovery
+
+#### Data Characteristics
+
+ - Assumes:
+   -  Streaming data access
+   -  Batch processing rather than interactive user access
+ - Large data sets and files
+ - Write-once / read-many
+   -  A file once created, written and closed does not need to be
+changed
+     - Or not often
+   -  This assumption simplifies coherency
+ - Optimal applications for this model: MapReduce, webcrawlers, …
+
+#### Structure
+
+NameNode, DataNodes
+ - Master/slave architecture
+ - HDFS exposes file system namespace
+ - File is internally split into one or more blocks
+   - Typical block size is 64MB (or 128 MB)
+ - NameNode = master server that manages the file
+system namespace + regulates access to files by clients
+   - Opening/closing/renaming files and directories
+   - Determines mapping of blocks to DataNodes
+ - DataNode = serves read/write requests from clients +
+performs block creation/deletion and replication upon
+instructions from NameNode
+   - Usually one per node in a cluster
+   - Manages storage attached to the node that it runs on
+
+![hdfs-arch](notes-img/hdfs-arch.png)
+
+##### Namespace
+ - Hierarchical file system
+   - Directories and files
+ - Create, remove, move, rename, ...
+ - NameNode maintains the file system
+   - Any meta information changes to the file system are
+recorded by the NameNode
+ - An application can specify the number of replicas
+of the file needed
+   - Replication factor of the file
+   - The information is stored in the NameNode
+
+##### Data Replication
+ - HDFS is designed to store very large files across machines in a large cluster
+   - Each file is a sequence of blocks
+   - All blocks in the file are of the same size
+     - Except the last one
+     - Block size is configurable per file
+ - Blocks are replicated for fault tolerance
+   - Number of replicas is configurable per file
+ - NameNode receives HeartBeat and BlockReport from each DataNode
+   - BlockReport contains a list of all blocks on a DataNode
+
+##### Replica Placement
+
+ - Placement of the replicas is critical to reliability and
+performance
+ - **Rack-aware** replica placement = to take a node's physical location into account while scheduling tasks and allocating storage
+   - Needs lots of tuning and experience
+ - Idea:
+   - Nodes are divided into racks
+   - Communication between racks through switches
+   - Network bandwidth between machines on the same rack is
+greater than those in different racks
+ - NameNode determines the rack id for each DataNode
+
+ - First idea: replicas should be placed on different racks
+   - Prevents losing data when an entire rack fails
+   - Allows use of bandwidth from multiple racks when reading data
+     - Multiple readers
+   - Writes are expensive (transfer to different racks)
+     - We need to write to all replicas
+ - Common case: replication factor is 3
+   - Replicas are placed:
+     - One on a node in a local rack
+     - One on a different node in the local rack
+     - One on a node in a different rack
+   - Decreases the inter-rack write traffic
+
+##### NameNode
+
+ - Stores HDFS namespace
+ - transaction log - **EditLog** - to record every change that occurs to the file system’s meta data
+   - E.g., creating a new file, change in replication factor of a file, ..
+   - EditLog is stored in the NameNode’s local file system
+ - FsImage – entire file system namespace + mapping of blocks to files + file system properties
+   - Stored in a file in NameNode’s local file system
+   - Designed to be compact
+ - Loaded in NameNode’s memory
+ - 4 GB of RAM is sufficient
+
+#### Workings
+
+##### NameNode
+
+Startup
+1. It reads the FsImage and EditLog from disk
+2. It applies all the transactions from the EditLog to the in-memory representation of the FsImage
+3. It flushes out this new version into a new FsImage on disk = checkpoint
+4. It truncates the edit log
+
+ - Checkpoints are then built periodically
+ - Recovery = last checkpointed state
+
+##### DataNode
+
+ - Stores data in files in its local file system
+   - Has no knowledge about HDFS file system
+ - Stores each block of HDFS data in a separate file
+ - Does not create all files in the same directory
+   - Local file system might not be support it
+   - Uses heuristics to determine optimal number of files per directory
+ - When the file system starts up:
+   1. It generates a list of all HDFS blocks = BlockReport
+   2. It sends the report to NameNode
+
+#### Failures
+
+ - Primary objective: to store data reliably in
+the presence of failures
+ - Three common failures:
+   - NameNode failure
+   - DataNode failure
+   - Network partition
+
+ - Network partition can cause a subset of DataNodes to
+lose connectivity with NameNode
+   -  NameNode detects this condition by the absence of a Heartbeat
+message
+   -  NameNode marks DataNodes without HearBeat and does not
+send any IO requests to them
+   -  Data registered to the failed DataNode is not available to the
+HDFS
+ - The death of a DataNode may cause replication factor of
+some of the blocks to fall below their specified value →
+re-replication
+   -  Also happens when replica is corrupted, hard disk fails,
+replication factor is increased, …
+
+#### API
+
+ - Java API for application to use
+   - Python, C language access available
+ - HTTP browser can be used to browse the files of a
+HDFS instance
+ - Command line interface called the FS shell
+   - Lets the user interact with data in the HDFS
+   - The syntax of the commands is similar to bash
+   - e.g., to create a directory /foodir
+     - `/bin/hadoop fs –mkdir /foodir`
+ - Browser interface is available to view the namespace
+
+### MapReduce Framework
+
+"Divide and conquer"
+
+ - A programming model + implementation
+ - Developed by Google in 2008
+ - Distributed, parallel computing on large data
+   - > Google: “A simple and powerful interface that enables automatic parallelization and distribution of large-scale computations, combined with an implementation of this interface that achieves high performance on large clusters of commodity PCs.”
+
+Programming model in general:
+ - Mental model a programmer has about execution of application
+ - Purpose: improve programmer's productivity
+ - Evaluation: expressiveness, simplicity, performance
+
+#### Models
+
+ - Von Neumann model
+   - Executes a stream of instructions (machine code)
+   - Instructions can specify
+     - Arithmetic operations
+     - Data addresses
+     - Next instruction to execute
+     - …
+   - Complexity
+ - Billions of data locations and millions of instructions
+ - Manages with:
+   - Modular design
+   - High-level programming languages
+
+ - Parallel programming models
+   - Message passing
+     - Independent tasks encapsulating local data
+     - Tasks interact by exchanging messages
+   - Shared memory
+     - Tasks share a common address space
+     - Tasks interact by reading and writing from/to this space
+       - Asynchronously
+   - **Data parallelization**
+     - Data are partitioned across tasks
+     - Tasks execute a sequence of independent operations
+
+#### DaC
+
+ - Divide ~ Map breaks down a problem into sub-problems
+   - Processes a key/value pair to generate a set of intermediate key/value pairs
+ - Conquer ~ Reduce receives and combines the sub-solutions to solve the problem
+   - Processes intermediate values associated with the same intermediate key
+ - Many real-world tasks can be expressed this way
+   - Programmer focuses on map/reduce code
+   - Framework cares about data partitioning, scheduling execution across machines, handling machine failures, managing intermachine communication, ...
+
+##### Formally
+
+Map
+ - Input: a key/value pair
+ - Output: a set of intermediate key/value pairs
+   - Usually different domain
+ - (k1,v1) → list(k2,v2)
+
+Reduce
+ - Input: an intermediate key and a set of all values for
+that key
+ - Output: a possibly smaller set of values
+   - The same domain
+ - (k2,list(v2)) → (k2,possibly smaller list(v2))
+
+###### Example
+
+```java
+map(String key, String value):
+  // key: document name
+  // value: document contents
+for each word w in value:
+  EmitIntermediate(w, "1");
+```
+
+```java
+reduce(String key, Iterator values):
+  // key: a word
+  // values: a list of counts
+int result = 0;
+for each v in values:
+  result += ParseInt(v);
+Emit(key, AsString(result));
+```
+
+![mapreduce](notes-img/mapreduce-example.png)
+
+ - distributed grep
+   - Map: emits <word, line number> if it matches a supplied pattern
+   - Reduce: identity
+ - URL access frequency
+   - Map: processes web logs, emits <URL, 1>
+   - Reduce: sums values and emits <URL, sum>
+ - reverse web-link graph
+   - Map: <target, source> for each link to a target URL found in a page named source
+   - Reduce: concatenates the list of all source URLs associated with a given target URL <target, list(source)>
+ - term vector per host
+   - “Term vector” summarizes the most important words that occur in a document or a set of documents
+   - Map: emits <hostname, term vector> for each input document
+     - The hostname is extracted from the URL of the document
+   - Reduce: adds the term vectors together, throws away infrequent terms
+ - inverted index
+   - Map: parses each document, emits <word, document ID>
+   - Reduce: sorts the corresponding document IDs, emits <word, list(document ID)>
+ - distributed sort
+   - Map: extracts the key from each record, and emits <key, record>
+   - Reduce: emits all pairs unchanged
+
+#### Application Parts
+
+  1. Input reader
+     - Divides the input into appropriate size 'splits'
+       - Each assigned to a single Map function
+     - Reads data from stable storage
+       - e.g., a distributed file system
+     - Generates key/value pairs
+  2. Map function
+     - User-specified processing of key/value pairs
+  3. Partition function
+     - Map function output is allocated to a reducer
+     - Partition function is given the key (output of Map) and the number of reducers and returns the index of the desired reducer
+     - Default is to hash the key and use the hash value modulo the number of reducers
+  4. Compare function
+     - Sorts the input for the Reduce function
+  5. Reduce function
+     - User-specified processing of key/values
+  6. Output writer
+     - Writes the output of the Reduce function to stable storage
+       - e.g., a distributed file system
+
+
+#### Flow
+
+ - Execution (Google) – Step 1
+   1. MapReduce library in the user program splits the input files into M pieces
+      - Typically 16 – 64 MB per piece
+      - Controllable by the user via optional parameter
+   2. It starts copies of the program on a cluster of machines
+
+![mapreduce1](notes-img/mapreduce-example-1.png)
+
+ - Execution – Step 2
+   - Master = a special copy of the program
+   - Workers = other copies that are assigned work by master
+   - M Map tasks and R Reduce tasks to assign
+   - Master picks idle workers and assigns each one a Map task (or a Reduce task)
+
+![mapreduce2](notes-img/mapreduce-example-2.png)
+
+ - Execution – Step 3
+   - A worker who is assigned a Map task:
+     - Reads the contents of the corresponding input split
+     - Parses key/value pairs out of the input data
+     - Passes each pair to the user-defined Map function
+     - Intermediate key/value pairs produced by the Map function are buffered in memory
+
+![mapreduce3](notes-img/mapreduce-example-3.png)
+
+ - Execution – Step 4
+   - Periodically, the buffered pairs are written to local disk
+     - Partitioned into R regions by the partitioning function
+   - Locations of the buffered pairs on the local disk are passed back to the master
+     - It is responsible for forwarding the locations to the Reduce workers
+
+![mapreduce4](notes-img/mapreduce-example-4.png)
+
+ - Execution – Step 5
+   - Reduce worker is notified by the master about data locations
+   - It uses remote procedure calls to read the buffered data from local disks of the Map workers
+   - When it has read all intermediate data, it sorts it by the intermediate keys
+     -  Typically many different keys map to the same Reduce task      -  If the amount of intermediate data is too large, an external sort is used
+
+![mapreduce5](notes-img/mapreduce-example-5.png)
+
+ - Execution – Step 6
+   - A Reduce worker iterates over the sorted intermediate data
+   - For each intermediate key encountered:
+     -  It passes the key and the corresponding set of intermediate values to the user's Reduce function
+     -  The output is appended to a final output file for this Reduce partition
+
+![mapreduce6](notes-img/mapreduce-example-6.png)
+
+ - Combine
+   - After a map phase, the mapper transmits over the network the entire intermediate data file to the reducer
+   - Sometimes this file is highly compressible
+   - User can specify function combine
+     - Like a reduce function
+     - It is run by the mapper before passing the job to the reducer
+       - Over local data
+ - Counters
+   - Can be associated with any action that a mapper or a reducer does
+     - In addition to default counters
+       - e.g., the number of input and output key/value pairs processed
+   - User can watch the counters in real time to see the progress of a job
+
+#### Fault Tolerance
+
+ - A large number of machines process a large number of data → fault tolerance is necessary
+ - Worker failure
+   - Master pings every worker periodically
+   - If no response is received in a certain amount of time, master marks the worker as failed
+   - All its tasks are reset back to their initial idle state → become eligible for scheduling on other workers
+
+ - Master failure
+   - Strategy A:
+     - Master writes periodic checkpoints of the master data structures
+     - If it dies, a new copy can be started from the last checkpointed state
+   - Strategy B:
+     - There is only a single master → its failure is unlikely
+     - MapReduce computation is simply aborted if the master fails
+     - Clients can check for this condition and retry the MapReduce operation if they desire
+
+ - Straggler
+   - is a machine that takes an unusually long time to complete one of the map/reduce tasks in the computation
+   - Example: a machine with a bad disk
+   - Solution:
+     - When a MapReduce operation is close to completion, the master schedules backup executions of the remaining in-progress tasks
+     - A task is marked as completed whenever either the primary or the backup execution completes
+
+#### Task granularity
+
+ - `M` pieces of Map phase and `R` pieces of Reduce phase
+   - Ideally both much larger than the number of worker machines
+   - How to set them?
+ - Master makes `O(M + R)` scheduling decisions
+ - Master keeps `O(M * R)` status information in memory
+   - For each Map/Reduce task: state (idle/in-progress/completed)
+   - For each non-idle task: identity of worker machine
+   - For each completed Map task: locations and sizes of the R intermediate file regions
+ - `R` is often constrained by users
+   - The output of each Reduce task ends up in a separate output file
+ - Practical recommendation (Google):
+   - Choose `M` so that each individual task is roughly 16 – 64 MB of input data
+   - Make `R` a small multiple of the number of worker machines we expect to use
+
+#### Criticism
+
+David DeWitt and Michael Stonebraker – 2008
+1. MapReduce is a step backwards in database access based on
+   - Schema describing data structure
+   - Separating schema from the application
+   - Advanced query languages
+2. MapReduce is a poor implementation
+   - Instead of indices it uses brute force
+3. MapReduce is not novel (ideas more than 20 years old and overcome)
+4. MapReduce is missing features common in DBMSs
+   - Indices, transactions, integrity constraints, views, …
+5. MapReduce is incompatible with applications implemented over DBMSs
+   - Data mining, business intelligence, …
+
+#### End
+
+ - FaceBook used MapReduce in 2010
+   - Hadoop
+
+but…
+
+ - Google has shifted towards: Google Cloud DataFlow
+   - Based on cloud and stream data processing
+   - Idea: no need to maintain complex infrastructure
+     - Data can be easily read, transformed and analyzed in a cloud
+
+#### Hadoop MapReduce
+
+ - MapReduce requires:
+   - Distributed file system
+   - Engine that can distribute, coordinate, monitor and gather the results
+ - Hadoop: HDFS + JobTracker + TaskTracker
+   - JobTracker (master) = scheduler
+   - TaskTracker (slave per node) – is assigned a Map or Reduce (or other operations)
+     - Map or Reduce run on a node → so does the TaskTracker
+     - Each task is run on its own JVM
+
+##### Structure
+
+JobTracker (Master)
+ - Like a scheduler:
+   1. A client application is sent to the JobTracker
+   2. It “talks” to the NameNode (= HDFS master) and locates the TaskTracker (Hadoop client) near the data
+   3. It moves the work to the chosen TaskTracker node
+
+TaskTracker (Client)
+ - Accepts tasks from JobTracker
+   - Map, Reduce, Combine, …
+   - Input, output paths
+ - Has a number of slots for the tasks
+   - Execution slots available on the machine (or machines on the same rack)
+ - Spawns a separate JVM for execution of a task
+ - Indicates the number of available slots through the hearbeat message to the JobTracker
+   - A failed task is re-executed by the JobTracker
+
+![mapreduce6](notes-img/hadoop-mapreduce.png)
+
+##### Job Launching
+
+Job configuration
+ - For launching program:
+   1. Create a Job to define a job
+ - Using class Configuration
+   2. Submit Job to the cluster and wait for completion
+ - Job involves:
+   - Classes implementing Mapper and Reducer interfaces
+     - `Job.setMapperClass()`
+     - `Job.setReducerClass()`
+   - Job outputs
+     - `Job.setOutputKeyClass()`
+     - `Job.setOutputValueClass()`
+   - Other options:
+     - `Job.setNumReduceTasks()`
+     - …
+
+ - `waitForCompletion()`– waits (blocks) until the job finishes
+ - `submit()` – does not block
+ - `monitorAndPrintJob()` – monitor a job and print status in real-time as progress is made and tasks fail
+
+Mapper
+
+ - The user provides an instance of Mapper
+   - Implements interface `Mapper`
+     - Overrides function `map`
+   - Emits (k2 ,v2) using `context.write(k2, v2)`
+ - Exists in separate process from all other instances of Mapper
+   - No data sharing
+
+```java
+void map (
+    Object key, // input key
+    Text value, // input value
+    Context context // collects output keys and values)
+```
+
+```java
+public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable>
+{
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+    public void map (Object key, Text value, Context context) throws IOException, InterruptedException
+    {
+        StringTokenizer itr = new StringTokenizer(value.toString());
+        while (itr.hasMoreTokens())
+        {
+            word.set(itr.nextToken());
+            context.write(word, one);
+        }
+    }
+}
+```
+
+Reducer
+```java
+reduce(Text key,
+Iterable<IntWritable> values,
+Context context)
+```
+ - Keys & values sent to one partition all go to the
+same reduce task
+ - Calls are sorted by key
+
+```java
+public static class IntSumReducer extends Reducer<Text,IntWritable,Text,IntWritable>
+{
+    private IntWritable result = new IntWritable();
+    public void reduce (Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException
+    {
+        int sum = 0;
+        for (IntWritable val : values)
+        {
+            sum += val.get();
+        }
+        result.set(sum);
+        context.write(key, result);
+    }
+}
+```
+
+#### Basic Design Questions to Ask
+
+ - From where will my input come?
+ - How is my input structured?
+ - Mapper and Reducer classes
+ - Do I need to count anything while job is in progress?
+ - Where is my output going?
+ - Executor class
+   - Must I block, waiting for job completion?
+
+
+## Apache Spark
+
+Data analytics tool
