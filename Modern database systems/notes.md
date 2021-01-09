@@ -7,7 +7,7 @@
 - [x] Přehled a klasifikace databázových systémů a technologií pro efektivní správu a zpracování Big Data.
 - [x] Distribuované souborové systémy. MapReduce – princip, vlastnosti, kritika, alternativní přístupy.
 - [x] Základní principy Big Data managementu. Apache Spark.
-- [ ] NoSQL databáze klíč/hodnota.
+- [x] NoSQL databáze klíč/hodnota.
 
 - [ ] NoSQL databáze sloupcové.
 - [ ] NoSQL dokumentové databáze.
@@ -2664,9 +2664,7 @@ QUEUED
 QUEUED
 > EXEC
 1) OK
-2) WRONGTYPE Operation
-against a key holding the
-wrong kind of value
+2) WRONGTYPE Operation against a key holding the wrong kind of value
 3) OK
 > GET a
 "4"
@@ -2758,3 +2756,6 @@ sentinel parallel-syncs mymaster 1
 // the new master after a failover at the same time
 ```
 
+## Column-Family Stores
+
+Basic Characteristics
