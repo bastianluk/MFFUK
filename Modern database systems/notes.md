@@ -10,8 +10,8 @@
 - [x] NoSQL databáze klíč/hodnota.
 
 - [x] NoSQL databáze sloupcové.
-- [ ] NoSQL dokumentové databáze.
-- [ ] Grafová data a grafové databáze.
+- [x] NoSQL dokumentové databáze.
+- [x] Grafová data a grafové databáze.
 - [ ] Data s více modely. Multi-model databáze.
 
 - [ ] Další typy moderních databází. Jazyk SQL v prostředí Big Data. NewSQL databáze. Databáze polí.
@@ -3307,4 +3307,1396 @@ center?
 ## Document Databases
 
 Basic Characteristics
+
+ - Documents are the main concept
+   - Stored and retrieved
+   - XML, JSON, …
+ - Documents are
+   - Self-describing
+   - Hierarchical tree data structures
+   - Can consist of maps, collections, scalar values, nested documents, …
+ - Documents in a collection are expected to be similar
+   - Their schema can differ
+ - Document databases store documents in the value part of the key-value store
+   - Key-value stores where the value is examinable\
+
+Usecases and nots via before
+
+### mongoDB
+
+ - Initial release: 2009
+ - Written in C++
+   - Open-source
+ - Cross-platform
+ - JSON documents
+   - Dynamic schemas
+ - Features:
+   - High performance – indices
+   - High availability – replication + eventual consistency + automatic failover
+   - Automatic scaling – automatic sharding across the cluster
+   - MapReduce support
+
+#### Terminology
+
+ - Each mongoDB instance has multiple databases
+ - Each database can have multiple collections
+ - When we store a document, we have to choose database and collection
+
+![cass-terminology](notes-img/mongo-term.png)
+
+#### Documents
+
+ - Use JSON
+ - Stored as BSON
+   - Binary representation of JSON
+ - Have maximum size: 16MB (in BSON)
+   - Not to use too much RAM
+   - GridFS tool divides larger files into fragments
+ - Restrictions on field names:
+   - _id is reserved for use as a primary key
+     - Unique in the collection
+     - Immutable
+     - Any type other than an array
+   - The field names cannot start with the $ character
+     - Reserved for operators
+   - The field names cannot contain the . character
+     - Reserved for accessing fields
+
+#### Data Model
+
+ - Documents have flexible schema
+   - Collections do not enforce structure of data
+   - In practice the documents are similar
+ - Challenge: Balancing
+   - the needs of the application
+   - the performance characteristics of database engine
+   - the data retrieval patterns
+ - Key decision: references vs. embedded documents
+   - Structure of data
+   - Relationships between data
+
+##### References
+
+ - Including links / references from one document to another
+ - Normalized data models
+
+![mongo-ref](notes-img/mongo-ref.png)
+
+ - References provide more flexibility than embedding
+ - Use normalized data models:
+   - When embedding would result in duplication of data not outweighted by read performance
+   - To represent more complex many-to-many relationships
+   - To model large hierarchical data sets
+ - Disadvantages:
+   - Can require more roundtrips to the server (follow up queries)
+
+##### Embedded Data
+
+ - Related data in a single document structure
+   - Documents can have subdocuments (in a field of array)
+   - Applications may need to issue less queries
+ - Denormalized data models
+ - Allow applications to retrieve and manipulate related data in a single database operation
+
+ - Use embedded data models:
+   - When we have “contains” relationships between entities
+     - One-to-one relationships
+   - In one-to-many relationships, where child documents always appear with one parent document
+ - Provides:
+   - Better performance for read operations
+   - Ability to retrieve/update related data in a single database operation
+ - Disadvantages:
+   - Documents may significantly grow after creation
+     - Impacts write performance
+       - The document must be relocated on disk if the size exceeds allocated space
+       - May lead to data fragmentation
+
+##### BSON (Binary JSON)
+
+"just so we know"
+
+ - Binary-encoded serialization of JSON documents
+   - Allows embedding of documents, arrays, JSON simple data types + other types (e.g., date)
+
+![mongo-bson](notes-img/mongo-bson.png)
+
+ - byte – 1 byte (8-bits)
+ - int32 – 4 bytes (32-bit signed integer)
+ - int64 – 8 bytes (64-bit signed integer)
+ - double – 8 bytes (64-bit IEEE 754 floating point)
+
+###### BSON Grammar
+
+document ::= int32 e_list "\x00"
+ - BSON document
+ - int32 = total number of bytes
+
+e_list ::= element e_list | ""
+ - Sequence of elements
+
+```cpp
+element ::= "\x01" e_name double // Floating point
+| "\x02" e_name string           // UTF-8 string
+| "\x03" e_name document         // Embedded document
+| "\x04" e_name document         // Array
+| "\x05" e_name binary           // Binary data
+| …                              // ...
+e_name ::= cstring
+```
+
+```cpp
+cstring ::= (byte*) "\x00"
+string ::= int32 (byte*) "\x00"
+```
+ - String = int32 bytes
+
+
+#### Operations
+ - create, update, delete
+   - Modify the data of a single collection of documents
+ - For update / delete: criteria to select the documents to update / remove
+
+#####  Insertion
+`db.inventory.insert( { _id: 10, type: "misc", item: "card", qty: 15 } )`
+ - Inserts a document with three fields into collection inventory
+   - User-specified _id field
+
+```json
+db.inventory.update(
+    { type: "book", item : "journal" },
+    { $set : { qty: 10 } },
+    { upsert : true }
+)
+```
+ - Creates a new document if no document in the inventory collection contains `{ type: "books", item : "journal" }`
+   - mongoDB adds the `_id` field and assigns as its value a unique `ObjectId`
+   - The result contains fields `type`, `item`, `qty` with the specified values
+
+`db.inventory.save( { type: "book", item: "notebook", qty: 40 } )`
+ - Creates a new document in collection inventory if `_id` is not specified or does not exist in the collection
+
+
+##### Removal
+
+`db.inventory.remove( { type : "food" } )`
+ - Removes all documents that have `type` equal to `food` from the inventory collection
+`db.inventory.remove( { type : "food" }, 1 )`
+ - Removes one document that has `type` equal to `food` from the inventory collection
+
+##### Updates
+
+```json
+db.inventory.update(
+    { type : "book" },
+    { $inc : { qty : -1 } },
+    { multi: true }
+)
+```
+ - Finds all documents with `type` equal to `book` and modifies their `qty` field by `-1`
+
+```json
+db.inventory.save({
+    _id: 10,
+    type: "misc",
+    item: "placard"
+})
+```
+ - Replaces document with `_id` equal to `10`
+
+#### Querying
+
+ - Targets a specific collection of documents
+ - Specifies criteria that identify the returned documents
+ - May include a projection that specifies the fields from the matching documents to return
+ - May impose limits, sort orders, …
+
+`db.inventory.find( {} )`
+`db.inventory.find()`
+ - All documents in the collection
+
+`db.inventory.find( { type: "snacks" } )`
+ - All documents where the type field has the value snacks
+
+`db.inventory.find( { type: { $in: [ 'food', 'snacks' ] } } )`
+ - All documents where value of the type field is either food or snacks
+
+`db.inventory.find( { type: 'food', price: { $lt: 9.95 } } )`
+ - All documents where the type field has the value food and the value of the price field is less than ($lt) 9.95
+
+```json
+db.inventory.find({
+    $or: [
+        { qty: { $gt: 100 } },
+        { price: { $lt: 9.95 } }
+    ]
+})
+```
+ - All documents where the field qty has a value greater than ($gt) 100 or the value of the price field is less than 9.95
+
+```
+db.inventory.find(
+    { type: 'food', $or: [
+        { qty: { $gt: 100 } },
+        { price: { $lt: 9.95 } }
+    ]}
+)
+```
+ - All documents where the value of the type field is food and either the qty has a value greater than ($gt) 100 or the value of the price field is less than 9.95
+
+##### Subdocuments
+
+```json
+db.inventory.find( {
+    producer: {
+        company: 'ABC123',
+        address: '123 Street'
+    }
+} )
+```
+ - All documents where the value of the field producer is a subdocument that contains only the field company with the value ABC123 and the field address with the value 123 Street, in the exact order
+
+`db.inventory.find( { 'producer.company': 'ABC123' } )`
+ - All documents where the value of the field producer is a subdocument that contains a field company with the value ABC123 and may contain other fields
+
+##### Arrays
+
+`db.inventory.find( { tags: [ 'fruit', 'food','citrus' ] } )`
+ - All documents where the value of the field tags is an array that holds exactly three elements, fruit, food, and citrus, in this order
+
+`db.inventory.find( { tags: 'fruit' } ) `
+ - All documents where value of the field tags is an array that contains fruit as one of its elements
+
+`db.inventory.find( { 'tags.0' : 'fruit' } )`
+ - All documents where the value of the tags field is an array whose first element equals fruit
+
+##### Arrays of Subdocuments
+
+`db.inventory.find( { 'memos.0.by': 'shipping' } )`
+ - All documents where the memos field contains an array whose first element
+is a subdocument with the field by with the value shipping
+
+`db.inventory.find( { 'memos.by': 'shipping' } )`
+ - All documents where the memos field contains an array that contains at
+least one subdocument with the field by with the value shipping
+
+```json
+db.inventory.find({
+    'memos.memo': 'on time',
+    'memos.by': 'shipping'
+})
+```
+ - All documents where the value of the memos field is an array that has at
+least one subdocument that contains the field memo equal to on time and
+the field by equal to shipping
+
+##### Limit Fields of the Result
+
+`db.inventory.find( { type: 'food' }, { item: 1, qty: 1 } )`
+ - Only the item and qty fields (and by default the _id field) return in
+the matching documents
+
+`db.inventory.find( { type: 'food' }, { item: 1, qty: 1, _id: 0 } )`
+ - Only the item and qty fields return in the matching documents
+
+`db.inventory.find( { type: 'food' }, { type : 0 } )`
+ - The type field does not return in the matching documents
+ - Note: With the exception of the _id field we cannot combine inclusion and exclusion statements in projection documents.
+
+##### Sorting
+
+`db.collection.find().sort( { age: -1 } )`
+ - Returns all documents in collection sorted by the age field in descending order
+
+`db.bios.find().sort( { 'name.last': 1, 'name.first': 1 } )`
+ - Specifies the sort order using the fields from a subdocument name
+ - Sorts first by the last field and then by the first field in ascending order
+
+#### Indices
+
+ - Without indices:
+   - mongoDB must scan every document in a collection to select those documents that match the query statement
+ - Indices store a portion of the collection's data set in an easy to traverse form
+   - Stores the value of a specific field or a set of fields ordered by the value of the field
+   - B-tree like structures
+ - Defined at collection level
+ - Purpose:
+   - To speed up common queries
+   - To optimize the performance of other operations in specific situations
+
+##### Usage for Sorted Results
+
+ - The index stores score values in ascending order
+ - mongoDB can traverse the index in either ascending or descending order to return sorted results (without sorting)
+
+##### Index Types
+
+ - Default _id
+   - Exists by default
+ - If applications do not specify _id, it is created automatically
+   - Unique by default
+ - Single Field
+   - User-defined indices on a single field of a document
+ - Compound
+   - User-defined indices on multiple fields
+ - Multikey index
+   - To index the content stored in arrays
+   - Creates separate index entry for every element of the array
+
+ - Geospatial Field
+   - 2d indexes = use planar geometry when returning results
+     - For data representing points on a two-dimensional plane
+   - 2sphere indexes = use spherical (Earth-like) geometry to return results
+     - For data representing longitude, latitude
+ - Text Indexes
+   - Searching for string content in a collection
+ - Hash Indexes
+   - Indexes the hash of the value of a field
+   - Only support equality matches (not range queries)
+
+`db.people.ensureIndex( { "phone-number": 1 } )`
+ - Creates a single-field index on the phone-number field of the people collection
+
+`db.products.ensureIndex( { item: 1, category: 1, price: 1 } )`
+ - Creates a compound index on the item, category, and price fields
+
+`db.accounts.ensureIndex( { "tax-id": 1 }, { unique: true } )`
+ - Creates a unique index
+   - Prevents applications from inserting documents that have duplicate values for the inserted fields
+
+`db.collection.ensureIndex( { _id: "hashed" } )`
+ - Creates a hashed index on _id
+
+> Internals
+
+#### Replication
+
+ - Master/slave replication
+ - Replica set = group of instances that host the same data set
+   - primary (master) – receives all write operations
+   - secondaries (slaves) – apply operations from the primary so that they have the same data set
+
+##### Steps
+
+ - Write:
+   1. mongoDB applies write operations on the primary
+   2. mongoDB records the operations to the primary’s oplog
+   3. Secondary members replicate oplog + apply the operations to their data sets
+ - Read: All members of the replica set can accept read operations
+   - By default, an application directs its read operations to the   primary member
+     - Guaranties the latest version of a document
+     - Decreases read throughput
+   - Read preference mode can be set
+
+##### Read Preference Mode
+
+![mongo-rpm](notes-img/mongo-rpm.png)
+
+##### Replica Set Elections
+
+ - Replica set can have at most one primary
+ - If the current primary becomes unavailable, an election determines a new primary
+ - Note:
+   - Elections need some time
+     - Approx. 1 minute
+   - No primary --> no writes
+
+![mongo-replica-elec](notes-img/mongo-replica-elec.png)
+
+Factors
+ - Heartbeat (ping)
+   - Every 2s sent to each other
+   - No response for 10s --> node is inaccessible
+ - Priority comparisons
+   - Higher priority = preferred to be voted
+   - Members with priority = 0
+     - Cannot become primary (not eligible)
+     - Cannot trigger election, but can vote
+   - The current primary has the highest priority and is within 10s of the latest oplog entry --> OK
+   - A higher-priority member catches up to within 10s of the latest oplog entry of the current primary --> elections
+     - The higher-priority node has a chance to become primary
+ - Connections
+   - A node cannot become primary unless it can connect to a majority of the members
+
+Mechanism
+ - Replica sets hold an election any time there is no primary:
+   - Initiation of a new replica set
+   - A secondary loses contact with a primary
+   - A primary steps down
+ - A primary will step down:
+   - After receiving the replSetStepDown command
+     - Forces a primary to become a secondary
+   - If one of the current secondaries is eligible for election and has a higher priority
+   - If it cannot contact a majority of the members of the replica set
+ - The replica set elects an eligible member with the highest priority value as primary
+   - By default, all members have a priority of 1
+     - Can be adjusted
+ - The first member to receive the majority of votes becomes primary
+   - By default, all members have 1 vote
+     - Can be disabled = non-voting members
+       - Hold copies of data
+       - Can become primary
+     - Not recommended to set more than 1 (better use priority)
+ - All members of a replica set can veto an election, e.g.,
+   - If the member seeking an election is not up-to-date with the most recent operation accessible in the replica set
+   - If the member seeking an election has a lower priority than another member in the set that is also eligible for election
+   - …
+
+##### Arbiter
+
+ - A special node
+ - Does not maintain a data set
+   - Does not require dedicated hardware
+ - Cannot be a primary
+ - Exists to vote in elections
+   - For replicas with even number of members
+
+![mongo-arb](notes-img/mongo-arb.png)
+
+##### Secondaries
+
+ - A secondary can be configured as:
+   - Priority 0 – to prevent it from becoming a primary in an election
+     - e.g., a standby
+   - Hidden – to prevent applications from reading from it
+     - Just replicates the data for special usage
+     - Can vote in elections
+   - Delayed – to keep a running “historical” snapshot
+     - For recovery from errors like unintentionally deleted databases
+
+#### Sharding
+
+ - Supported through sharded clusters
+ - Consisting of:
+   - Shards – store the data
+     - Each shard is a replica set
+   - For testing purposes can be a single node
+   - Query routers – interface with client applications
+     - Direct operations to the appropriate shard(s) + return the result to the user
+     - More than one --> to divide the client request load
+   - Config servers – store the cluster’s metadata
+     - Mapping of the cluster’s data set to the shards
+     - Recommended number: 3
+
+![mongo-sharding](notes-img/mongo-sharding.png)
+
+##### Data Partitioning
+
+ - Partitions a collection’s data by the shard key
+   - Indexed (possibly compound) field that exists in every document in the collection
+ - Immutable
+   - Divided into chunks distributed across shards
+ - Range-based partitioning
+ - Hash-based partitioning
+   - When a chunk grows beyond the chunk size, it is split
+ - Small chunks --> more even distribution at the expense of more frequent migrations
+ - Large chunks --> fewer migrations
+
+###### Range-Based Partitioning
+
+ - Each value of the shard key falls at some point on line from negative infinity to positive infinity
+ - The line is partitioned into non-overlapping chunks
+ - Documents with “close” shard key values are likely to be in the same chunk
+   - More efficient range queries
+   - Can result in an uneven distribution of data
+
+###### Hash-Based Partitioning
+
+ - Computes a hash of a field’s value
+   - Hashes form chunks
+ - Ensures a more random distribution of a collection in the cluster
+   - Documents with “close” shard key values are unlikely to be a part of the same chunk
+   - A range query may need to target most/all shards
+
+#### Journaling
+
+ - Journaling = mongoDB stores and applies write operations in memory and in a journal before the changes are done in the data files
+   - To bring the database to a consistent state after hard shutdown
+   - Can be switched on/off
+ - Journal directory – holds journal files
+ - Journal file = write-ahead redo logs
+   - Append only file
+   - Deleted when all the writes are performed
+   - When it holds 1GB of data, mongoDB creates a new journal file
+ - The size can be modified
+ - Clean shutdown removes all the files in the journal directory
+
+#### Transactions
+
+ - Write operations are atomic at the level of a single document
+   - Including nested documents (sufficient for many cases, but not all)
+ - When a single write operation modifies multiple documents, it is not atomic
+   - Other operations may interleave
+ - Transactions:
+   - Isolation of a single write operation that affects multiple documents
+     - No client sees the changes until the operation completes or errors out
+     - `db.foo.update( { field1 : 1 , $isolated : 1 }, { $inc : { field2 : 1 } } , { multi: true } )`
+   - Two-phase commit
+     - Transaction-like semantics for multi-document updates
+     - Idea:
+       - Store all the information about the steps of an operation in a transaction and store the transaction
+       - Retrieve the transaction and perform its steps
+       - After performing each step, update the state of the transaction to reflect that.
+       - A transaction is complete when it is in a final state
+
+#### Enterprise
+
+ - Commercial edition of mongoDB
+ - Includes:
+   - Advanced Security – Kerberos authentication
+   - Management Service – a suite of tools for managing mongoDB deployments
+     - Monitoring, backup capabilities, helping users optimize clusters, …
+   - Enterprise Software Integration – SNMP support to integrate mongoDB with other tools
+   - Certified OS Support – has been tested and certified on Red Hat/CentOS, Ubuntu, SuSE and Amazon Linux
+   - …
+
+## Graph Databases
+
+Basic Characteristics
+ - To store entities and relationships between these entities
+   - Node is an instance of an object
+   - Nodes have properties
+     - e.g., name
+   - Edges have directional significance
+   - Edges have types
+     - e.g., likes, friend, …
+ - Nodes are organized by relationships
+   - Allow to find interesting patterns
+   - e.g., “Get all people employed by Big Co that like NoSQL Distilled”
+ - Nodes can have different types of relationships between them
+   - To represent relationships between the domain entities
+   - To have secondary relationships
+     - Category, path, time-trees, quad-trees for spatial indexing, linked lists for sorted access, …
+ - There is no limit to the number and kind of relationships a node can have
+ - Relationships have type, start node, end node, own properties
+   - e.g., since when did they become friends
+
+### RDBMS vs. Graph Databases
+ - When we store a graph-like structure in RDBMS, it is for a single type of relationship
+   - “Who is my manager”
+   - Adding another relationship usually means schema changes, data movement etc.
+   - In graph databases relationships can be dynamically created / deleted
+     - There is no limit for number and kinds
+ - In RDBMS we model the graph beforehand based on the Traversal we want
+   - If the Traversal changes, the data will have to change
+   - We usually need a lot of join operations
+ - In graph databases the relationships are not calculated at query time but persisted
+   - Shifting the bulk of the work of navigating the graph to inserts, leaving queries as fast as possible
+
+
+### Neo4j
+
+ - Open source graph database
+   - The most popular
+ - Initial release: 2007
+ - Written in: Java
+ - OS: cross-platform
+ - Stores data in nodes connected by directed, typed relationships
+   - With properties on both
+   - Called property graph
+
+#### Main Features (according to authors)
+
+ - intuitive – a graph model for data representation
+ - reliable – with full ACID transactions
+ - durable and fast – disk-based, native storage engine
+ - massively scalable – up to several billions of nodes / relationships / properties
+ - highly-available – when distributed across multiple machines
+ - expressive – powerful, human readable graph query language
+ - fast – powerful traversal framework
+ - embeddable
+ - simple – accessible by REST interface / object-oriented Java API
+
+#### RDBMS vs. Neo4j
+
+ - RDBMS is optimized for aggregated data
+ - Neo4j is optimized for highly connected data
+
+![neo4j-con](notes-img/neo4j-con.png)
+
+#### Key-Value (Column Family) Store vs. Neo4j
+
+ - Key-Value model is for lookups of simple values or lists
+   - Column family store can be considered as a step in evolution of key/value stores
+     - The value contains a list of columns
+ - Neo4j lets you elaborate the simple data structures into more complex data
+   - Interconnected
+
+![neo4j-kvp](notes-img/neo4j-kvp.png)
+
+#### Document Store vs. Neo4j
+
+ - Document database accommodates data that can easily be represented as a tree
+   - Schema-free
+ - References to other documents within the tree = more expressive representation
+
+![neo4j-doc](notes-img/neo4j-doc.png)
+
+#### Data Model
+
+Node, Relationship, Property
+ - Fundamental units: nodes + relationships
+ - Both can contain properties
+   - Key-value pairs where the key is a string
+   - Value can be primitive or an array of one primitive type
+     - e.g., String, int, int[], …
+   - null is not a valid property value
+     - nulls can be modelled by the absence of a key
+ - Relationships
+   - Directed (incoming and outgoing edge)
+ - Equally well traversed in either direction = no need to add both directions to increase performance
+ - Direction can be ignored when not needed by applications
+   - Always have start and end node
+   - Can be recursive
+
+![neo4j-struct](notes-img/neo4j-struct.png)
+
+![neo4j-datatypes](notes-img/neo4j-datatypes.png)
+
+##### Examples
+
+![neo4j-example-1](notes-img/neo4j-example-1.png)
+
+Replationship
+```java
+// enum of types of relationships:
+private static enum RelTypes implements RelationshipType
+{
+    KNOWS
+};
+GraphDatabaseService graphDb;
+Node firstNode;
+Node secondNode;
+Relationship relationship;
+// starting a database (directory is created if not exists):
+graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
+// …
+```
+
+Graph
+```java
+// create a small graph:
+firstNode = graphDb.createNode();
+firstNode.setProperty( "message", "Hello, " );
+secondNode = graphDb.createNode();
+secondNode.setProperty( "message", "World!" );
+relationship = firstNode.createRelationshipTo(secondNode, RelTypes.KNOWS);
+relationship.setProperty("message", "brave Neo4j ");
+// …
+```
+
+Examples
+```java
+// print the result:
+System.out.print( firstNode.getProperty( "message" ) );
+System.out.print( relationship.getProperty( "message" ) );
+System.out.print( secondNode.getProperty( "message" ) );
+
+// remove the data:
+firstNode.getSingleRelationship(RelTypes.KNOWS, Direction.OUTGOING).delete();
+firstNode.delete();
+secondNode.delete();
+
+// shut down the database:
+graphDb.shutdown();
+```
+
+Transactions
+```java
+// all writes (creating, deleting and updating any data)
+// have to be performed in a transaction,
+// otherwise NotInTransactionException
+Transaction tx = graphDb.beginTx();
+try
+{
+    // updating operations go here
+    tx.success(); // transaction is committed on close
+}
+catch (Exception e)
+{
+    tx.failure(); // transaction is rolled back on close
+}
+finally
+{
+    tx.close(); // or deprecated tx.finish()
+}
+```
+
+##### Path traversal
+
+ - Path = one or more nodes with connecting relationships
+   - Typically retrieved as a query or traversal result
+ - Traversing a graph = visiting its nodes, following relationships according to some rules
+   - Mostly a subgraph is visited
+   - Neo4j: Traversal framework + Java API, Cypher, Gremlin
+
+###### Traversal Framework
+
+ - A traversal is influenced by
+   - Expanders – define what to traverse
+     - i.e., relationship direction and type
+   - Order – depth-first / breadth-first
+   - Uniqueness – visit nodes (relationships, paths) only once
+   - Evaluator – what to return and whether to stop or continue traversal beyond a current position
+   - Starting nodes where the traversal will begin
+
+![neo4j-traversal](notes-img/neo4j-traversal.png)
+
+JAVAAPI
+
+ - TraversalDescription
+   - The main interface used for defining and initializing traversals
+   - Not meant to be implemented by users
+     - Just used
+   - Can specify branch ordering
+     - breadthFirst() / depthFirst()
+ - Relationships
+   - Adds a relationship type to traverse
+     - Empty (default) = traverse all relationships
+     - At least one in the list = traverse the specified ones
+   - Two methods: including / excluding direction
+     - Direction.BOTH
+     - Direction.INCOMING
+     - Direction.OUTGOING
+
+ - Evaluator
+   - Used for deciding at each position: should the traversal continue, and/or should the node be included in the result
+   - Actions:
+     - Evaluation.INCLUDE_AND_CONTINUE: Include this node in the result and continue the traversal
+     - Evaluation.INCLUDE_AND_PRUNE: Include this node in the result, but do not continue the traversal
+     - Evaluation.EXCLUDE_AND_CONTINUE: Exclude this node from the result, but continue the traversal
+     - Evaluation.EXCLUDE_AND_PRUNE: Exclude this node from the result and do not continue the traversal
+   - Pre-defined evaluators:
+     - Evaluators.excludeStartPosition()
+     - Evaluators.toDepth(int depth) / Evaluators.fromDepth(int depth)
+ - …
+
+ - Uniqueness
+   - Can be supplied to the TraversalDescription
+   - Indicates under what circumstances a traversal may revisit the same position in the graph
+     - NONE: Any position in the graph may be revisited.
+     - NODE_GLOBAL: No node in the graph may be re-visited (default)
+     - …
+ - Traverser
+   - Traverser which is used to step through the results of a traversal
+   - Steps can correspond to
+     - Path (default)
+     - Node
+     - Relationship
+
+Example
+
+![neo4j-example-2](notes-img/neo4j-example-2.png)
+
+Get the Admins
+```java
+Node admins = getNodeByName( "Admins" );
+TraversalDescription traversalDescription = Traversal.description()
+    .breadthFirst()
+    .evaluator( Evaluators.excludeStartPosition() )
+    .relationships( RoleRels.PART_OF, Direction.INCOMING )
+    .relationships( RoleRels.MEMBER_OF, Direction.INCOMING );
+Traverser traverser = traversalDescription.traverse( admins );
+String output = "";
+for ( Path path : traverser )
+{
+    Node node = path.endNode();
+    output += "Found: " + node.getProperty( NAME ) + " at depth: " + ( path.length() - 1 ) + "\n";
+}
+```
+
+Get Group Membership of a User
+```java
+Node jale = getNodeByName( "Jale" );
+traversalDescription = Traversal.description()
+    .depthFirst()
+    .evaluator( Evaluators.excludeStartPosition() )
+    .relationships( RoleRels.MEMBER_OF, Direction.OUTGOING )
+    .relationships( RoleRels.PART_OF, Direction.OUTGOING );
+traverser = traversalDescription.traverse( jale );
+```
+
+Get All Groups
+```java
+Node referenceNode = getNodeByName( "Reference_Node" ) ;
+traversalDescription = Traversal.description()
+    .breadthFirst()
+    .evaluator( Evaluators.excludeStartPosition() )
+    .relationships( RoleRels.ROOT, Direction.INCOMING )
+    .relationships( RoleRels.PART_OF, Direction.INCOMING );
+traverser = traversalDescription.traverse( referenceNode );
+```
+
+Get All Members of a Group
+```java
+Node referenceNode = getNodeByName( "Reference_Node" ) ;
+traversalDescription = Traversal.description()
+    .breadthFirst()
+    .evaluator(Evaluators.includeWhereLastRelationshipTypeIs( RoleRels.MEMBER_OF ) );
+traverser = traversalDescription.traverse( referenceNode );
+```
+
+#### Gremlin
+
+ - Gremlin = graph traversal language for traversing property graphs
+   - Maintained by TinkerPop
+ - Open source software development group
+ - Focuses on technologies related to graph databases
+   - Implemented by most graph database vendors
+   - Neo4j Gremlin Plugin
+ - Scripts are executed on the server database
+ - Results are returned as Neo4j `Node` and `Relationship` representations
+
+gremlin-struct
+![gremlin-struct](notes-img/gremlin-struct.png)
+
+##### Related
+
+ - Blueprints – interface for graph databases
+   - Like ODBC (JDBC) for graph databases
+ - Pipes – dataflow framework for evaluating graph traversals
+ - Groovy – superset of Java used by Gremlin as a host language
+
+##### Examples
+
+![gremlin-example-1](notes-img/gremlin-example-1.png)
+
+```c
+gremlin> g = new Neo4jGraph('I:\\tmp\\myDB.graphdb')
+==> neo4jgraph[EmbeddedGraphDatabase[I:\tmp\myDB.graphdb]]
+gremlin> v = g.v(1)
+==>v[1]
+gremlin> v.outE
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> v.outE.inV
+==>v[2]
+==>v[3]
+==>v[4]
+gremlin> v.outE.inV.outE.inV
+==>v[5]
+==>v[3]
+
+
+gremlin> list = [v]
+gremlin> for(i in 1..2)
+list = list._().out.collect{it}
+gremlin> list
+==>v[5]
+==>v[3]
+gremlin> v.as('x').out.loop('x'){it.loops < 3}
+==>v[5]
+==>v[3]
+```
+
+it component of the loop step closure has three properties:
+ - it.object : the current object of the traverser
+ - it.path : the current path of the traverser
+ - it.loops : the number of times the traverser has looped through the loop section
+
+```c
+gremlin> v = g.v(1)
+==>v[1]
+gremlin> v.name
+==>marko
+gremlin> v.outE('knows').inV.filter{it.age > 30}.name
+==>josh
+gremlin> v.out('knows').filter{it.age > 21}.
+as('x').name.filter{it.matches('jo.{2}|JO.{2}')}.
+back('x').age
+==>32
+
+gremlin> g.v(1).note= "my friend" // set a property
+==> my friend
+gremlin> g.v(1).map // get property map
+==> {name=marko, age=29, note=my friend}
+gremlin> v1= g.addVertex([name: "irena"])
+==> v[7]
+gremlin> v2 = g.v(1)
+==> v[1]
+gremlin> g.addEdge(v1, v2, 'knows')
+==> e[7][7-knows->1]
+```
+
+#### Cypher
+
+ - Neo4j graph query language
+   - For querying and updating
+ - Declarative – we describe what we want, not how to get it
+   - Not necessary to express traversals
+ - Human-readable
+   - Inspired by SQL and SPARQL
+
+##### Clauses
+
+ - `START`: Starting points in the graph, obtained via index lookups or by element IDs.
+ - `MATCH`: The graph pattern to match, bound to the starting points in START.
+ - `WHERE`: Filtering criteria.
+ - `RETURN`: What to return.
+ - `CREATE`: Creates nodes and relationships.
+ - `DELETE`: Removes nodes, relationships and properties.
+ - `SET`: Set values to properties.
+ - `FOREACH`: Performs updating actions once per element in a list.
+ - `WITH`: Divides a query into multiple, distinct parts.
+
+##### Examples
+
+Creating Nodes
+```sql
+CREATE (n);
+0 rows available after 8 ms, consumed after another 0 ms
+Added 1 nodes
+
+CREATE (a {name : 'Andres'}) RETURN a;
++--------------------+
+| a                  |
++--------------------+
+| ({name: "Andres"}) |
++--------------------+
+1 row available after 13 ms, consumed after another 0 ms
+Added 1 nodes, Set 1 properties
+
+CREATE (n {name : 'Andres', title : 'Developer'});
+0 rows available after 13 ms, consumed after another 0 ms
+Added 1 nodes, Set 2 properties
+```
+
+Creating Relationships
+```sql
+MATCH (a {name:"Andres"})
+CREATE (a)-[r:FRIEND]->(b {name:"Jana"} )
+RETURN r;
++-----------+
+| r         |
++-----------+
+| [:FRIEND] |
++-----------+
+1 row available after 27 ms, consumed after another 1 ms
+Added 1 node, Created 1 relationship, Set 1 property
+
+MATCH (a {name:"Andres"})
+MATCH (b {name:"Jana"})
+CREATE (a)-[r:RELTYPE {name : a.name + '<->' + b.name }]->(b)
+RETURN r;
+1 row available after 18 ms, consumed after another 1 ms
+Created 1 relationship, Set 1 property
+```
+
+Creating Paths
+```sql
+CREATE p = (andres {name:'Andres'})-[:WORKS_AT]->(neo)<-[:WORKS_AT]-(michael {name:'Michael'})
+RETURN p;
++---------------------------------------------------------------------+
+| p |
++---------------------------------------------------------------------+
+| ({name: "Andres"})-[:WORKS_AT]->()<-[:WORKS_AT]-({name: "Michael"}) |
++---------------------------------------------------------------------+
+1 row available after 188 ms, consumed after another 22 ms
+Added 3 nodes, Created 2 relationships, Set 2 properties
+```
+
+Changing Properties
+```sql
+MATCH (n { name: 'Andres' })
+SET n.surname = 'Taylor'
+RETURN n
+| n |
++------------------------------------------------------------+
+| Node[0]{surname:"Taylor",name:"Andres",age:36,hungry:true} |
++------------------------------------------------------------+
+1 row
+Properties set: 1
+
+MATCH (n { name: 'Andres' })
+SET n.name = NULL RETURN n
++-----------------------------+
+| n                           |
++-----------------------------+
+| Node[0]{hungry:true,age:36} |
++-----------------------------+
+1 row
+Properties set: 1
+```
+
+Delete
+```sql
+MATCH (n { name: 'Andres' })
+DETACH DELETE n
++-------------------+
+| No data returned. |
++-------------------+
+Nodes deleted: 1
+Relationships deleted: 2
+
+MATCH (n { name: 'Andres' })-[r:KNOWS]->()
+DELETE r
++-------------------+
+| No data returned. |
++-------------------+
+Relationships deleted: 2
+```
+
+Foreach
+```sql
+MATCH p =(begin)-[*]->(END)
+WHERE begin.name = 'A' AND END.name = 'D'
+FOREACH (n IN nodes(p)| SET n.marked = TRUE )
++-------------------+
+| No data returned. |
++-------------------+
+Properties set: 4
+```
+
+##### Querying
+
+
+```sql
+MATCH (john {name: 'John'})-[:friend]->()-[:friend]->(fof)
+RETURN john.name, fof.name
++----------------------+
+| john.name | fof.name |
++----------------------+
+| "John" | "Maria"     |
+| "John" | "Steve"     |
++----------------------+
+2 rows
+```
+
+Order by
+ - We can use:
+   - multiple properties
+   - asc/desc
+```sql
+MATCH (n)
+RETURN n.name, n.age
+ORDER BY n.name
+```
+
+Count
+```sql
+MATCH (n { name: 'A' })-->(x)
+RETURN labels(n), n.age, count(*)
+
+MATCH (n { name: 'A' })-[r]->()
+RETURN type(r), count(*)
+```
+
+ - And there are many other features
+   - Other aggregation functions
+     - Count, sum, avg, max, min
+   - LIMIT n - returns only subsets of the total result
+     - SKIP n = trimmed from the top
+     - Often combined with order by
+   - Predicates ALL and ANY
+   - Functions
+     - LENGTH of a path, TYPE of a relationship, ID of node/relationship, NODES of a path, RELATIONSHIPS of a path, …
+   - Operators
+   - …
+
+> Internals
+
+#### Transaction Management
+
+ - Support for ACID properties
+ - All write operations that work with the graph must be performed in a transaction
+   - Can have nested transactions
+   - Rollback of nested transaction --> rollback of the whole transaction
+ - Required steps:
+   1. Begin a transaction
+   2. Operate on the graph performing write operations
+   3. Mark the transaction as successful or not
+   4. Finish the transaction
+      - Memory + locks are released (= necessary step)
+
+```java
+// all writes (creating, deleting and updating any data)
+// have to be performed in a transaction,
+// otherwise NotInTransactionException
+Transaction tx = graphDb.beginTx();
+try
+{
+    // updating operations go here
+    tx.success(); // transaction is committed on close
+}
+catch (Exception e)
+{
+    tx.failure(); // transaction is rolled back on close
+}
+finally
+{
+    tx.close(); // or deprecated tx.finish()
+}
+```
+
+##### Read
+
+ - Default:
+   - Read operation reads the last committed value
+   - Reads do not block or take any locks
+     - Non-repeatable reads can occur
+   - A row is retrieved twice and the values within the row differ
+between reads
+ - Higher level of isolation: read locks can be
+acquired explicitly
+
+##### Write
+
+ - All modifications performed in a transaction are kept in memory
+   - Very large updates have to be split
+ - Default locking:
+   - Adding/changing/removing a property of a node/relationship --> write lock on the node/relationship
+   - Creating/deleting a node --> write lock on the specific node
+   - Creating/deleting a relationship --> write lock on the relationship + its nodes
+ - Deadlocks:
+   - Can occur
+   - Are detected and an exception is thrown
+
+##### Delete Semantics
+ - Node/relationship is deleted --> all properties are removed
+ - Deleted node can have attached relationships
+   - They are deleted too
+ - Write operation on a node or relationship after it has been deleted (but not yet committed) --> exception
+   - It is possible to acquire a reference to a deleted relationship / node that has not yet been committed
+   - After commit, trying to acquire new / work with old reference to a deleted node / relationship --> exception
+
+#### Index
+ - Has a unique, user-specified name
+ - Indexed entities = nodes / relationships
+
+Index = associating any number of key-value pairs with any number of entities
+ - We can index a node / relationship with several keyvalue pairs that have the same key
+ - --> An old value must be deleted to set new (otherwise we have both)
+
+##### Create / Delete Index
+
+```java
+graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
+IndexManager index = graphDb.index();
+
+// check existence of an index
+boolean indexExists = index.existsForNodes("actors");
+
+// create three indexes
+Index<Node> actors = index.forNodes("actors");
+Index<Node> movies = index.forNodes("movies");
+RelationshipIndex roles = index.forRelationships("roles");
+
+// delete index
+actors.delete();
+```
+
+##### Add Nodes
+
+```java
+Node reeves = graphDb.createNode();
+reeves.setProperty("name", "Keanu Reeves");
+actors.add(reeves, "name", reeves.getProperty("name"));
+Node bellucci = graphDb.createNode();
+bellucci.setProperty("name", "Monica Bellucci");
+
+// multiple index values for a field
+actors.add(bellucci, "name", bellucci.getProperty("name"));
+actors.add(bellucci, "name", "La Bellucci");
+Node matrix = graphDb.createNode();
+matrix.setProperty("title", "The Matrix");
+matrix.setProperty("year", 1999);
+movies.add(matrix, "title", matrix.getProperty("title"));
+movies.add(matrix, "year", matrix.getProperty("year"));
+```
+
+##### Add Relationships, Remove
+```java
+Relationship role1 = reeves.createRelationshipTo(matrix, ACTS_IN);
+role1.setProperty("name", "Neo");
+roles.add(role1, "name", role1.getProperty("name"));
+
+// completely remove bellucci from actors index
+actors.remove( bellucci );
+
+// remove any "name" entry of bellucci from actors index
+actors.remove( bellucci, "name" );
+
+// remove the "name" -> "La Bellucci" entry of bellucci
+actors.remove( bellucci, "name", "La Bellucci" );
+```
+
+##### Update
+
+```java
+Node fishburn = graphDb.createNode();
+fishburn.setProperty("name", "Fishburn");
+
+// add to index
+actors.add(fishburn, "name", fishburn.getProperty("name"));
+
+// update the index entry when the property value changes
+actors.remove(fishburn, "name", fishburn.getProperty("name"));
+fishburn.setProperty("name", "Laurence Fishburn");
+actors.add(fishburn, "name", fishburn.getProperty("name"));
+```
+
+##### Search using get()
+
+```java
+// get single exact match
+IndexHits<Node> hits = actors.get("name", "Keanu Reeves");
+Node reeves = hits.getSingle();
+Relationship persephone = roles.get("name", "Persephone").getSingle();
+Node actor = persephone.getStartNode();
+Node movie = persephone.getEndNode();
+
+// iterate over all exact matches from index
+for ( Relationship role : roles.get("name", "Neo") )
+{
+    // this will give us Reeves e.g. twice
+    Node reeves = role.getStartNode();
+}
+```
+
+
+##### Search using query()
+
+```java
+for ( Node a : actors.query("name", "*e*"))
+{
+    // This will return Reeves and Bellucci
+}
+
+for (Node m : movies.query("title:*Matrix* AND year:1999"))
+{
+    // This will return "The Matrix" from 1999 only
+}
+```
+
+##### Search for Relationships
+
+```java
+// find relationships filtering on start node (exact match)
+IndexHits<Relationship> reevesAsNeoHits =
+roles.get("name", "Neo", reeves, null);
+Relationship reevesAsNeo =
+reevesAsNeoHits.iterator().next();
+reevesAsNeoHits.close();
+
+// find relationships filtering on end node (using a query)
+IndexHits<Relationship> matrixNeoHits =
+roles.query( "name", "*eo", null, theMatrix );
+Relationship matrixNeo = matrixNeoHits.iterator().next();
+matrixNeoHits.close();
+```
+
+##### Automatic Indexing
+
+ - One automatic index for nodes and one for relationships
+   - Follow property values
+   - By default off
+ - We can specify properties of nodes / edges which are automatically indexed
+   - We do not need to add them explicitly
+ - The index can be queried as any other index
+
+##### Examples
+
+Opt1 - via config
+```java
+GraphDatabaseService graphDb =new  GraphDatabaseFactory()
+    .newEmbeddedDatabaseBuilder(storeDirectory)
+    .setConfig(GraphDatabaseSettings.node_keys_indexable,"nodeProp1,nodeProp2")
+    .setConfig(GraphDatabaseSettings.relationship_keys_indexable,"relProp1,relProp2")
+    .setConfig(GraphDatabaseSettings.node_auto_indexing,"true")
+    .setConfig(GraphDatabaseSettings.relationship_auto_indexing,"true")
+    .newGraphDatabase();
+```
+
+Opt2 - add later
+```java
+// start without any configuration
+GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(storeDirectory);
+
+// get Node AutoIndexer, set nodeProp1, nodeProp2 as auto indexed
+AutoIndexer<Node> nodeAutoIndexer = graphDb.index().getNodeAutoIndexer();
+nodeAutoIndexer.startAutoIndexingProperty("nodeProp1");
+nodeAutoIndexer.startAutoIndexingProperty("nodeProp2");
+
+// get Relationship AutoIndexer, set relProp1 as auto indexed
+AutoIndexer<Relationship> relAutoIndexer = graphDb.index().getRelationshipAutoIndexer();
+relAutoIndexer.startAutoIndexingProperty("relProp1");
+
+// none of the AutoIndexers are enabled so far - do that now
+nodeAutoIndexer.setEnabled(true);
+relAutoIndexer.setEnabled(true);
+```
+
+###### Search
+
+```java
+// create the primitives
+node1 = graphDb.createNode();
+node2 = graphDb.createNode();
+rel = node1.createRelationshipTo(node2, DynamicRelationshipType.withName("DYNAMIC") );
+
+// add indexable and non-indexable properties
+node1.setProperty("nodeProp1", "nodeProp1Value");
+node2.setProperty("nodeProp2", "nodeProp2Value");
+node1.setProperty("nonIndexed", "nodeProp2NonIndexedValue");
+rel.setProperty("relProp1", "relProp1Value");
+rel.setProperty("relPropNonIndexed", "relPropValueNonIndexed");
+```
+
+```java
+// Get the Node auto index
+ReadableIndex<Node> autoNodeIndex = graphDb.index().getNodeAutoIndexer().getAutoIndex();
+
+// node1 and node2 both had auto indexed properties, get them
+assertEquals(node1, autoNodeIndex.get("nodeProp1", "nodeProp1Value").getSingle());
+assertEquals(node2, autoNodeIndex.get("nodeProp2", "nodeProp2Value").getSingle());
+
+// node2 also had a property that should be ignored.
+assertFalse(autoNodeIndex.get("nonIndexed",
+"nodeProp2NonIndexedValue").hasNext());
+```
+
+#### Data Size
+
+Since version 3.0.0 (2016) no limits in Neo4j Enterprise
+Edition
+
+ - nodes
+   - 2^35 (∼ 34 billion)
+ - relationships
+   - 2^35 (∼ 34 billion)
+ - properties
+   - 2^36 to 238 depending on property types (maximum ∼ 274 billion, always at least ∼ 68 billion)
+ - relationship types
+   - 2^15 (∼ 32 000)
+
+#### High Availability (HA)
+
+ - Provides the following features:
+   - Enables a fault-tolerant database architecture
+ - Several Neo4j slave databases can be configured to be exact replicas of a single Neo4j master database
+   - Enables a horizontally scaling read-mostlyarchitecture
+     - Enables the system to handle more read load than a single Neo4j database instance can handle
+ - Transactions are still atomic, isolated and durable, but eventually propagated to other slaves
+ - Transition from single machine to multi machine operation is simple
+   - No need to change existing applications
+   - Switch from GraphDatabaseFactory to HighlyAvailableGraphDatabaseFactory
+     - Both implement the same interface
+ - Always one master and zero or more slaves
+   - Write on master: eventually propagated to slaves
+     - All other ACID properties remain the same
+   - Write on slave: (immediate) synchronization with master
+     - Slave has to be up-to-date with master
+     - Operation must be performed on both
+ - Each database instance contains the logic needed in order to coordinate with other members
+ - On startup Neo4j HA database instance will try to connect to an existing cluster specified by configuration
+   - If the cluster exists, it becomes a slave
+   - Otherwise, it becomes a master
+ - Failure:
+   - Slave – other nodes recognize it
+   - Master – a slave is elected as a new master
+ - Recovery:
+   - Slave – synchronizes with the cluster
+   - Old master – becomes a slave
+
+#### Data on Disk
 
