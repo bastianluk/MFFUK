@@ -12,7 +12,7 @@
 - [x] NoSQL databáze sloupcové.
 - [x] NoSQL dokumentové databáze.
 - [x] Grafová data a grafové databáze.
-- [ ] Data s více modely. Multi-model databáze.
+- [x] Data s více modely. Multi-model databáze.
 
 - [ ] Další typy moderních databází. Jazyk SQL v prostředí Big Data. NewSQL databáze. Databáze polí.
 - [ ] Vyhledávací nástroje. Polystores.
@@ -3186,7 +3186,7 @@ replica:
    1. Merging the data in each SSTable data by partition key
       - Selecting the latest data for storage based on its timestamp
         - We need synchronization!
-      - Remember: SSTables are sorted  random access is not needed
+      - Remember: SSTables are sorted --> random access is not needed
    2. Evicting tombstones and removing deleted data
    3. Consolidation of SSTables into a single file
    4. Deleting old SSTable files
@@ -4700,3 +4700,381 @@ Edition
 
 #### Data on Disk
 
+ - Note: Neo4j is a schema-less database
+   - Fixed record lengths + offsets in files
+ - Several types of files to store the data
+
+![neo4j-file](notes-img/neo4j-file.png)
+
+ - Data = linked lists of (fixed size) records
+
+ - Properties
+   - Stored as a linked list of property records
+     - Key + value + reference to the next property
+
+ - Node - references
+   - The first property in its property chain
+   - The first relationship in its relationship chain
+
+ - Relationship - references
+   - The first property in its property chain
+   - The start and end node
+   - The previous and next relationship record for the start and end node respectively
+
+## Big Data V-characteristics
+
+ - Volume – scale
+ - Variety – complexity
+ - Velocity – speed
+ - …
+ - Veracity – uncertainty
+ - …
+ - Value
+ - Validity
+ - Volatility
+ - …
+
+### A Grand Challenge on Variety
+
+ - Tree data (XML, JSON)
+ - Graph data (RDF, property graphs, networks)
+ - Tabular data (CSV)
+ - Temporal and spatial data
+ - Text
+ - …
+
+> Motivation: one application to accommodate multi-model data
+
+![bd-variety](notes-img/bd-variety.png)
+
+#### Polyglot Persistence
+
+ - Idea: Use the right tool for the job
+ - If you have structured data with some differences
+   - Use a document store
+ - If you have relations between entities and want to efficiently query them
+   - Use a graph database
+ - If you manage the data structure yourself and do not need complex queries
+   - Use a key/value store
+
+Pros:
+ - Handles multi-model data
+ - Helps apps to scale well
+ - A rich experience
+
+Cons:
+ - Requires the company to hire people to integrate different databases
+ - Developers need to learn different databases
+ - How to handle crossmodel queries and transactions?
+
+OR:
+## Multi-model DB
+
+ - One unified database for multi-model data
+ - A multi-model database is designed to support multiple data models against a single, integrated backend
+ - Example of data models: document, graph, relational, key/value
+
+Three Arguments
+1. One size cannot fit all
+2. One size can fit all
+3. One size fits a bunch
+
+### One size cannot fit all
+
+M. Stonebraker and U. Cetintemel. ”One Size Fits All”: An Idea Whose Time Has Come and Gone (Abstract). In ICDE, 2005.
+> “SQL analytics, real-time decision support, and data warehouses cannot be supported in one engine.”
+
+### One size can fit all
+
+J. Dittrich, A. Jindal: Towards a One Size Fits All Database Architecture.
+CIDR 2011: 195-198
+> OctopusDB suggests a unified, one-sizefits-all data processing architecture for OLTP, OLAP, streaming systems, and scan-oriented database systems
+
+
+OctopusDB
+ - All data is collected in a central log
+   - Insert and update-operations = log-entries
+ - Based on that log, it defines several types of optional storage views
+ - Query optimization, view maintenance, index selection, as well as the store selection problems suddenly become a single problem: storage view selection
+
+### One size can fit a bunch
+
+AsterixDB: A Scalable, Open Source BDMS. PVLDB 7(14): 1905-1916 (2014)
+> Providing Hadoopbased query platforms, key/value stores and semi-structured data management
+
+AsterixDB
+ - Data model is flexible
+   - „Evolving-world“ models
+ - Open: you can store objects there that have fields (and types) your data instances happen to have at insertion time
+ - Closed: you can choose to pre-define any or all of the fields and types that objects to be stored in it will have
+
+### Multi-model Databases: One size fits multi-model data
+
+Providers
+ - arangodb
+ - orientdb
+ - oracle
+ - mongodb
+ - mariadb
+ - ...
+
+Not a new idea
+ - Can be traced to objectrelational databases (ORDBMS)
+ - ORDBMS framework allows users to plug in their domain and/or application specific data models as user-defined functions/types/indexes
+
+Gartner report for operational databases 2016
+> By 2017, all leading operational DBMSs will offer multiple data models, relational and NoSQL, in a single DBMS platform.
+
+
+Pros:
+ - Handle multi-model data
+ - One system implements fault tolerance
+ - Data consistency
+ - Unified query language for multimodel data
+
+Cons:
+ - A complex system
+ - Immature and developing
+ - Many challenges and open problems
+
+### ArangoDB
+
+ - ArangoDB is a multi-model, open-source database with flexible data models
+   - Documents, graphs, key/values
+ - Stores all data as documents
+ - Vertices and edges of graphs are documents --> allows to mix all three data models
+
+![multi-arangi-ex](notes-img/multi-arangi-ex.png)
+
+```sql
+LET CustomerIDs = (
+    FOR Customer IN Customers
+    FILTER Customer.CreditLimit > 3000
+    RETURN Customer.id)
+LET FriendIDs = (
+    FOR CustomerID IN CustomerIDs
+        FOR Friend IN 1..1 OUTBOUND CustomerID Knows
+    RETURN Friend.id)
+FOR Friend in FriendIDs
+FOR Order in 1..1 OUTBOUND Friend Customer2Order
+RETURN Order.orderlines[*].Product_no
+```
+
+### OrientDB
+
+ - Supporting graph, document, key/value and object models
+ - The relationships are managed as in graph databases with direct connections between records
+ - It supports schema-less, schema-full and schema-mixed modes
+ - Queries: SQL extended for graph traversal
+
+```sql
+SELECT expand( out("Knows").Orders.orderlines.
+Product_no )
+FROM Customers
+WHERE CreditLimit > 3000
+```
+
+### Classification of Multi-model Systems
+
+ - Basic approach: on the basis of original (or core)
+data model
+
+
+
+ - When a particular system became multi-model
+   - Original data format (model) was extended
+   - First released directly as a multi-model DBMS
+
+### Extension towards Multiple Models
+
+Types of strategies:
+1. Adoption of a completely new storage strategy suitable for the new data model(s)
+   - e.g., XML-enabled databases
+2. Extension of the original storage strategy for the purpose of the new data model(s)
+   - e.g., ArangoDB - special edge collections bear information about edges in a graph
+3. Creating of a new interface for the original storage strategy
+   - e.g., MarkLogic - stores JSON data in the same way as XML data
+4. No change in the original storage strategy
+   - Storage and processing of data formats simpler than the original one
+
+![multi-strategy](notes-img/multi-strategy.png)
+
+![multi-support](notes-img/multi-support.png)
+
+#### Relational Multi-model DBMSs
+
+ - Biggest set of multi-model databases
+   - The most popular type of databases
+   - SQL has been extended towards other data formats (e.g, SQL/XML)
+   - Simplicity and universality of the relational model
+
+![multi-rel](notes-img/multi-rel.png)
+
+Examples for Postgres
+
+#### Column Multi-model DBMSs
+
+ - Two meanings:
+   - Column-oriented (columnar, column) DBMS stores data tables as columns rather than rows
+ - Not necessarily NoSQL
+   - Column-family (wide-column) DBMS = a NoSQL database which supports tables having distinct numbers and types of columns
+ - Underlying storage strategy is arbitrary
+
+![multi-col](notes-img/multi-col.png)
+
+Examples for Cassandra
+
+`SELECT JSON * FROM myspace.users;`
+
+#### Key/Value Multi-model DBMSs
+
+ - The simplest type of NoSQL database
+   - Get / put / delete + key
+   - Often extended with more advanced features
+ - Multi-model extensions:
+   - More complex indices over the value part + new APIs (e.g., JSON, SQL, ...)
+
+![multi-kvp](notes-img/multi-kvp.png)
+
+Examples for Oracle NoSQL
+
+array of records ~ JSON/document
+
+#### Document Multi-model DBMSs
+
+ - Distinct strategies:
+   - ArangoDB: special edge collection
+   - MarkLogic: stores JSON data as XML
+
+![multi-doc](notes-img/multi-doc.png)
+
+Examples for MarkLogic - extend what they already have (store JSON as XML)
+
+#### Graph Multi-model DBMSs
+
+ - Based on an object database = native support for multiple models
+   - Element of storage = record = document / BLOB / vertex / edge
+ - Classes – define records
+ - Classes can have relationships:
+   - Referenced – stored similarly to storing pointers between two objects in memory
+   - Embedded – stored within the record that embed
+
+![multi-graph](notes-img/multi-graph.png)
+
+Examples for OrientDB - extending Vertexes or Edges
+
+### Query Languages
+
+Classification of Approaches
+1. Simple API
+   - Store, retrieve, delete data
+     - Typically key/value, but also other use cases
+   - DynamoDB – simple data access + querying over indices
+using comparison operators
+2. SQL Extensions and SQL-Like Languages
+   - Most common
+     - In most types of systems (relational, column, document, …)
+
+![multi-queries-struct](notes-img/multi-queries-struct.png)
+
+
+3. SPARQL Query Extensions
+   - IBM DB2 - SPARQL 1.0 + subset of features from SPARQL 1.1
+     - SELECT, GROUP BY, HAVING, SUM, MAX, …
+     - Probably no extension for relational data
+   - But: RDF triples are stored in table  SQL queries can be used over them too
+4. XML Query Extensions
+   - MarkLogic – JSON can be accessed using XPath
+     - Tree representation like for XML
+     - Can be called from XQuery and JavaScript
+5. Full-text Search
+   - In general quite common
+   - Riak – Solr index + operations
+     - Wildcards, proximity search, range search, Boolean operators, grouping, …
+
+
+ - Postgres - special chars
+ - Oracle - dot notation
+ - MarkLogic - use already existing infra
+
+
+### Query Processing
+ - Depends highly on the way the system was extended
+   - No change
+   - New interface
+     - e.g. MarkLogic
+   - Extension of the original storage strategy
+     - e.g. ArangoDB
+   - A completely new storage strategy
+     - e.g. Oracle native support for XML
+ - General tendencies:
+   - Exploit the existing storage strategies as much as possible
+   - Exploit the verified approaches to query optimization
+
+#### MarkLogic Multi model
+
+ - Indexes both XML and JSON data in the same way
+ - Schema-less data
+ - Universal index - optimized to allow text, structure and value searches to be combined into
+   - Word indexing
+   - Phrase indexing
+   - Relationship indexing
+   - Value indexing
+ - Other user-defined indices
+   - Range indexing
+   - Word lexicons
+   - Reverse indexing
+   - Triple index
+
+#### ArangoDB Multi model
+ - Supported models:
+   - Document - original
+   - Key/value - special type of document without complex value part
+   - Tables - special type of document with regular structure
+   - Graph - relations between documents
+ - Edge collection – two special attributes _from and _to
+ - So we still need to efficiently process queries over documents
+ - Indices
+   - Primary = hash index for document keys
+   - Edge = hash index, which stores the union of all _from and _to attributes
+ - For equality look-ups
+   - User-defined - (non-)unique hash/skiplist index, (non-)unique sparse hash/skiplist index, geo, fulltext, ...
+
+### Query Optimization Strategies
+
+ - B-tree/B+-tree index - the most
+common approach
+   - Typically in relational databases
+ - Native XML index - support of XML
+data
+   - Typically an ORDPATH-based
+approach
+ - Hashing - can be used almost
+universally
+ - ...
+ - But: still no universally acknowledged
+optimal or sub-optimal approach
+   - Approaches are closely related to the
+way the system was extended
+
+![multi-query-opt](notes-img/multi-query-opt.png)
+
+### Challanges
+
+![multi-challenges](notes-img/multi-challenges.png)
+
+## Modern Data Management Systems
+
+ - NoSQL databases
+   - Non-core – XML, object, …
+   - Core – key/value, column, document, graph
+ - Multi-model databases and polystores
+ - NewSQL databases
+ - Array databases
+ - Search engines
+   - Elasticsearch, Splunk, Solr, …
+ - …
+ - And there is also a number of specialized DBMSs
+   - Navigational, multi-value, event, content, time-series, ...
+
+### NewSQL Databases
