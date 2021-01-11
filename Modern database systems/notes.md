@@ -16,7 +16,7 @@
 
 - [x] Další typy moderních databází. Jazyk SQL v prostředí Big Data. NewSQL databáze. Databáze polí.
 - [x] Vyhledávací nástroje. Polystores.
-- [ ] Pokročilé principy Big Data managementu.
+- [x] Pokročilé principy Big Data managementu.
 
 ## Outline
 
@@ -6015,6 +6015,7 @@ Not needed for exam
 ![transactions-opt-off-lock](notes-img/transactions-opt-off-lock.png)
 
 ### Pessimistic Offline Lock
+
  - Problems of optimistic approach:
    - There might be many conflicts
    - The conflict can be detected at the end of a lengthy business transaction
@@ -6061,9 +6062,378 @@ Not needed for exam
 
 ## Performance Tuning
 
+Goals
+ - MapReduce creates a bottleneck-free way of scaling out
+ - To reduce latency
+   - Latency:
+     - Non-parallel systems: time taken to execute the entire program
+     - Parallel systems: time taken to execute the smallest atomic sub-task
+   - Strategies:
+     - Reducing the execution time of a program
+     - Choosing the most optimal algorithms for producing the output
+     - Parallelizing the execution of sub-tasks
+ - To increase throughput
+   - Throughput = the amount of input that can be manipulated to generate output within a process
+   - Non-parallel systems:
+     - Constrained by the available resources (amount of RAM, number of CPUs)
+   - Parallel systems:
+     - “No” constraints
+     - Parallelization allows for any amount of commodity hardware
 
+### Linear Scalability
+
+ - Typical horizontally scaled MapReduce-based model:
+linear scalability
+   - “One node of a cluster can process x MBs of data every second --> n nodes can process x * n amounts of data every second.”
+     - Time taken to process y amounts of data on a single node = t seconds
+     - Time taken to process y amounts of data on n nodes = t / n seconds
+ - Assumption: tasks can be parallelized into equally balanced units
+
+### Amdahl’s Law
+ - Formula for finding the maximum improvement in performance of a system when a part is improved
+   - P = the proportion of the program that is parallelized
+   - 1 – P = the proportion of the program that cannot be parallelized
+   - N = the times the parallelized part performs as compared to the nonparallelized one
+     - i.e., how many times faster it is
+       - e.g., the number of processors
+     - Tends to infinity in the limit
+ - Example: a process that runs for 5 hours (300 minutes); all but a small part of the program that takes 25 minutes to run can be parallelized
+   - Percentage of the overall program that can be parallelized: 91.6%
+   - Percentage that cannot be parallelized: 8.4%
+   - Maximum increase in speed: 1 / (1 – 0.916) = ~11.9 times faster
+     - N tends to infinity
+
+![perf-amdahl](notes-img/perf-amdahl.png)
+
+### Little’s Law
+ - Origins in economics and queuing theory (mathematics)
+ - Analyzing the load on stable systems
+   - Customer joins the queue and is served (in a finite time)
+ - “The average number of customers (L) in a stable system is the product of the average arrival rate (k) and the time each customer spends in the system (W).”
+   - Intuitive but remarkable result
+   - i.e., the relationship is not influenced by the arrival process distribution, the service distribution, the service order, or practically anything else
+ - Example: a gas station with cash-only payments over a single counter
+   - 4 customers arrive every hour
+   - Each customer spends about 15 minutes (0.25 hours) at the gas station
+   - -->There should be on average 1 customer at any point in time
+   - -->If more than 4 customers arrive at the same station, it would lead to a
+bottleneck
+
+![perf-little](notes-img/perf-little.png)
+
+### Message Cost Model
+
+ - Breaks down the cost of sending a message from one end to the other in terms of its fixed and variable costs
+   - C = cost of sending the message from one end to the other
+   - a = the upfront cost for sending the message
+   - b = the cost per byte of the message
+   - N = number of bytes of the message
+ - Example: gigabit Ethernet
+   - a is about 300 microseconds = 0.3 milliseconds
+   - b is 1 second per 125 MB
+     - Implies a transmission rate of 125 MBps.
+   - 100 messages of 10 KB => take 100 * (0.3 + 10/125) ms = 38 ms
+   - 10 messages of 100 KB => take 10 *x* (0.3 + 100/125) ms = 11 ms
+   - A way to optimize message cost is to send as big packet as possible each time
+
+![perf-msg](notes-img/perf-msg.png)
 
 ## Theory behind Graph Databases
 
+A bit of theory
+ - Data: a set of entities and their relationships
+   - e.g., social networks, travelling routes, …
+   - We need to efficiently represent graphs
+ - Basic operations: finding the neighbours of a node,
+checking if two nodes are connected by an edge,
+updating the graph structure, …
+   - We need efficient graph operations
+ - G = (V, E) is commonly modelled as
+   - set of nodes (vertices) V
+   - set of edges E
+   - n = |V|, m = |E|
+ - Which data structure should be used?
+
+The following were quickly gone over
+
+### Adjacency Matrix
+
+ - Bi-dimensional array A of n x n Boolean values
+   - Indexes of the array = node identifiers of the graph
+   - The Boolean junction Aij of the two indices indicates whether the two nodes are connected
+ - Variants:
+   - Directed graphs
+   - Weighted graphs
+   - …
+
+Pros:
+ - Adding/removing edges
+ - Checking if two nodes are connected
+
+Cons:
+ - Quadratic space with respect to n
+   - We usually have sparse graphs --> lots of 0 values
+ - Addition of nodes is expensive
+ - Retrieval of all the neighbouring nodes takes linear time with respect to n
+
+### Adjacency List
+
+ - A set of lists where each accounts for the neighbours of one node
+   - A vector of n pointers to adjacency lists
+ - Undirected graph:
+   - An edge connects nodes i and j => the list of neighbours of i contains the node j and vice versa
+ - Often compressed
+   - Exploitation of regularities in graphs, difference from other nodes, …
+
+Pros:
+ - Obtaining the neighbours of a node
+ - Cheap addition of nodes to the structure
+ - More compact representation of sparse matrices
+Cons:
+ - Checking if there is an edge between two nodes
+   - Optimization: sorted lists => logarithmic scan, but also logarithmic insertion
+
+### Incidence Matrix
+
+ - Bi-dimensional Boolean matrix of n rows and m columns
+   - A column represents an edge
+     - Nodes that are connected by a certain edge
+   - A row represents a node
+     - All edges that are connected to the node
+
+Pros:
+ - For representing hypergraphs, where one edge connects an arbitrary number of nodes
+Cons:
+ - Requires n x m bits
+
+Laplacian Matrix
+ - Bi-dimensional array of n x n integers
+   - Diagonal of the Laplacian matrix indicates the degree of the node
+   - The rest of positions are set to -1 if the two vertices are connected, 0 otherwise
+
+Pros:
+ - Allows analyzing the graph structure by means of spectral analysis
+   - Calculates the eigenvalues
+
+### Graph Traversals Single Step
+
+![graph-step](notes-img/graph-step.png)
+
+ - Single step traversals can compose complex traversals of arbitrary length
+   -  e.g., find all friends of Alberto
+   -  „Traverse to the outgoing edges of vertex i (representing Alberto), then only allow those edges with the label friend, then traverse to the incoming (i.e. head) vertices on those friend-labeled edges. Finally, of those vertices, return their name property.“
+
+![graph-composition](notes-img/graph-composition.png)
+
+### Improving Data Locality
+
+ - Idea: take into account computer architecture in the data structures to reach a good performance
+   -  The way data is laid out physically in memory determines the locality to be obtained
+   -  Spatial locality = once a certain data item has been accessed, the nearby data items are likely to be accessed in the following computations
+      - e.g., graph traversal
+ - Strategy: in graph adjacency matrix representation, exchange rows and columns to improve the cache hit ratio
+
+#### Breadth First Search Layout
+
+(BFSL)
+ - Trivial algorithm
+ - Input: sequence of vertices of a graph
+ - Output: a permutation of the vertices which obtains
+better cache performance for graph traversals
+ - BFSL algorithm:
+   1. Selects a node (at random) that is the origin of the traversal
+   2. Traverses the graph following a breadth first search algorithm, generating a list of vertex identifiers in the order they are visited
+   3. Takes the generated list and assigns the node identifiers
+sequentially
 
 
+Pros:
+- optimal when starting from the selected node
+Cons:
+- starting from other nodes
+
+#### Bandwidth of a Matrix
+
+ - Graphs <--> matrices
+ - Locality problem = minimum bandwidth problem
+   - Bandwidth of a row in a matrix = the maximum distance between nonzero elements, with the condition that one is on the left of the diagonal and the other on the right of the diagonal
+   - Bandwidth of a matrix = maximum of the bandwidth of its rows
+ - Matrices with low bandwidths are more cache friendly
+   - Non zero elements (edges) are clustered across the diagonal
+ - Bandwidth minimization problem (BMP) is NP hard
+   - For large matrices (graphs) the solutions are only approximated
+
+![graph-bandwidth](notes-img/graph-bandwidth.png)
+
+##### Cuthill-McKee (1969)
+ - Popular bandwidth minimization technique for sparse matrices
+ - Re-labels the vertices of a matrix according to a sequence, with the aim of a heuristically guided traversal
+ - Algorithm:
+    1. Node with the first identifier (where the traversal starts) is the node with the smallest degree in the whole graph
+    2. Other nodes are labeled sequentially as they are visited by BFS traversal
+       - In addition, the heuristic prefers those nodes that have the smallest degree
+
+### Graph Partitioning
+
+ - Some graphs are too large to be fully loaded into the main memory of a single computer
+   - Usage of secondary storage degrades the performance of graph applications
+   - Scalable solution distributes the graph on multiple computers
+ - We need to partition the graph reasonably
+   - Usually for particular (set of) operation(s)
+   - The shortest path, finding frequent patterns, BFS, spanning tree search, …
+
+#### One and Two Dimensional Graph Partitioning
+
+ - Aim: partitioning the graph to solve BFS more efficiently
+   - Distributed into shared-nothing parallel system
+   - Partitioning of the adjacency matrix
+ - 1D partitioning
+   - Matrix rows are randomly assigned to the P nodes (processors) in the system
+   - Each vertex and the edges emanating from it are owned by one processor
+
+![graph-part-1](notes-img/graph-part-1.png)
+
+##### BSF with 1D partitioning
+ - Input: starting node s having level 0
+ - Output: every vertex v becomes labeled with its level, denoting its distance from the starting node
+
+1. Each processor has a set of frontier vertices F
+   - At the beginning it is node s where the BFS starts
+2. The edge lists of the vertices in F are merged to form a set of neighbouring vertices N
+   - Some owned by the current processor, some by others
+3. Messages are sent to all other processors to (potentially) add these vertices to their frontier set F for the next level
+   - A processor may have marked some vertices in a previous iteration => ignores messages regarding them
+
+##### 2D partitioning
+ - Processors are logically arranged in an R x C processor mesh
+ - Adjacency matrix is divided C block columns and R x C block rows
+ - Each processor owns C blocks
+
+Other
+ - Note: 1D partitioning = 2D partitioning with C = 1 (or R = 1)
+ - Consequence: each node communicates with at most R + C nodes instead of all P nodes
+   - In step 2 a message is sent to all processors in the same row
+   - In step 3 a message is sent to all processors in the same column
+
+![graph-part-2](notes-img/graph-part-2.png)
+
+
+### Graph databases
+
+ - A graph database = a set of graphs
+ - Types of graphs:
+   - Directed-labeled graphs
+     - e.g., XML, RDF, traffic networks
+   - Undirected-labeled graphs
+     - e.g., social networks, chemical compounds
+ - Types of graph databases:
+   - Non-transactional = few numbers of very large graphs
+     - e.g., Web graph, social networks, …
+   - Transactional = large set of small graphs
+     - e.g., chemical compounds, biological pathways, linguistic trees each representing the structure of a sentence…
+
+### Transactional Graph Databases
+
+ - Sub-graph queries
+   - Searches for a specific pattern in the graph database
+   - A small graph or a graph, where some parts are uncertain
+     - e.g., vertices with wildcard labels
+   - More general type: sub-graph isomorphism
+ - Super-graph queries
+   - Searches for the graph database members of which their whole structures are contained in the input query
+ - Similarity (approximate matching) queries
+   - Finds graphs which are similar, but not necessarily isomorphic to a given query graph
+   - Key question: how to measure the similarity
+
+![graph-q-1](notes-img/graph-q-1.png)
+
+![graph-q-2](notes-img/graph-q-2.png)
+
+#### Sub-graph Query Processing
+
+##### Non Mining-Based Graph Indexing Techniques
+
+ - Focus on indexing whole constructs of the graph database
+   - Instead of indexing only some selected features
+
+Cons:
+ - Can be less effective in their pruning (filtering) power
+   - May need to conduct expensive structure comparisons in the filtering process
+
+Pros:
+ - Can handle graph updates with less cost
+   - Do not rely on the effectiveness of the selected features
+   - Do not need to rebuild whole indexes
+
+###### GraphGrep (2002)
+
+ - For each graph, it enumerates all paths up to a certain maximum length and records the number of occurrences of each path
+ - Path index table:
+   - Row = path
+   - Column = graph
+   - Entry in the table = number of occurrences of the path in the graph
+ - Query processing:
+1. Path index is used to find candidate graphs G1, … GN which
+   1. contain paths in the query q and
+   2. counts of such paths are beyond threshold specified in query q
+2. Each G1, … GN is examined by sub-graph isomorphism to obtain the final results
+
+Pros:
+ - The indexing process of paths with limited lengths is usually fast
+
+Cons:
+ - The size of the indexed paths could drastically increase with the size of graph database
+ - The filtering power of paths is limited
+   - Verification cost can be very high due to the large size of the candidate set
+
+###### GString (2007)
+
+ - Considers the semantics of the graph
+ - Models graph objects in the context of organic chemistry using basic structures
+   - Line = series of vertices connected end to end
+   - Cycle = series of vertices that form a closed loop
+   - Star = core vertex directly connected to several vertexes
+ - Order of identification of objects: cycles, stars, lines
+ - Graphs and queries are represented as string sequences
+   - Sub-graph search problem = subsequence string-matching domain
+   - Suffix tree-based index structure for the string representations is created
+
+![graph-gstring](notes-img/graph-gstring.png)
+
+![graph-gstring-gram](notes-img/graph-gstring-gram.png)
+
+Cons:
+ - Converting can be inefficient for large graphs
+ - Suitable for, e.g., chemical compounds but not in general
+
+##### Mining-Based Graph Indexing Techniques
+
+ - Idea: if features of query graph q do not exist in data graph G,
+then G cannot contain q as its sub-graph
+ - Graph-mining methods extract selected features (sub-structures)
+from the graph database members
+   - An inverted index is created for each feature
+ - Answering a sub-graph query q:
+   1. Identifying the set of features of q
+   2. Using the inverted index to retrieve all graphs that contain the same features of q
+
+Cons:
+ - Effectiveness depends on the quality of mining techniques to effectively identify the set of features
+ - Quality of the selected features may degrade over time (after lots of insertions and deletions)
+   - Re-identification and re-indexing must be done
+
+###### TreePI (2007)
+
+ - Indexing unit = frequent sub-trees
+ - Observations:
+   - Tree data structures are more complex patterns than paths
+   - Trees can preserve almost equivalent amount of structural
+information as arbitrary sub-graph patterns
+   - The frequent sub-tree mining process is easier than general frequent
+sub-graph mining process.
+ - Mining:
+   1. Mining a frequent tree in the graph database
+   2. Selecting a set of frequent trees as index patterns
+ - Query processing: given a query graph q
+   1. Frequent sub-trees in q are identified and matched with the set of indexing features to obtain a candidate set
+   2. Candidates are verified
