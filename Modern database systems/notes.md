@@ -14,8 +14,8 @@
 - [x] Grafová data a grafové databáze.
 - [x] Data s více modely. Multi-model databáze.
 
-- [ ] Další typy moderních databází. Jazyk SQL v prostředí Big Data. NewSQL databáze. Databáze polí.
-- [ ] Vyhledávací nástroje. Polystores.
+- [x] Další typy moderních databází. Jazyk SQL v prostředí Big Data. NewSQL databáze. Databáze polí.
+- [x] Vyhledávací nástroje. Polystores.
 - [ ] Pokročilé principy Big Data managementu.
 
 ## Outline
@@ -5422,4 +5422,648 @@ SELECT a1.val_a, a2.val_a + 2 FROM A AS a1, A AS a2;
    - Primarily designed for searching, not editing
    - Specialized functions: full-text search, stemming, complex search expressions, ranking and grouping of search results, geospatial search, …
      - Big Data analytics
+
+Providers:
+ - elasticsearch
+ - spphinx
+ - solr
+ - splunk
+
+### Elasticsearch
+
+ - Distributed full-text search engine
+   - Scalable search solution
+ - Released in 2010
+ - Written in Java
+   - Based on Lucene library
+ - HTTP web interface
+   - JSON schema-free documents
+ - Official clients: Java, .NET (C#), PHP, Python, Apache Groovy, Ruby, …
+ - Elastic Stack = Elasticsearch +
+   - Logstash – collects, processes, and forwards events and log messages
+   - Kibana – analytics and visualization platform
+ - Can be used for all kinds of documents
+ - Near real-time search
+   - Slight latency (approx. 1 second) from the time you index (or update or delete) a document until the time it becomes searchable
+ - Index = collection of documents with similar characteristics
+   - e.g., customer data, product catalogue, …
+   - Has a name
+   - In a cluster there can be any number of indices
+ - Indices can be divided into shards
+   - Each shard can have replicas
+   - Rebalancing and routing are done automatically
+ - Each node can act as a coordinator to delegate operations to the respective shards
+
+#### Indices
+
+ - When creating an index, define the number of shards and number of replicas
+   - Note: index does not need to be defined beforehand
+   - Each shard is in itself a fully-functional and independent index
+   - Shards enable:
+ - Horizontal scaling of large volumes of data
+ - Parallelization of operations
+   - Replicas enable:
+ - High availability (partial failures)
+ - Parallelization of operations
+ - Default: 5 primary shards and 1 replica
+   - i.e., 10 shards per index
+
+#### Basic operations
+
+`GET /_cat/indices?v`
+ - Get all indices
+
+`PUT /customer?pretty`
+ - Create index “customer” (and pretty print the result, if any)
+
+`PUT /customer/_doc/1?pretty { "name": "John Doe" }`
+ - Index the given document with ID = 1
+
+`GET /customer/_doc/1?pretty`
+ - Get document with ID = 1
+
+`DELETE /customer/_doc/1?pretty`
+ - Delete document with ID = 1
+
+`DELETE /customer`
+ - Delete index “customer”
+
+##### Data modification
+
+ - ID of a document
+   - If an existing is used: the document is replaced (and re-indexed)
+   - If a different is used: a new document is stored
+ - The same one twice
+   - If none is specified: a random ID is generated
+ - Document updates
+   - No in-place updates
+   - A document is deleted and a new one is created and indexed
+
+`POST /customer/_doc/1/_update?pretty { "doc": { "name": "Jane Doe" } }`
+ - Change value of field “name” of document with ID = 1
+
+`POST /customer/_doc/1/_update?pretty { "doc": { "name": "Jane Doe", "age": 20 } }`
+ - … and add a new field
+
+`POST /customer/_doc/1/_update?pretty { "script" : "ctx._source.age += 5" }`
+ - … or use a script to specify the change
+
+##### Batch Processing
+
+`POST /customer/_doc/_bulk?pretty {"index":{"_id":"1"}} {"name": "John Doe" } {"index":{"_id":"2"}} {"name": "Jane Doe" }`
+ - Index two documents
+
+`POST /customer/_doc/_bulk?pretty {"update":{"_id":"1"}} {"doc": { "name": "John Doe becomes Jane Doe" } } {"delete":{"_id":"2"}}`
+
+ - Update the first document, delete the second document
+
+##### Search API
+
+Sample data set
+```json
+{
+    "account_number": 0,
+    "balance": 16623,
+    "firstname": "Bradshaw",
+    "lastname": "Mckenzie",
+    "age": 29,
+    "gender": "F",
+    "address": "244 Columbus Place",
+    "employer": "Euron",
+    "email": "bradshawmckenzie@euron.com",
+    "city": "Hobucken",
+    "state": "CO"
+}
+```
+
+ - Search parameters can be sent by:
+   - REST request URI
+   - REST request body
+ - More expressive
+ - More readable (JSON)?
+
+`GET /bank/_search?q=*&sort=account_number:asc&pretty`
+ - Search (_search) in the bank index,
+ - match all the documents (q=*),
+ - sort the results using the account_number field of each document in an ascending order (sort=account_number:asc)
+
+###### Results
+
+ - We will see:
+   - took – time in milliseconds to execute the search
+   - timed_out – if the search timed out or not
+   - _shards – how many shards were searched
+     - Total, successful, failed, skipped
+   - hits – search results
+     - hits.total – total number of documents matching our search criteria
+     - hits.hits – actual array of search results
+       - Default: first 10 documents
+     - hits.sort – sort key for results
+   - …
+
+
+```json
+{
+    "took" : 9,
+    "timed_out" : false,
+    "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+},
+"hits" : {
+    "total" : {
+        "value" : 1000,
+        "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+        {
+            "_index" : "holubova_bank",
+            "_type" : "_doc",
+            "_id" : "51",
+            "_score" : 1.0,
+            "_source" : {
+                "account_number" : 51,
+                "balance" : 14097,
+                "firstname" : "Burton",
+                "lastname" : "Meyers",
+                "age" : 31,
+                "gender" : "F",
+                "address" : "334 River Street",
+                "employer" : "Bezal",
+                "email" : "burtonmeyers@bezal.com",
+                "city" : "Jacksonburg",
+                "state" : "MO"
+            }
+        },
+        …
+    ]
+}
+```
+
+`GET /bank/_search { "query": { "match_all": {} }, "sort": [ { "account_number": "asc" } ] }`
+ - The same exact search using the request body method
+ - When all search results are returned, Elasticsearch does not maintain any kind of server-side resources or open cursors etc.
+   - Contrary to, e.g., traditional relational databases
+
+ - Domain specific language
+ - JSON-style
+
+```json
+GET /bank/_search
+{
+    "query": { "match_all": {} },
+    "from": 10, // starting index
+    "size": 10, // number of results
+    "_source": ["account_number", "balance"] // include to the result
+    "sort": { "balance": { "order": "desc" } }
+}
+```
+
+##### Examples
+
+Query DSL
+
+`"query": { "match": { "account_number": 20 } }`
+ - Return the account numbered 20
+
+`"query": { "match": { "address": "mill" } }`
+ - Return all accounts containing the term "mill" in the address
+
+`"query": { "match": { "address": "mill lane" } }`
+ - Return all accounts containing the term "mill" or "lane" in the address
+
+`"query": { "match_phrase": { "address": "mill lane" } }`
+ - Return all accounts containing the phrase "mill lane" in the address
+
+
+Bool queries
+
+ - Bool query allows us to compose smaller queries into bigger queries
+using Boolean logic
+
+`"query": { "bool": { "must": [ { "match": { "address": "mill" } }, { "match": { "address": "lane" } } ] } }`
+ - Return all accounts containing "mill" and "lane" in the address
+
+`"query": { "bool": { "should": [ { "match": { "address": "mill" } }, { "match": { "address": "lane" } } ] } }`
+ - Return all accounts containing "mill" or "lane" in the address
+
+
+
+ - _score field in the search results
+   - Relative measure of how well the document matches the search query
+     - The bigger, the more relevant
+     - Practical scoring function evaluates it from 0 to max_score returned for the set
+       - https://www.elastic.co/guide/en/elasticsearch/guide/current/practical-scoringfunction.html
+   - When queries filter the set, it is not evaluated
+     - Y/N depending on the filter
+
+```json
+"query": {
+    "bool": {
+        "must": { "match_all": {} },
+        "filter": {
+            "range": { "balance": { "gte": 20000, "lte": 30000 } }
+        }
+    }
+}
+```
+ - Return all accounts with balances between 20000 and 30000
+
+Aggregations
+ - Ability to group and extract statistics
+   - Like SQL GROUP BY
+ - We can execute searches returning both hits and aggregated results
+   - No round tripping
+
+```json
+GET /bank/_search {
+    "size": 0, // not show search hits
+    "aggs": {
+        "group_by_state": {
+            "terms": { "field": "state.keyword" }
+        }
+    }
+}
+```
+ - Group all the accounts by state, and returns the top 10 (default)
+states sorted by count descending (default)
+
+```json
+GET /bank/_search {
+    "size": 0,
+    "aggs": {
+        "group_by_state": {
+            "terms": { "field": "state.keyword" },
+            "aggs": {
+                "average_balance": {
+                    "avg": { "field": "balance" }
+                }
+            }
+        }
+    }
+}
+```
+ - Calculate the average account balance by state
+   - Uses nested aggregations (average_balance in group_by_state)
+
+
+### Apache Lucene
+
+ - Used by Elasticsearch, Solr, …
+ - Released 1999
+ - Written in Java
+ - High-performance, text search engine library
+ - Suppot for
+   - Ranked searching
+   - A number of query types: phrase queries, wildcard queries, proximity queries, range queries, …
+   - Fielded searching
+     - e.g. title, author, contents, …
+   - Sorting by any field
+   - Multiple-index searching with merged results
+   - Simultaneous update and searching
+   - Flexible faceting, highlighting, joins and result grouping
+
+ - Inverted index
+ - Document is the unit of search and index
+   - Does not have to be real documents, but also, e.g., database tables
+ - Document consists of one or more fields
+   - Name-value pair
+ - Searching requires an index to have already been built
+ - For searching it uses own language
+   - Matching: keyword, wildcard, proximity, range searches, …
+   - Logical operators
+   - Boosting of terms/clauses
+   - …
+
+
+## Polystores
+
+(Polyglot Persistence)
+
+### Motivation
+
+See A Grand Challenge on Variety
+
+> One application to include multi-model data
+
+### Properties
+
+ - Use the right tool for (each part of) the job…
+   - If you have structured data with some differences
+     - Use a document store
+   - If you have relations between entities and want to efficiently query them
+     - Use a graph database
+   - If you manage the data structure yourself and do not need complex queries
+     - Use a key-value store
+ - …and glue everything together
+
+Pros:
+ - Handle multi-model data
+ - Help your applications to scale well
+ - A rich experience
+
+Cons:
+ - Requires the company to hire people to integrate different databases
+ - Developers need to learn different databases
+ - It is a challenge to handle cross-model query and transaction
+
+### Types
+
+1. Loosely-coupled systems
+    - Similar to mediator-wrapper architecture
+    - Common interfaces
+    - Autonomy of local stores
+2. Tightly-coupled systems
+    - Exploit directly local interfaces
+    - Trade autonomy for erformance
+      - Materialized views, indexes
+3. Hybrid
+
+LIP vs TIP
+![poly-coupling](notes-img/poly-coupling.png)
+
+![poly-table1](notes-img/poly-table1.png)
+
+![poly-table2](notes-img/poly-table2.png)
+
+ - LAV = local as a view
+   - describes each local schema as function over global schema
+ - GAV = global as a view
+   - global schema is a set of views over local schemas
+
+### Motivation
+
+> No „one size fits all“…
+
+ - Heterogeneous data analytics: data processing frameworks (Map/Reduce, Spark, Flink), NoSQL, …
+ - Polystore idea:
+   - Package together multiple query engines
+ - Union (federation) of different specialized stores, each with distinct (native) data model, internal capabilities, language, and semantics
+   - Holy grail: platform agnostic data analytics
+ - Use the right store for (parts of) each specialized scenario
+ - Possibly rely on middleware layer to integrate data from different sources
+
+### Dimensions of Polystores
+ - Heterogeneity
+   - Different data models, query models, expressiveness, query engines
+ - Autonomy
+   - Association with the polystore, execution (support of native applications + federation), evolution of own models and schemas
+ - Transparency
+   - Location (data may even span multiple storage engines, user does not know that), transformation / migration of data
+ - Flexibility
+   - User-defined schemata and interfaces (functions), modular architecture
+ - Optimality
+   - Federated plans, data placement
+
+
+### Tightly Integrated Polystores (TIPs)
+Providers:
+ - Polybase,
+ - HadoopDB,
+ - Estocada
+
+Characteristics
+ - Trade autonomy for efficient querying of diverse kinds of data for Big Data analytics
+   - Data stores can only be accessed through the multi-store system
+   - Less uncertainty with extended control over the various stores
+   - Stores accessed directly through their local language
+ - Efficient / adaptive data movement across data stores
+ - Number of data stores that can be interfaced is typically limited
+ - Extensibility
+   - Good to have…
+
+> Arguably the closest we can get to multi-model DBs, while having several native stores “under the hood”.
+
+#### Comparison of MMDs and TIPs
+
+ - Common features:
+   - Support for multiple data models
+   - Global query processing
+   - Cloud support
+
+![poly-compare](notes-img/poly-compare.png)
+
+### Loosely Integrated Polystores
+
+Providers:
+ - BigIntegrator,
+ - Forward/SQL++,
+ - QoX
+ - For all above:
+   - Data mediation SQL engines: Apache Drill, Spark SQL, SQL++
+     - Allow different sources to be plugged in by wrappers, then queried via SQL
+
+Characteristics
+ - Reminiscent of multi-database systems
+ - Follow mediator-wrapper architecture (one wrapper per datastore)
+   - One global common language
+ - General approach
+   - Split a query into subqueries
+ - Per datastore, still in common language
+   - Send to wrapper
+   - Translate
+   - Get results
+   - Translate to common format
+   - Integrate
+
+### Hybrid Polystores
+
+Providers:
+ - BigDawg,
+ - SparkSQL,
+ - CloudMdsQL
+
+Characteristics
+ - Rely on tight coupling for some stores, loose coupling for others
+ - Following the mediator-wrapper architecture
+   - But the query processor can also directly access some data stores
+
+![poly-hyb](notes-img/poly-hyb.png)
+
+### BigDAWG
+
+ - A collection of data stores accessed with a single query language
+ - Key abstraction: island of information
+   - Data model + operations + storage engine(s)
+   - Cross-island queries
+ - Relies on a variety of data islands
+   - Relational, array, NoSQL, streaming, …
+   - Currently: PostgreSQL, SciDB, Accumulo
+ - No common data model, query language / processor
+   - Each island has its own
+ - Shim connects an island to one or more storage engines
+   - Maps queries from island language to the native query language of a particular storage engine (or engines)
+ - Cast = operators for moving datasets between islands
+   - Processing in the storage engine best suited to the features of the data
+
+![poly-dawg](notes-img/poly-dawg.png)
+
+ - At its core middleware that supports a common API to a collection of storage engines
+ - Key elements:
+   - Optimizer: parses the input query and creates a set of viable query plan trees with possible engines for each subquery
+   - Monitor: uses performance data from prior queries to determine the query plan tree with the best engine for each subquery
+   - Executor: figures out how to best join the collections of objects and then executes the query
+   - Migrator: moves data from engine to engine when the plan calls for such data motion
+
+![poly-dawg-flow](notes-img/poly-dawg-flow.png)
+
+### Historical perspective
+
+ - Multi-database systems (federated systems, data integration systems)
+   - Mediator-wrapper architecture, declarative SQL-like language, single unified global schema
+   - Key principle: query is sent to store that owns the data
+   - Focus on data integration
+ - Reference federated databases: Garlic, Tsimmis
+   - Even multi-model settings, but the non-relational stores did not support their own declarative query language
+     - Being wrapped to provide an SQL API
+   - No cross-model rewriting
+ - Polystores
+   - Higher expectations in terms of data heterogeneity
+   - Allow the direct exploitation of the datasets in their native language (but not only)
+
+### Another Classification
+
+ - Federated systems:
+   - Collection of homogeneous data stores
+   - Features a single standard query interface
+ - Polyglot systems:
+   - Collection of homogeneous data stores
+   - Exposes multiple query interfaces to the users
+ - Multistore systems:
+   - Data across heterogeneous data stores
+   - Supporting a single query interface
+ - Polystore systems:
+   - Query processing across heterogeneous data stores
+   - Supports multiple query interfaces
+
+### Open Problems and Challenges
+ - Many challenges: query optimization, query execution, extensibility, interfaces, cross-platform transactions, selftuning, data placement / migration, benchmarking, …
+   - High degree of uncertainty
+ - Transparency: do not require users to specify where to get / store data, where to run queries / subqueries
+   - Explain and allow user hints
+ - More than ever need for automation, adaptiveness, learning on the fly
+
+## CAP Theorem
+
+(Recapitulation)
+
+ - **C**onsistency
+   - Consistent reads and writes
+   - Concurrent operations see the same valid and consistent data state
+ - **A**vailability
+   - The system is available to serve at the time when it is needed
+   - Node failures do not prevent survivors from continuing to operate
+ - **P**artition tolerance
+   - The ability of a system to continue to service in the event a few of its cluster members become unavailable
+ - Theorem: In systems that are distributed or scaled out it is impossible to achieve all three.
+   - First appeared in 1998, published in 1999
+   - Established as theorem and proved in: Lynch, Nancy and Gilbert, Seth. Brewer’s conjecture and the feasibility of consistent, available, partition-tolerant web services. ACM SIGACT News, volume 33 issue 2, 2002, pages 51-59.
+
+ - Consistency + Availability
+   - Single-site databases, cluster databases, …
+ - Consistency + Partition Tolerance
+   - Distributed databases, distributed locking, majority protocols, …
+ - Availability + Partition Tolerance
+   - Web caching, DNS
+
+ - Examples:
+   - RDBMS: CA
+   - Apache Cassandra (column): AP
+   - Google BigTable (column): CA
+   - Apache CouchDB (document): AP
+
+### Proof
+
+Not needed for exam
+
+## Managing Transactions
+
+ - Critics of NoSQL databases focus on the lack of support for transactions
+ - Business transaction
+   - e.g., browsing a product catalogue, choosing a bottle of Talisker at a good price, filling in credit card information, and confirming the order
+ - System transaction
+   - At the end of the interaction with the user
+   - Locks are only held for a short period of time
+ - Business transaction = a series of system transactions
+
+ - Offline concurrency involves manipulating data for a business transaction that spans multiple data requests
+   - Having a system transaction open for the whole business transaction is not usually possible
+     - Long system transactions are not supported
+ - Problems:
+   - Overwriting uncommitted data
+     - More transactions select the same row and then update the row based on the value originally selected unaware of the other
+   - Reading uncommitted data
+     - A transaction accesses the same row several times and reads different data each time
+ - i.e., calculations and decisions may be made based on data that is changed
+   - e.g., price list may be updated, someone may update the customer’s address, changing the shipping charges, …
+
+![transactions-1](notes-img/transactions-1.png)
+
+### Optimistic Offline Lock
+
+ - Assumes that the chance of conflict is low
+ - A form of conditional update
+   - Ensures that changes about to be committed by one session do not conflict with the changes of another session
+ - Pre-commit validation
+   1. Client operation re-reads any information that the business transaction relies on
+   2. It checks that it has not changed since it was originally read and displayed to the user
+ - Obtaining a lock indicating that it is okay to go ahead with the changes to the record data
+
+![transactions-opt-off-lock](notes-img/transactions-opt-off-lock.png)
+
+### Pessimistic Offline Lock
+ - Problems of optimistic approach:
+   - There might be many conflicts
+   - The conflict can be detected at the end of a lengthy business transaction
+ - Pessimistic solution: allows only one business transaction at a time to access data
+ - Forces a business transaction to acquire a lock on each piece of data before it starts to use it
+   - Once a business transaction begins, it surely completes
+ - Lock manager
+   - Simple, single (for all business transactions), centralized (or based on the database in the distributed system)
+ - Standard issue: deadlock
+   - Timeout for an application
+ - Automatically rolled-back after a period of time of non responding
+   - Timestamp attribute for a lock
+ - Automatically released after a period of time
+
+![transactions-pes-off-lock](notes-img/transactions-pes-off-lock.png)
+
+### Coarse-grained Lock
+
+ - When objects are edited as a group
+   - Logically related objects
+   - e.g., a customer and its set of addresses
+ - We want to lock any one of them
+ - A separate lock for individual objects presents a number of challenges
+   - We need to find them all in order to lock them
+ - Gets tricky as we get more locking groups
+ - When the groups get complicated
+   - Nested groups
+ - Idea: a single lock that covers many objects
+   - A sophisticated lock manager
+
+![transactions-coarse-lock](notes-img/transactions-coarse-lock.png)
+
+### Implicit lock
+
+ - Problem: forgetting to write a single line of code that acquires a lock --> entire offline locking scheme is useless
+   - Failing to retrieve a read lock --> other transactions use write locks --> not getting up-to-date session data
+   - Failing to use a version count --> unknowingly writing over someone's changes
+   - Not releasing locks --> bring productivity to a halt
+ - Fact: If an item might be locked anywhere it must be locked everywhere
+ - Idea: locks are automatically acquired
+   - Not explicitly by developers but implicitly by the application
+
+![transactions-implicit-lock](notes-img/transactions-implicit-lock.png)
+
+## Performance Tuning
+
+
+
+## Theory behind Graph Databases
+
+
 
