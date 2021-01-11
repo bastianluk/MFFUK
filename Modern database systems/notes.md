@@ -1,23 +1,5 @@
 # Modern database systems
 
-
-## Watched
-
-- [x] Relační model dat, relační databáze. Historický přehled alternativních datových modelů a databázových systémů. Úvod do problematiky Big Data (historie, vlastnosti, datové modely).
-- [x] Přehled a klasifikace databázových systémů a technologií pro efektivní správu a zpracování Big Data.
-- [x] Distribuované souborové systémy. MapReduce – princip, vlastnosti, kritika, alternativní přístupy.
-- [x] Základní principy Big Data managementu. Apache Spark.
-- [x] NoSQL databáze klíč/hodnota.
-
-- [x] NoSQL databáze sloupcové.
-- [x] NoSQL dokumentové databáze.
-- [x] Grafová data a grafové databáze.
-- [x] Data s více modely. Multi-model databáze.
-
-- [x] Další typy moderních databází. Jazyk SQL v prostředí Big Data. NewSQL databáze. Databáze polí.
-- [x] Vyhledávací nástroje. Polystores.
-- [x] Pokročilé principy Big Data managementu.
-
 ## Outline
 
 - Intro
@@ -40,13 +22,13 @@
 1. Conceptual
    - Highest level of abstraction
    - Modelling of real-world objects and relationships
-   - e.g., ER, UML, …
+     - e.g., ER, UML, …
 2. Logical
    - Machine interpretable data structures for storing the modelled data
-   - e.g., object, relational, object-relational, XML, graph, …
+     - e.g., object, relational, object-relational, XML, graph, …
 3. Physical
    - How logical database structures are implemented in a specific technical environment
-   - e.g., data files, index structures, …
+     - e.g., data files, index structures, …
 
 ### Relational model
 
@@ -56,14 +38,12 @@ Advantages:
  - Simplicity
    - of the model
    - of the respective query language
- - After so many years mature and verified database management
-systems (DBMSs)
+ - After so many years mature and verified database management systems (DBMSs)
  - Strong mathematical background
  - …
 
 Basic idea:
- - Storing of object and their mutual associations in tables
-(relations)
+ - Storing of object and their mutual associations in tables (relations)
    - A relation R from X to Y is a subset of the Cartesian product X × Y.
  - Row in a table (member of relation) = object/association
  - Column (attribute) = attribute of an object/association
@@ -111,8 +91,7 @@ techniques
  - basically a graph
 
 Idea: data records connected through binary relationships
- - Data processing: navigational primitives according to which records are
-accessed and updated one at a time
+ - Data processing: navigational primitives according to which records are accessed and updated one at a time
    - Relational query languages: set orientation
 
 ### Relational model
@@ -124,12 +103,9 @@ accessed and updated one at a time
  - New application domains have appeared
    - e.g., GIS
    - Complex data types not supported by the relational model
- - Normalizing data into table form affects performance for
-the retrieval of large, complex, and hierarchically
-structured data
+ - Normalizing data into table form affects performance for the retrieval of large, complex, and hierarchically structured data
    - Numerous joins
- - Object-oriented programming languages (OOPLs) have
-appeared
+ - Object-oriented programming languages (OOPLs) have appeared
    - Defined the concept of user-defined classes
 
 #### Object model and object databases
@@ -164,9 +140,7 @@ company
    - HQ in Stanford, Connecticut, USA
      - /> 5,300 employees
      - /> 12,400 client organizations
-   - Provides: competitive analysis reports, industry
-overviews, market trend data, product evaluation
-reports, …
+   - Provides: competitive analysis reports, industry overviews, market trend data, product evaluation reports, …
 
 
 Characteristics:
@@ -193,8 +167,7 @@ Characteristics:
  - OLAP: Online Analytical Processing (Data Warehousing)
    - Answer multi-dimensional analytical queries
    - Financial/marketing reporting, budgeting, forecasting, …
- - RTAP: Real-Time Analytic Processing (Big Data
-Architecture & Technology)
+ - RTAP: Real-Time Analytic Processing (Big Data Architecture & Technology)
    - Data gathered & processed in a real-time
      - Streaming fashion
    - Real-time data queried and presented in an online fashion
@@ -217,8 +190,7 @@ Architecture & Technology)
 
 ### Relational Database Management Systems (RDMBSs)
 
-- Predominant technology for storing structured
-data
+- Predominant technology for storing structured data
    - Web and business applications
  - Relational calculus, SQL
 
@@ -248,22 +220,17 @@ Characteristics:
 #### Relational databases are not going away
  - Compelling arguments for most projects
    - Familiarity, stability, feature set, and available support
- - We should see relational databases as one
-option for data storage
-   - Polyglot persistence – using different data stores in
-different circumstances
+ - We should see relational databases as one option for data storage
+   - Polyglot persistence – using different data stores in different circumstances
    - Search for optimal storage for a particular application
      - Multi-model databases
 
 #### Motivation for NoSQL Databases
  - Huge amounts of data are now handled in realtime
- - Both data and use cases are getting more and
-more dynamic
- - Social networks (relying on graph data) have
-gained impressive momentum
+ - Both data and use cases are getting more and more dynamic
+ - Social networks (relying on graph data) have gained impressive momentum
    - Special type of NoSQL databases: graph databases
- - Full-text has always been treated shabbily by
-RDBMS
+ - Full-text has always been treated shabbily by RDBMS
 
 #### Example
 
@@ -281,24 +248,17 @@ Every 60 seconds
 #### Advantages
 
 1. Elastic scaling
- - “Classical” database administrators scale up – buy
-bigger servers as database load increases
- - Scaling out – distributing the database across multiple
-hosts as load increases
+ - “Classical” database administrators scale up – buy bigger servers as database load increases
+ - Scaling out – distributing the database across multiple hosts as load increases
 2. Big Data
- - Volumes of data that are being stored have increased
-massively
- - Opens new dimensions that cannot be handled with
-RDBMS
+ - Volumes of data that are being stored have increased massively
+ - Opens new dimensions that cannot be handled with RDBMS
 3. Goodbye DBAs (see you later?)
- - Automatic repair, distribution, tuning, … vs. expensive,
-highly trained DBAs of RDBMSs
+ - Automatic repair, distribution, tuning, … vs. expensive, highly trained DBAs of RDBMSs
 4. Economics
- - Based on cheap commodity servers --> less costs per
-transaction/second
+ - Based on cheap commodity servers --> less costs per transaction/second
 5. Flexible Data Models
- - Non-existing/relaxed data schema --> structural changes
-cause no overhead
+ - Non-existing/relaxed data schema --> structural changes cause no overhead
 
 #### Challanges
 
@@ -332,16 +292,14 @@ Over time less and less critical - they are being solved
 
  - "inlined data" - duplicates data, but no need for a join, snapshots the data
 
- - Data model = the model by which the database
-organizes data
+ - Data model = the model by which the database organizes data
  - Each NoSQL solution has a different model
    - Key-value, document, column-family, graph
    - First three orient on aggregates
  - Aggregate
    - A data unit with a complex structure
      - Not just a set of tuples like in RDBMS
-   - Domain-Driven Design: “an aggregate is a collection
-of related objects that we wish to treat as a unit”
+   - Domain-Driven Design: “an aggregate is a collection of related objects that we wish to treat as a unit”
      - A unit for data manipulation and management of consistency
 
 Aggregates – aggregate-ignorant
@@ -349,15 +307,12 @@ Aggregates – aggregate-ignorant
 
 Aggregates – aggregate-oriented
  - Aggregate orientation
-   - Aggregates give the database information about
-which bits of data will be manipulated together
+   - Aggregates give the database information about which bits of data will be manipulated together
      - Which should live on the same node
    - Helps greatly with running on a cluster
- - We need to minimize the number of nodes we need to query
-when we are gathering data
+ - We need to minimize the number of nodes we need to query when we are gathering data
  - Consequence for transactions
-   - NoSQL databases support atomic manipulation of a
-single aggregate at a time
+   - NoSQL databases support atomic manipulation of a single aggregate at a time
 
 ##### Materialized Views
 
@@ -365,8 +320,7 @@ single aggregate at a time
  - Strategies:
    - Update materialized view when we update the base data
      - For more frequent reads of the view than writes
-   - Run batch jobs to update the materialized views at regular
-intervals
+   - Run batch jobs to update the materialized views at regular intervals
 
 ##### Schemalessness
 
@@ -382,25 +336,19 @@ about the project
 
  - Association rule learning – discovering interesting relationships, i.e., “association rules,” among variables in large databases
    - e.g., market basket analysis
- - Classification – to identify the categories in which new data points
-belong, based on a training set containing data points that have
-already been categorized
+ - Classification – to identify the categories in which new data points belong, based on a training set containing data points that have already been categorized
    - Supervised learning
    - e.g., buying decisions
- - Cluster analysis – classifying objects that split a diverse group into
-smaller groups of similar objects
+ - Cluster analysis – classifying objects that split a diverse group into smaller groups of similar objects
    - Unsupervised learning
  - Data fusion and data integration
  - Signal processing
- - Crowdsourcing - collecting data submitted by a large group of
-people or community
+ - Crowdsourcing - collecting data submitted by a large group of people or community
  - Data mining - extract patterns from large datasets
-   - Involves association rule learning, cluster analysis, classification,
-regression, …
+   - Involves association rule learning, cluster analysis, classification, regression, …
  - Time series analysis and forecasting
    - e.g., hourly value of a stock market index
- - Sentiment analysis - identifying the feature/aspect/product about
-which a sentiment is being expressed,
+ - Sentiment analysis - identifying the feature/aspect/product about which a sentiment is being expressed,
    - Determining the type (i.e., positive, negative, or neutral)
    - Determining the degree and strength of the sentiment
  - Visualization, ...
@@ -408,8 +356,7 @@ which a sentiment is being expressed,
 ### Cloud computing
 
  - Way of creating SW
- - Idea: Providing shared IT technologies (HW/SW) and/or
-data to computers and other devices on demand
+ - Idea: Providing shared IT technologies (HW/SW) and/or data to computers and other devices on demand
    - Software as a Service (SaaS)
      - For end-users
    - Platform as a Service (PaaS)
@@ -419,11 +366,9 @@ data to computers and other devices on demand
  - Users pay for the usage (rent)
    - Time of usage, size of the data, …
  - Types
-   - Private – for internal
-usage of a company
+   - Private – for internal usage of a company
    - Public – for anyone
-   - Community – for a
-selected community
+   - Community – for a selected community
      - Set of customers
    - … and their
 combinations
@@ -438,17 +383,14 @@ Providers
  - Users do not have to manage the technologies
    - Buy, install, upgrade, maintain, …
  - Thanks to the Internet can be used anywhere
- - Service provider can provide distinct solutions for
-distinct requirements
+ - Service provider can provide distinct solutions for distinct requirements
    - Within the respective capabilities
- - Data stored at server(s) of the cloud can be easily
-shared
+ - Data stored at server(s) of the cloud can be easily shared
 
 #### Disadvantages
 
  - We store our private data on a public cloud
-   - Theoretically vulnerable (but the protection techniques are
-still being improved)
+   - Theoretically vulnerable (but the protection techniques are  still being improved)
  - Vendor lock-in
    - Proprietary technologies and solutions
  - High prices
@@ -492,10 +434,8 @@ Types:
 
 Basic characteristics
  - The simplest NoSQL data stores
- - A simple hash table (map), primarily used when all
-access to the database is via primary key
- - A table in RDBMS with two columns, such as ID and
-NAME
+ - A simple hash table (map), primarily used when all access to the database is via primary key
+ - A table in RDBMS with two columns, such as ID and NAME
    - ID column being the key
    - NAME column storing the value
      - A BLOB that the data store just stores
@@ -548,12 +488,9 @@ operations
 (“columnar” or “column-oriented”)
 
 Basic Characteristics
- - Column families = rows that have many columns
-associated with a row key
- - Column families are groups of related data that is often
-accessed together
-   - e.g., for a customer we access all profile information at the same
-time, but not orders
+ - Column families = rows that have many columns associated with a row key
+ - Column families are groups of related data that is often accessed together
+   - e.g., for a customer we access all profile information at the same time, but not orders
 
 Providers:
  - Cassandra
@@ -635,11 +572,9 @@ Query language which is expressed via JSON
  - Event Logging
    - Many different applications want to log events
      - Type of data being captured keeps changing
-   - Events can be sharded (i.e. divided) by the name of the application or type
-of event
+   - Events can be sharded (i.e. divided) by the name of the application or type of event
  - Content Management Systems, Blogging Platforms
-   - Managing user comments, user registrations, profiles, web-facing
-documents, …
+   - Managing user comments, user registrations, profiles, web-facing documents, …
  - Web Analytics or Real-Time Analytics
    - Parts of the document can be updated
    - New metrics can be easily added without schema changes
@@ -727,9 +662,7 @@ Node martin = nodeIndex.get("name", "Martin").getSingle();
 allRelationships = martin.getRelationships();
 ```
 
- - We are interested in determining if there are
-multiple paths, finding all of the paths, the
-shortest path, …
+ - We are interested in determining if there are multiple paths, finding all of the paths, the shortest path, …
 
 ```java
 Node barbara = nodeIndex.get("name", "Barbara").getSingle();
@@ -770,8 +703,7 @@ Aggregates and NoSQL databases
  - Key-value database
    - Aggregate = some big blob of mostly meaningless bits
      - But we can store anything
-   - We can only access an aggregate by lookup based on
-its key
+   - We can only access an aggregate by lookup based on its key
  - Document database
    - Enables to see the structure in an aggregate
      - But we are limited by the structure when storing (similarity)
@@ -816,14 +748,10 @@ Distributed filesystem
 ### Related projects
 
  - Avro – a data serialization system
- - **Cassandra** – a scalable multi-master database with no single points
-of failure
- - Chukwa – a data collection system for managing large distributed
-systems
- - **HBase** – a scalable, distributed column-family database that
-supports structured data storage for large tables
- - **Hive** – data warehouse infrastructure that provides data
-summarization and ad hoc querying
+ - **Cassandra** – a scalable multi-master database with no single points of failure
+ - Chukwa – a data collection system for managing large distributed systems
+ - **HBase** – a scalable, distributed column-family database that supports structured data storage for large tables
+ - **Hive** – data warehouse infrastructure that provides data summarization and ad hoc querying
  - Mahout – scalable machine learning and data mining library
  - Pig – high-level data-flow language and execution framework for
 parallel computation
@@ -857,8 +785,7 @@ applications
    -  Batch processing rather than interactive user access
  - Large data sets and files
  - Write-once / read-many
-   -  A file once created, written and closed does not need to be
-changed
+   -  A file once created, written and closed does not need to be changed
      - Or not often
    -  This assumption simplifies coherency
  - Optimal applications for this model: MapReduce, webcrawlers, …
@@ -870,13 +797,10 @@ NameNode, DataNodes
  - HDFS exposes file system namespace
  - File is internally split into one or more blocks
    - Typical block size is 64MB (or 128 MB)
- - NameNode = master server that manages the file
-system namespace + regulates access to files by clients
+ - NameNode = master server that manages the file system namespace + regulates access to files by clients
    - Opening/closing/renaming files and directories
    - Determines mapping of blocks to DataNodes
- - DataNode = serves read/write requests from clients +
-performs block creation/deletion and replication upon
-instructions from NameNode
+ - DataNode = serves read/write requests from clients + performs block creation/deletion and replication upon instructions from NameNode
    - Usually one per node in a cluster
    - Manages storage attached to the node that it runs on
 
@@ -887,10 +811,8 @@ instructions from NameNode
    - Directories and files
  - Create, remove, move, rename, ...
  - NameNode maintains the file system
-   - Any meta information changes to the file system are
-recorded by the NameNode
- - An application can specify the number of replicas
-of the file needed
+   - Any meta information changes to the file system are recorded by the NameNode
+ - An application can specify the number of replicas of the file needed
    - Replication factor of the file
    - The information is stored in the NameNode
 
@@ -907,15 +829,13 @@ of the file needed
 
 ##### Replica Placement
 
- - Placement of the replicas is critical to reliability and
-performance
+ - Placement of the replicas is critical to reliability and performance
  - **Rack-aware** replica placement = to take a node's physical location into account while scheduling tasks and allocating storage
    - Needs lots of tuning and experience
  - Idea:
    - Nodes are divided into racks
    - Communication between racks through switches
-   - Network bandwidth between machines on the same rack is
-greater than those in different racks
+   - Network bandwidth between machines on the same rack is greater than those in different racks
  - NameNode determines the rack id for each DataNode
 
  - First idea: replicas should be placed on different racks
@@ -970,33 +890,24 @@ Startup
 
 #### Failures
 
- - Primary objective: to store data reliably in
-the presence of failures
+ - Primary objective: to store data reliably in the presence of failures
  - Three common failures:
    - NameNode failure
    - DataNode failure
    - Network partition
 
- - Network partition can cause a subset of DataNodes to
-lose connectivity with NameNode
-   -  NameNode detects this condition by the absence of a Heartbeat
-message
-   -  NameNode marks DataNodes without HearBeat and does not
-send any IO requests to them
-   -  Data registered to the failed DataNode is not available to the
-HDFS
- - The death of a DataNode may cause replication factor of
-some of the blocks to fall below their specified value →
-re-replication
-   -  Also happens when replica is corrupted, hard disk fails,
-replication factor is increased, …
+ - Network partition can cause a subset of DataNodes to lose connectivity with NameNode
+   -  NameNode detects this condition by the absence of a Heartbeat message
+   -  NameNode marks DataNodes without HearBeat and does not send any IO requests to them
+   -  Data registered to the failed DataNode is not available to the HDFS
+ - The death of a DataNode may cause replication factor of some of the blocks to fall below their specified value → re-replication
+   -  Also happens when replica is corrupted, hard disk fails, replication factor is increased, …
 
 #### API
 
  - Java API for application to use
    - Python, C language access available
- - HTTP browser can be used to browse the files of a
-HDFS instance
+ - HTTP browser can be used to browse the files of a HDFS instance
  - Command line interface called the FS shell
    - Lets the user interact with data in the HDFS
    - The syntax of the commands is similar to c
@@ -1064,8 +975,7 @@ Map
  - (k1,v1) → list(k2,v2)
 
 Reduce
- - Input: an intermediate key and a set of all values for
-that key
+ - Input: an intermediate key and a set of all values for that key
  - Output: a possibly smaller set of values
    - The same domain
  - (k2,list(v2)) → (k2,possibly smaller list(v2))
