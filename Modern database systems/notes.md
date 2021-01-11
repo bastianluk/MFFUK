@@ -5077,4 +5077,349 @@ way the system was extended
  - And there is also a number of specialized DBMSs
    - Navigational, multi-value, event, content, time-series, ...
 
-### NewSQL Databases
+## NewSQL Databases
+
+ - Idea (from 2011): scalable storage + all functionality known from traditional relational databases
+   - Not just SQL access, but classical relational model, ACID properties, …
+   - Previously ScalableSQL
+
+### Approaches
+
+ 1. Distributed systems which add advantages of relational model + ACID
+     - e.g. Clustrix, ScaleArc, MemSQL, VoltDB, …
+ 2. Relational DBMSs extended towards horizontal scalability
+     - e.g. TokuDB, JustOne DB, ..
+
+ - Cloud: NewSQL as a Service
+   - Special type of a cloud service = scalable relational DBMS
+     - e.g. Amazon Relational Database Service, Microsoft Azure Database, …
+
+ - Why do we need them?
+   1. There are applications which work with relational databases + they need to solve new increase of data volumes
+      - Transformation to any NoSQL data model would be too expensive
+   2. There are application which still need strong data consistency + horizontal scalability
+ - Consequence: Again NewSQL does not mean the end of traditional SQL (relational) DBMSs
+   - An alternative approach – we need alternatives and there will occur other
+
+### VoltDB
+
+ - Based on academic DBMS H-System
+   - Developed by researchers from US top universities (including M.
+Stonebraker) + Intel
+   - Aim: relational model + ACID + horizontal scalability
+ - User perspective: classical relational DBMS
+   - CREATE / ALTER / DROP TABLE, INSERT INTO, CHECK
+constraints, SELECT (including GROUP BY), set operations, nested
+queries, stored procedures, database views, …
+ - Big Data
+   - Automatic data distribution
+     - Users can specify according to which column to distribute
+       - Customers: cities, countries, type, …
+   - Shared-nothing architecture
+     - Nodes in the cluster do not share memory, disk space, …
+     - Autonomous parts which communicate using messages
+
+#### Research
+
+ - Observation: Traditional databases spend less than 10% of their time doing actual work
+ - Most of the time they focus on:
+   1. Page Buffer Management
+      - Assigns database records to fixed-size pages, organizes their placement within pages, manages which pages are loaded into memory / are on disk, tracks dirty / clean pages as they are read and written to, …
+   2. Concurrency Management
+      - Multiple user transactions operating concurrently must not conflict and must read consistent data
+      - Database software has multiple threads of execution = data structures must be thread safe
+
+ - In-memory database
+   - Data are primarily processed in memory
+     - Durability: command log (enterprise edition) / snapshots (community edition)
+   - Eliminating disk waits
+ - All data operations in VoltDB are single-threaded
+   - Simple data structures
+   - Eliminating thread safety or concurrent access costs
+ - Distributed data processing
+   - Includes distribution of stored procedures
+     - Thanks to an analysis and pre-compilation of the data access logic in the procedures
+     - Procedures work with local part of the data in separate transactions
+       - 1 stored procedure = 1 transaction
+   - Local transactions are serialized = no conflicts
+     - No need for locks etc.
+   - Distributed data processing works in parallel
+
+#### Internals
+
+ - Replication
+   - Partitions: peer-to-peer
+   - Whole databases: peer-to-peer or master/slave
+ - Each node in the cluster contains a unique "slice" of
+the data and the data processing
+   - Data + stored procedures
+ - Processing:
+   1. When a procedure works with data on a single node (partition): no requests for other nodes
+      - They can handle other requests in parallel
+   2. Need for data from multiple nodes (partitions):
+      1. One node in the cluster becomes a coordinator
+      2. It hands out the necessary work to the other nodes
+      3. It merges the results and ends the procedure
+
+## Array databases
+
+ - Database systems specific for data represented as one- or multi-dimensional arrays
+ - Usually: We need to represent the respective values in time and/or space
+   - Biology, chemistry, physics, geology, …
+   - Complex research analyses of natural events
+     - e.g. astronomical measurements, changes of climate, satellite pictures of the Earth, oceanographic data, human genome, …
+ - Example: Each satellite picture is a 2D-array (longitude + latitude) with values informing about the particular positions
+   - Next dimensions: time when the picture was taken, characteristics of the tool taking the picture, …
+
+ - In general:
+   - Big Data of a specific type
+   - Data not suitable for flat 2D relations
+ - Some RDBMSs support arrays
+ - Too simple operations for these purposes
+   - Not efficient
+
+Providers:
+ - SciDB,
+ - Rasdaman,
+ - Oracle Spatial and Graph, …
+
+### SciDB
+
+ - Provided by
+   - Co-founder: M. Stonebraker
+ - One of the most popular representatives
+   - Wide range of functionalities
+ - Data model
+   - Multidimensional sorted array
+   - Assumption: data are not overwritten
+     - Update = creating a new version of data
+     - Aim: analyses of evolution/errors/corrections/… in time
+
+#### Language
+
+ - AFL (Array Functional Language)
+ - AQL (Array Query Language)
+   - Inspired by SQL
+   - Instead of tables we work with arrays
+ - Wider set of operations for DDL, DML
+   - Compiled into AFL
+
+```sql
+CREATE ARRAY A <x: double, err: double> [i=0:99,10,0,j=0:99,10,0];
+LOAD A FROM '../examples/A.scidb';
+```
+
+ - Each array has:
+   - At least one attribute (x, err) with a datatype (2x double)
+   - At least one dimension (i, j)
+   - Each dimension has:
+     - coordinates (0-99)
+     - size of data chunks (10 fields) and
+     - eventual overlapping (0)
+
+ - SciDB distributes the chunks of data
+   - Not too big, not too small
+   - Recommendation: 10-20 MB
+     - Depending on the datatypes
+ - Coordinates do not have to be limited (*)
+ - Overlapping is optional
+   - Suitable, e.g., for faster searching nearest neighbours
+     - The data would probably be otherwise stored on another cluster node
+
+#### Querying
+
+```sql
+// create two 1D arrays
+CREATE ARRAY A <val_a:double>[i=0:9,10,0];
+LOAD A FROM '../examples/exA.scidb';
+
+CREATE ARRAY B <val_b:double>[j=0:9,10,0];
+LOAD B FROM '../examples/exB.scidb';
+
+// print values of coordinate i from array A
+SELECT i FROM A;
+[(0),(1),(2),(3),(4),(5),(6),(7),(8),(9)]
+
+// print values of attribute val_a from array A and val_b from
+// array B
+SELECT val_a FROM A;
+[(1),(2),(3),(4),(5),(6),(7),(8),(9),(10)]
+
+SELECT val_b FROM B;
+[(101),(102),(103),(104),(105),(106),(107),(108),(109),(110)]
+
+// usage of WHERE clause + sqrt() function
+SELECT sqrt(val_b) FROM B WHERE j > 3 AND j < 7;
+[(),(),(),(),(10.247),(10.2956),(10.3441),(),(),()]
+```
+ - SELECT commands
+   - Basic operation: inner join
+     - Joined arrays must be compatible (coordinates, chunks, overlapping)
+       - Amounts and datatypes of attributes can differ
+       - Attributes are merged according to the given operation (condition)
+   - Other joins: MERGE, CROSS, CROSS_JOIN, JOIN ON (a condition), …
+   - Nested queries, aggregation (GROUP BY), sorting, …
+
+```sql
+// joining values of arrays A and B and storing to array C
+SELECT * INTO C FROM A, B;
+[(1,101),(2,102),(3,103),(4,104),(5,105),(6,106),(7,107),(8,108),(9,109),(10,110)]
+
+// joining values of arrays C and B and storing to array D
+SELECT * INTO D FROM C, B;
+[(1,101,101),(2,102,102),(3,103,103),(4,104,104),(5,105,105),(6,106,106),(7,107,107),(8,108,108),(9,109,109),(10,110,110)]
+
+// print information about array D (see attributes with the same name)
+SELECT * FROM show(D);
+[("D<val_a:double,val_b:double,val_b_2:double> [i=0:9,10,0]")]
+
+// joining the values by addition
+SELECT C.val_b + D.val_b FROM C, D;
+[(202),(204),(206),(208),(210),(212),(214),(216),(218),(220)]
+
+// self-joining of values
+SELECT a1.val_a, a2.val_a + 2 FROM A AS a1, A AS a2;
+[(1,3),(2,4),(3,5),(4,6),(5,7),(6,8),(7,9),(8,10),(9,11),(10,12)]
+```
+
+#### Structure - array
+
+ - Loosely based on n-dimensional matrices of linear algebra
+ - Each SciDB array consists of
+   - Name
+   - Ordered list of named dimensions
+ - Cell
+   - Product of an array's dimensions
+   - Record (tuple) of one or more named, typed, attributes
+ - Array's dimensions have a precedence order
+   - E.g., array B is declared with dimensions [ x, y, z ], C with the same dimensions in different order [ z, y, x ] => shape of B differs from C
+
+![scidb-struct](notes-inmg/../notes-img/scidb-struct.png)
+
+ - SciDB arrays can either be sparse or dense
+   - No internal distinction between them
+   - Users can apply every operator to sparse or dense arrays
+ - SciDB can handle:
+   - Dense data
+     - e.g., images, mathematical matrices where every cell has value
+   - Time series data
+ - Typically with gaps in the series
+   - Very sparse arrays
+     - e.g. adjacency matrices to represent graphs
+ - Handling missing information
+   - Specify a default value for an attribute or by using a missing code
+   - Similar to the concept of a SQL null value
+     - SciDB supports up to 128 codes = different kinds of missing-ness
+
+#### Operators
+
+ - Filter array data
+ - Calculate new values
+ - Combine data from multiple arrays
+ - Divide input arrays into partitions and compute various per-partition aggregates
+   - Sum of values, centroid of a set of vectors, …
+ - Compute linear algebraic results
+   - Matrix/matrix and matrix/vector multiply, array factorizations, image processing transformations, …
+ - …
+ - And they can be chained to form complex operations
+
+![scidb-example1](notes-inmg/../notes-img/scidb-example1.png)
+
+![scidb-example2](notes-inmg/../notes-img/scidb-example2.png)
+
+#### Query evaluation
+
+ - Query = series of operators
+ - SciDB figures out an efficient, parallel execution strategy
+   - Moves operators, injects new ones, replaces a particular sequence with a more efficient and logically equivalent alternative, …
+ - SciDB engine = data pump
+   - Does not materialize intermediate results
+ - Unless it is absolutely necessary
+   - Passing data from the storage layer through a sequence of operators to compute the final result
+   - Contrasts with the Map/Reduce model in Hadoop
+ - Each link in a chain of Map/Reduce operations writes back to HDFS
+
+![scidb-qeval](notes-inmg/../notes-img/scidb-qeval.png)
+
+#### Temporary Arrays
+ - Can improve performance
+   - User-defined
+ - Do not offer the transactional guarantees of persistent arrays (ACID)
+ - Are not persistent (saved to disk)
+   - In memory
+ - Become corrupted if a SciDB instance fails
+   - When a SciDB cluster restarts, all temporary arrays are marked as unavailable
+     - But not deleted; must be deleted explicitly
+ - Do not have versions
+   - Any update overwrites existing attribute values
+
+#### Array Attributes
+
+ - Store individual data values in array cells
+ - Consist of:
+   - Name
+   - Data type
+   - Nullability (optional)
+   - Default value (optional)
+     - If unspecified, the system chooses a value:
+       - If the attribute is nullable: null
+       - Otherwise:
+         - 0 for numeric types
+         - empty string "" for string type
+   - Compression type (optional): zlib or bzlib
+
+![scidb-attr](notes-inmg/../notes-img/scidb-attr.png)
+
+#### Array Dimensions
+
+ - Form the coordinate system for a SciDB array
+ - Consist of:
+   - Name
+     - If only the name is specified: SciDB leaves the chunk length unspecified, uses the default overlap of zero, and makes the dimension unbounded.
+   - Low value – dimension start value
+   - High value – dimension end value (or * for no limit)
+   - Chunk overlap (optional) – number of overlapping dimension values for adjacent chunks
+   - Chunk length (optional) – number of dimension values between consecutive chunk boundaries
+     - 1-dimensional array: maximum number of cells in each chunk
+     - n-dimensional array: maximum number of cells in each chunk is the product of the chunk length parameters of each dimension
+
+#### Clustering
+
+ - Makes sure that:
+   1. Data that are close to each other in the user-defined coordinate system are stored in the same chunk
+   2. Data are stored in the same order as in the coordinate system
+ - Different attributes are stored separately
+ - Data are split into rectilinear chunks
+   - Chunks are assigned to different SciDB instances using a hash function
+ - Data in each chunk are stored in a contiguous region
+ - Data are compressed
+ - The locations of empty cells are encoded using a special bitmask EBM
+ - Coordinate values themselves are not stored, but are recomputed when needed from the EBM
+ - Users can specify an optional overlap of chunks
+   - Data in the overlap regions are replicated in the logically adjacent chunks
+ - Overlap is maintained automatically by the database
+   - SciDB turns window queries into parallel operations that require no special programming on the part of the developer
+ - The overlap uses slightly more storage space but gives faster performance
+   - To speed up windowed queries
+
+
+![scidb-attr](notes-inmg/../notes-img/scidb-clust1.png)
+
+![scidb-attr](notes-inmg/../notes-img/scidb-clust2.png)
+
+## Search Engines
+
+ - Sometimes denoted as search engine data management systems
+ - Differences from relational DBMSs
+   - No rigid structural requirements
+     - Data can be structured, semi-structured, unstructured, …
+     - No relations, no constraints, no joins, no transactional behaviour, …
+   - Use cases: relevance-based search, full text search, synonym search, log analysis, …
+     - Not typical for databases
+   - Data can be large
+     - Distributed computing
+ - Differences from NoSQL DBMSs
+   - Primarily designed for searching, not editing
+   - Specialized functions: full-text search, stemming, complex search expressions, ranking and grouping of search results, geospatial search, …
+     - Big Data analytics
+
