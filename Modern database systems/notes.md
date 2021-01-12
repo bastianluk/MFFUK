@@ -1,23 +1,6 @@
 # Modern database systems
 
-## Outline
-
-- Intro
-- Classification
-- MapReduce
-- BigData management
-- KVP dbs
-- Column dbs
-- Document dbs
-- Graph dbs
-- Multi-model dbs
-- Other dbs types
-- Searching
-- Advanced principles
-
-## Intro
-
-### Modeling layers
+## Modeling layers
 
 1. Conceptual
    - Highest level of abstraction
@@ -29,26 +12,6 @@
 3. Physical
    - How logical database structures are implemented in a specific technical environment
      - e.g., data files, index structures, …
-
-### Relational model
-
-historically the pressumed be all end all model
-
-Advantages:
- - Simplicity
-   - of the model
-   - of the respective query language
- - After so many years mature and verified database management systems (DBMSs)
- - Strong mathematical background
- - …
-
-Basic idea:
- - Storing of object and their mutual associations in tables (relations)
-   - A relation R from X to Y is a subset of the Cartesian product X × Y.
- - Row in a table (member of relation) = object/association
- - Column (attribute) = attribute of an object/association
- - Table (relational) schema = name of the schema + list of attributes and their types
- - Schema of a relational database = set of relational schemas
 
 ### History
 
@@ -68,9 +31,6 @@ Basic idea:
    - …
    - Back to the relations
      - NewSQL
-
-
-## Models
 
 ### Hierarchical model
 
@@ -96,9 +56,30 @@ Idea: data records connected through binary relationships
 
 ### Relational model
 
+historically the pressumed be all end all model
+
+Advantages:
+ - Simplicity
+   - of the model
+   - of the respective query language
+ - After so many years mature and verified database management systems (DBMSs)
+ - Strong mathematical background
+ - …
+
+Basic idea:
+ - Storing of object and their mutual associations in tables (relations)
+   - A relation R from X to Y is a subset of the Cartesian product X × Y.
+ - Row in a table (member of relation) = object/association
+ - Column (attribute) = attribute of an object/association
+ - Table (relational) schema = name of the schema + list of attributes and their types
+ - Schema of a relational database = set of relational schemas
+
+
  - Optimal for may applications, **BUT**
 
+
  - hard to handle many relations/chains or large amount of data
+
 
  - New application domains have appeared
    - e.g., GIS
