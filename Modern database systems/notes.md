@@ -98,7 +98,7 @@ Idea: data records connected through binary relationships
 
  - Optimal for may applications, **BUT**
 
- - hard to handle many rrelationas/chains or large amount of data
+ - hard to handle many relations/chains or large amount of data
 
  - New application domains have appeared
    - e.g., GIS
