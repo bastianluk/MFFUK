@@ -5,30 +5,32 @@ class Group
     created;
     index;
 
-    constructor(members, index)
+    constructor(members)
     {
         this.members = members;
         this.count = this.members.length;
         this.created = this.members[0].created;
-        this.index = index;
+        this.index = this.members[0].index;
     }
 }
 
 function preprocessGalleryData(imgData)
 {
+    let indexedData = imgData.map(function(data, index) {
+        data.index = index;
+        return data;
+    })
+
     let done = [];
     let groups = [];
-    imgData.forEach(data =>
+    indexedData.forEach(data =>
     {
         let members = [];
         addSimilar(done, members, data, groups);
-        safeAddNewGroup(groups, members, imgData)
+        safeAddNewGroup(groups, members)
     });
 
-    groups.sort(function(a, b) {
-        let timeCompare = compareCreatedProperty(a, b);
-        return timeCompare !== 0 ? timeCompare : (a.index < b.index ? -1 : 1);
-    });
+    groups.sort(comparator);
 
     let readyGroups = [];
     let coalescedGroupMembers = [];
@@ -36,16 +38,18 @@ function preprocessGalleryData(imgData)
     {
         if (group.count > 1)
         {
-            safeAddNewGroup(readyGroups, coalescedGroupMembers, imgData);
+            safeAddNewGroup(readyGroups, coalescedGroupMembers);
             coalescedGroupMembers = [];
             readyGroups.push(group);
         }
         else
         {
-            coalescedGroupMembers = coalescedGroupMembers.concat(group.members);
+            coalescedGroupMembers.push(group.members[0]);
         }
     });
     safeAddNewGroup(readyGroups, coalescedGroupMembers, imgData);
+
+    readyGroups.sort(comparator);
 
     let groupMembers = readyGroups.map(group => group.members);
     return groupMembers;
@@ -57,50 +61,53 @@ function addSimilar(done, members, current, groups)
     {
         members.push(current);
         done.push(current);
-        current.similar.forEach(similar =>
-        {
-            if (done.includes(similar) && !members.includes(similar))
-            {
-                let index = groups.findIndex(g => g.members.includes(similar));
-                let group = groups[index];
-                members = members.concat(group.members);
-                groups.splice(index, 1);
-            }
-            else
-            {
-                addSimilar(done, members, similar, groups);
-            }
-        });
+        current.similar.forEach(similar => addSimilar(done, members, similar, groups));
     }
+    else
+    {
+        if (!members.includes(current))
+        {
+            // "late comer" - references something already grouped
+            let index = groups.findIndex(g => g.members.includes(current));
+            let existingGroup = groups[index];
+            console.log(existingGroup);
+            existingGroup.members.forEach(member => members.push(member));
+            groups.splice(index, 1);
+        }
+        else
+        {
+            // would be a cycle: is done and is in members
+        }
+    }
+}
+
+function comparator(objectA, objectB)
+{
+    let timeCompare = compareCreatedProperty(objectA, objectB)
+    return timeCompare !== 0 ? timeCompare : compareIndexProperty(objectA, objectB);
 }
 
 function compareCreatedProperty(objectA, objectB)
 {
-    let dateA = new Date(objectA.created).getTime();
-    let dateB = new Date(objectB.created).getTime();
+    let dateA = objectA.created.getTime();
+    let dateB = objectB.created.getTime();
 
     return dateA < dateB ? -1 : (dateA > dateB ? 1 : 0);
 }
 
-function safeAddNewGroup(groups, members, array)
+function compareIndexProperty(objectA, objectB)
+{
+    return objectA.index < objectB.index ? -1 : 1;
+}
+
+function safeAddNewGroup(groups, members)
 {
     if (members.length > 0)
     {
-        members.sort(function(a, b) {
-            let timeCompare = compareCreatedProperty(a, b);
-            return timeCompare !== 0 ? timeCompare : compareByPosition(a, b, array)
-        });
-        let group = new Group(members, array.indexOf(members[0]));
+        members.sort(comparator);
+        let group = new Group(members);
         groups.push(group);
     }
-}
-
-function compareByPosition(objectA, objectB, array)
-{
-    let positionA = array.indexOf(objectA);
-    let positionB = array.indexOf(objectB);
-
-    return positionA < positionB ? -1 : 1;
 }
 
 
