@@ -1,9 +1,30 @@
 <?php
 
-function safeGet(array $array, string $name, $default = null)
+function checkedBadRequest($condtion)
 {
-    if (!array_key_exists($name, $array)) {
-        return $default;
+    if (!$condition)
+    {
+        http_response_code(400);
+        exit();
     }
-    return $array[$name];
 }
+
+function checkedNotFound($condition)
+{
+    if (!$condition)
+    {
+        http_response_code(404);
+        exit();
+    }
+}
+
+function checkedRedirectOther($condition, $redirect)
+{
+    if (!$condition)
+    {
+        header( "Location: {$redirect}", true, 303 );
+        exit();
+    }
+}
+
+//function checkedAction(bool $condtion, $function, array $parameters)

@@ -12,12 +12,12 @@
 <h2>Add new item</h2>
 <form action="?page=add/index" method="post" id="newItem">
     <div class="input">
-        <label for="newItemName">Name:</label>
-        <input list="knowItems" name="newItemName" id="newItem">
+        <label for="name">Name:</label>
+        <input list="knowItems" name="name" id="name">
     </div>
     <div class="input">
-        <label for="newItemAmount">Amount:</label>
-        <input type="number" name="newItemAmount" id="newItem" min="0">
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" id="amount" min="0">
     </div>
 
     <div class="input">
