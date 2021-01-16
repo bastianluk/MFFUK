@@ -168,8 +168,6 @@ class SqlContext
         return $queryResult;
     }
 
-// $query = 'update ' . $table . 'SET' . $values . 'WHERE id = "' . $this->connection->real_escape_string($id) . '"';
-
     private function handle_error()
     {
         throw new Exception("Query error: " . $this->connection->error);

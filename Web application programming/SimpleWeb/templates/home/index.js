@@ -44,6 +44,12 @@ function makeEditable(id)
     {
         // TODO Save plus redirect
         alert("save");
+        let url = window.location.pathname;
+        console.log(url);
+        let amount = row.children[1].find('input').val();
+        let parametrizedUrl = url + "?page=edit/index&id=" + id + "&amount=" + amount;
+        let method = "POST";
+        let result = fetch(parametrizedUrl, { method });
 
         changeToViewing(tableBody);
     });
