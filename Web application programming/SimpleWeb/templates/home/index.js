@@ -32,9 +32,6 @@ function createButton(className, text, delegate)
 
 function makeEditable(id)
 {
-    // TODO
-    alert("edit");
-
     let tableBody = document.getElementById("shopping-list-body");
     changeDisplay(tableBody, "edit-button", "none");
     changeDisplay(tableBody, "delete-button", "none");
@@ -47,7 +44,8 @@ function makeEditable(id)
 
         changeToViewing(tableBody);
     });
-    let cancelButton = createButton("cancel-button", "CANCEL", function() {
+    let cancelButton = createButton("cancel-button", "CANCEL", function()
+    {
         changeToViewing(tableBody);
     });
     row.children[2].appendChild(saveButton);
@@ -55,22 +53,40 @@ function makeEditable(id)
 
     let oldValue = row.children[1].textContent;
     row.children[1].textContent = null;
+
+    let form = document.createElement("form");
+    form.classList.add("edit-form");
+
     let input = document.createElement("input");
     input.type = "number";
     input.min = 1;
     input.name = "edit-input";
     input.id = "edit-input";
     input.value = oldValue;
-    row.children[1].appendChild(input);
+
+    form.appendChild(input);
+    row.children[1].appendChild(form);
 }
 
 function changeToViewing(tableBody)
 {
     changeDisplay(tableBody, "edit-button", "block");
     changeDisplay(tableBody, "delete-button", "block");
-    removeElementsByClass(tableBody, "edit-input")
+    changeAmountElement(tableBody);
     removeElementsByClass(tableBody, "save-button");
     removeElementsByClass(tableBody, "cancel-button");
+}
+
+function changeAmountElement(tableBody)
+{
+    let forms = tableBody.getElementsByClassName("edit-form")
+    Array.from(forms).forEach(form =>
+    {
+        let parent = form.parentNode;
+        let value = form.children[0].value;
+        parent.textContent = value;
+    });
+    removeElementsByClass(tableBody, "edit-form")
 }
 
 function changeDisplay(parent, className, display)
