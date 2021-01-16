@@ -45,6 +45,40 @@ class SqlContext
         self::updateAmountInList($item, $amount);
     }
 
+
+    public function setAmount(int $id, int $amount)
+    {
+        $updateQuery = "UPDATE list SET amount = $amount WHERE id = $id";
+        $updateQueryResult = self::execute($updateQuery);
+    }
+
+    public function deleteListItemAt($id, $position)
+    {
+        $deleteQuery = "DELETE FROM list WHERE id = $id";
+        $deleteQueryResult = self::execute($updateQuery);
+
+        $updateQuery = "UPDATE list SET position = position - 1 WHERE position > $position";
+        $updateQueryResult = self::execute($updateQuery);
+    }
+
+    public function moveListItemTo(int $id, int $oldPosition, int $newPosition)
+    {
+        $updateSpecificQuery = "UPDATE list SET position = $newPosition WHERE id = $id";
+        $updateSpecificQueryResult = self::execute($updateQuery);
+
+        if ($oldPosition > $newPosition)
+        {
+            $updateQuery = "UPDATE list SET position = position + 1 WHERE id != $id AND $newPsition <= position AND position < $oldPosition";
+            $updateQueryResult = self::execute($updateQuery);
+        }
+
+        if ($oldPosition < $newPosition)
+        {
+            $updateQuery = "UPDATE list SET position = position - 1 WHERE id != $id AND $oldPsition < position AND position <= $newPosition";
+            $updateQueryResult = self::execute($updateQuery);
+        }
+    }
+
     private function findItemByName(string $name, $default = null)
     {
         $itemQuery = 'SELECT * FROM items WHERE name = "' . $this->connection->real_escape_string($name) . '"';
@@ -59,7 +93,7 @@ class SqlContext
         return $default;
     }
 
-    public function createItem(string $name) : Item
+    private function createItem(string $name) : Item
     {
         $createQuery = 'INSERT INTO items (name) VALUES ("' . $this->connection->real_escape_string($name) . '")';
         $createQueryResult = self::execute($createQuery);
@@ -126,39 +160,6 @@ class SqlContext
         }
 
         return 0;
-    }
-
-    public function setAmount(int $id, int $amount)
-    {
-        $updateQuery = "UPDATE list SET amount = $amount WHERE id = $id";
-        $updateQueryResult = self::execute($updateQuery);
-    }
-
-    public function deleteListItemAt($id, $position)
-    {
-        $deleteQuery = "DELETE FROM list WHERE id = $id";
-        $deleteQueryResult = self::execute($updateQuery);
-
-        $updateQuery = "UPDATE list SET position = position - 1 WHERE position > $position";
-        $updateQueryResult = self::execute($updateQuery);
-    }
-
-    public function moveListItemTo($id, $oldPosition, $newPosition)
-    {
-        $updateSpecificQuery = "UPDATE list SET position = $newPosition WHERE id = $id";
-        $updateSpecificQueryResult = self::execute($updateQuery);
-
-        if ($oldPosition > $newPosition)
-        {
-            $updateQuery = "UPDATE list SET position = position + 1 WHERE id != $id AND $newPsition <= position AND position < $oldPosition";
-            $updateQueryResult = self::execute($updateQuery);
-        }
-
-        if ($oldPosition < $newPosition)
-        {
-            $updateQuery = "UPDATE list SET position = position - 1 WHERE id != $id AND $oldPsition < position AND position <= $newPosition";
-            $updateQueryResult = self::execute($updateQuery);
-        }
     }
 
     private function execute(string $query)
