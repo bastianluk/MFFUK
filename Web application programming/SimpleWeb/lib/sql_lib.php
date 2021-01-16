@@ -18,31 +18,150 @@ class SqlContext
     public function getAllListItems() : array
     {
         $query = 'SELECT i.id, i.name, l.amount, l.position FROM list AS l JOIN items AS i ON l.item_id = i.id';
-        $query_result = self::execute($query);
+        $queryResult = self::execute($query);
 
+        require_once(__DIR__ . "/../entities/item.php");
         require_once(__DIR__ . "/../entities/listItem.php");
 
         $items = [];
-        while ($row = $query_result->fetch_assoc())
+        while ($row = $queryResult->fetch_assoc())
         {
-            $item = new ListItem($row['id'], $row['name'], $row['amount'], $row['position']);
-            $items[] = $item;
+            $item = new Item($row['id'], $row['name']);
+            $listItem = new ListItem($item, $row['amount'], $row['position']);
+            $items[] = $listItem;
         }
 
         return $items;
     }
 
-    public function execute(string $query)
+    public function upsertItemToList(string $name, int $amount)
     {
-        $query_result = $this->connection->query($query) or self::handle_error();
+        throw new Exception("test");
+        $item = findItemByName($name);
+        if(!isset($item))
+        {
+            $item = createItem($name);
+        }
 
-        return $query_result;
+        updateAmountInList($item, $amount);
+    }
+
+    private function findItemByName($default = null)
+    {
+        $itemQuery = 'SELECT * FROM items WHERE name = "' . $this->connection->real_escape_string($name) . '"';
+        $itemQueryResult = self::execute($itemQuery);
+
+        if ($row = $itemQueryResult->fetch_assoc())
+        {
+            $item = new Item($row['id'], $row['name']);
+            return $item;
+        }
+
+        return $default;
+    }
+
+    public function createItem(string $name) : Item
+    {
+        $createQuery = 'INSERT INTO items (name) VALUES (' . $this->connection->real_escape_string($name) . ')';
+        $createQueryResult = self::execute($createQuery);
+
+        if ($row = $createQueryResult->fetch_assoc())
+        {
+            $item = new Item($row['id'], $row['name']);
+            return $item;
+        }
+
+        return findItemByName($name);
+    }
+
+    private function updateAmountInList($item, int $amount)
+    {
+        $listItemId = findIdOfListItemIByItemId($item->id);
+        if(!isset($listItemId))
+        {
+            $listItemId = createListItemIByItemId($listItemId);
+        }
+
+        $oldAmount = getListItemAmountById($listItemId);
+        $newAmount = $oldAmount + $amount;
+        setAmount($listItemId, $newAmount);
+    }
+
+    private function getListItemAmountById($id)
+    {
+        $itemQuery = "SELECT amount FROM list WHERE id = $id";
+        $itemQueryResult = self::execute($itemQuery);
+
+        if ($row = $itemQueryResult->fetch_assoc())
+        {
+            return $row['amount'];
+        }
+
+        return 0;
+    }
+
+    private function findIdOfListItemIByItemId(int $item_id, $default = null)
+    {
+        $itemQuery = "SELECT id FROM list WHERE item_id = $item_id";
+        $itemQueryResult = self::execute($itemQuery);
+
+        if ($row = $itemQueryResult->fetch_assoc())
+        {
+            return $row['id'];
+        }
+
+        return $default;
+    }
+
+    private function createListItemIByItemId(int $item_id)
+    {
+        $maxPosition = getMaxListPosition();
+        $newPosition = $maxPosition + 1;
+        $createQuery = "INSERT INTO list (item_id, amount, position) VALUES ($item_id, 0, $newPosition)";
+        $createQueryResult = self::execute($createQuery);
+
+        if ($row = $createQueryResult->fetch_assoc())
+        {
+            return $row['item_id'];
+        }
+
+        return findIdOfListItemIByItemId($item_id);
+    }
+
+    private function getMaxListPosition()
+    {
+        $maxQuery = 'SELECT MAX(position) AS maxPos FROM list';
+        $maxQueryResult = self::execute($maxQuery);
+        if ($row = $maxQueryResult->fetch_assoc())
+        {
+            return $row['maxPos'];
+        }
+
+        return 0;
+    }
+
+    private function setAmount(int $id, int $amount)
+    {
+        $updateQuery = "UPDATE list SET amount = $amount WHERE id = $id";
+        $updateQueryResult = self::execute($updateQuery);
+    }
+
+    private function deleteListItem($id)
+    {
+        // Delete + move positions of other elements;
+    }
+
+    private function execute(string $query)
+    {
+        $queryResult = $this->connection->query($query) or self::handle_error();
+
+        return $queryResult;
     }
 
 // $query = 'update ' . $table . 'SET' . $values . 'WHERE id = "' . $this->connection->real_escape_string($id) . '"';
 
     private function handle_error()
     {
-        die("Query error: " . $this->connection->error);
+        throw new Exception("Query error: " . $this->connection->error);
     }
 }

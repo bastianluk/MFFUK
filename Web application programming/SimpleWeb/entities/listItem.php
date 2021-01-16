@@ -2,16 +2,14 @@
 
 class ListItem
 {
-    public $id;
-    public $name;
+    public $item;
     public $amount;
     public $position;
 
 
-    public function __construct($id, $name, $amount, $position)
+    public function __construct($item, $amount, $position)
     {
-        $this->id = $id;
-        $this->name = $name;
+        $this->item = $item;
         $this->amount = $amount;
         $this->$position = $position;
     }

@@ -13,44 +13,22 @@ function add()
 {
     checkedBadRequest(parameterValid($name, $amount));
 
-
-    $item = findExistingItem($name);
-    if (!isset($item))
-    {
-        // Create new + update the amount, add to datalist
-    }
-    else
-    {
-        // Update the amount
-    }
-}
-
-
-
-function findExistingItem()
-{
-    $sqlContext = new SqlContext();
-    // find by name
-}
-
-function isNameInvalid($name)
-{
-    return !isset($name) || !is_string($name);
-}
-
-function isAmountInvalid($amount)
-{
-    return !isset($amount) || !(
-        is_numeric($amount) && $amount > 0
-    );
+    upsertItemToList($name, $amount);
 }
 
 function parametersValid($name, $amount)
 {
-    return (
-        (!isset($name) || !is_string($name)) ||
-        (!isset($amount) || !(
-            is_numeric($amount) && $amount > 0
-        ))
+    return isNameValid($name) && isAmountValid($amount);
+}
+
+function isNameValid($name)
+{
+    return isset($name) && is_string($name);
+}
+
+function isAmountValid($amount)
+{
+    return isset($amount) && (
+        is_numeric($amount) && $amount > 0
     );
 }

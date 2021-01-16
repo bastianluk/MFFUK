@@ -6,21 +6,21 @@ require_once(__DIR__ . "/../../lib/subpage_lib.php");
 
 require_once(__DIR__ . "/../../entities/listItem.php");
 
-function get_data()
+function get_listItems()
 {
     require_once(__DIR__ . "/../../lib/sql_lib.php");
 
     $context = new SqlContext();
-    $items = $context->getAllListItems();
+    $listItems = $context->getAllListItems();
 
-    usort($items, "compareListItems");
+    usort($listItems, "compareListItems");
 
-    return $items;
+    return $listItems;
 }
 
-function compareListItems(ListItem $itemA, ListItem $itemB)
+function compareListItems(ListItem $listItemA, ListItem $listItemB)
 {
-    return intcmp($itemA->position, $itemB->position);
+    return intcmp($listItemA->position, $listItemB->position);
 }
 
 function intcmp($intA, $intB)
