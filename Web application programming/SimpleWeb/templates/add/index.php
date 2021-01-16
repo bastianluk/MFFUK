@@ -11,10 +11,7 @@ add();
 
 function add()
 {
-    if (isNameInvalid($name) || isAmountInvalid($amount))
-    {
-        # Invalid request data
-    }
+    checkedBadRequest(parameterValid($name, $amount));
 
 
     $item = findExistingItem($name);
@@ -48,15 +45,12 @@ function isAmountInvalid($amount)
     );
 }
 
-function revalidate()
+function parametersValid($name, $amount)
 {
-    if (
+    return (
         (!isset($name) || !is_string($name)) ||
         (!isset($amount) || !(
             is_numeric($amount) && $amount > 0
         ))
-    )
-    {
-        die("Invalid data");
-    }
+    );
 }

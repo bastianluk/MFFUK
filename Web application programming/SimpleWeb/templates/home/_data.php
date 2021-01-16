@@ -4,20 +4,16 @@ require_once(__DIR__ . "/../../lib/subpage_lib.php");
 
 //validateCall();
 
+require_once(__DIR__ . "/../../entities/listItem.php");
+
 function get_data()
 {
     require_once(__DIR__ . "/../../lib/sql_lib.php");
-    require_once(__DIR__ . "/../../entities/listItem.php");
 
-    // This is rather ugly...
     $context = new SqlContext();
-    $items = $context::getAllListItems();
-    usort($items, "compareListItems");
+    $items = $context->getAllListItems();
 
-    foreach ($items as $item)
-    {
-        echo "Item: $item->name";
-    }
+    usort($items, "compareListItems");
 
     return $items;
 }
@@ -29,5 +25,5 @@ function compareListItems(ListItem $itemA, ListItem $itemB)
 
 function intcmp($intA, $intB)
 {
-    return (int)$a < (int)$b ? -1 : ((int)$a == (int)$b ? 0 : 1);
+    return (int)$intA < (int)$intB ? -1 : ((int)$intA == (int)$intB ? 0 : 1);
 }
