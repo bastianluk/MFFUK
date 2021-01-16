@@ -20,14 +20,14 @@ class SqlContext
 
     public function getAllListItems() : array
     {
-        $query = 'SELECT i.id, i.name, l.amount, l.position FROM list AS l JOIN items AS i ON l.item_id = i.id';
+        $query = 'SELECT l.id, l.item_id, i.name, l.amount, l.position FROM list AS l JOIN items AS i ON l.item_id = i.id';
         $queryResult = self::execute($query);
 
         $items = [];
         while ($row = $queryResult->fetch_assoc())
         {
-            $item = new Item($row['id'], $row['name']);
-            $listItem = new ListItem($item, $row['amount'], $row['position']);
+            $item = new Item($row['item_id'], $row['name']);
+            $listItem = new ListItem($row['id'], $item, $row['amount'], $row['position']);
             $items[] = $listItem;
         }
 
