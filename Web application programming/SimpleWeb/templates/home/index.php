@@ -9,7 +9,8 @@ $listItems = get_listItems();
 $columns = [
     'listItem' => 'Item',
     'amount' => 'Amount',
-    'edit' => '',
+    'position' => '',
+    'edit' => ''
 ];
 ?>
 
@@ -33,10 +34,11 @@ $columns = [
     </thead>
     <tbody id="shopping-list-body">
         <?php foreach ($listItems as $listItem) { ?>
-        <tr id="<?= $listItem->id; ?>">
-            <td class="w-50"><?= htmlspecialchars($listItem->item->name); ?></td>
+        <tr id="<?= $listItem->id; ?>" position="<?= $listItem->position; ?>">
+            <td class="w-75"><?= htmlspecialchars($listItem->item->name); ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
             <td class="w-25"></td>
+            <td class="w-50"></td>
         </tr>
         <?php } ?>
     </tbody>

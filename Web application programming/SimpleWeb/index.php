@@ -2,11 +2,21 @@
 
 require_once(__DIR__ . "/lib/index_lib.php");
 
-main();
+try
+{
+    main();
+}
+catch (Exception $exception)
+{
+    $homeUrl = getHomeUrl(); // Lets hope there is nothing wrong in the home page code :)
+    $message = urlencode("Exception occured:" . $exception->getMessage());
+    $newUrl = $homeUrl . "&message=$message";
+    checkedRedirectOther(isset($page), $newUrl);
+}
 
 function main()
 {
-    define('rudamentaryValidation', 42); // to prevent direct access to templates
+    define('rudamentaryValidation', 322); // to prevent direct access to templates
 
     $method = getMethod();
     $page = getPageOrRedirectHome($_GET);
@@ -60,6 +70,11 @@ function processRequest(string $method, $relativePath, array $parameters)
     else
     {
         require $templatePrefix . "/_header.php";
+        $message = safeGet($parameters, "message")
+        if (isset($message))
+        {
+            require $templatePrefix . "/_message.php";
+        }
         require $templateFullPath;
         require $templatePrefix . "/_footer.php";
     }

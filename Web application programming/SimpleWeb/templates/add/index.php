@@ -2,7 +2,7 @@
 
 // require_once(__DIR__ . "/../../lib/subpage_lib.php");
 
-//validateCall();
+// validateCall();
 
 add($name, $amount);
 
