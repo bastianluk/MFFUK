@@ -1,3 +1,18 @@
+<?php
+
+require_once(__DIR__ . "/../../lib/subpage_lib.php");
+
+//validateCall();
+
+require_once(__DIR__ . "/_data.php");
+$data = get_data();
+$columns = [
+    'item' => 'Item',
+    'amount' => 'Amount',
+    'edit' => '',
+];
+?>
+
 <h2>Shopping list</h2>
 
 <datalist id="knowItems">
@@ -8,6 +23,26 @@
   <option value="Safari">
 </datalist>
 
+<table class="table table-striped mt-5">
+    <thead>
+        <tr>
+            <?php foreach ($columns as $col => $caption) { ?>
+            <th class="text-nowrap">
+                <span class="mr-2 text-nowrap"><?= $caption ?></span>
+            </th>
+            <?php } ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($data as $item) { ?>
+        <tr>
+            <td class="w-50"><?= htmlspecialchars("$item->Name"); ?></td>
+            <td class="w-25"><?= $item->Amount ?></td>
+            <td class="w-25"></td>
+        </tr>
+        <?php } ?>
+    </tbody>
+</table>
 
 <h2>Add new item</h2>
 <form action="?page=add/index" method="post" id="newItem">
@@ -24,22 +59,3 @@
         <input type="submit" value="Add"/>
     </div>
 </form>
-
-
-<p>
-	The assignment is designed to introduce Front Controller design pattern to you.
-	Your objective is to design a simple page that utilizes this particular pattern
-	to desing a simple web page.
-</p>
-
-<p>
-	Please, be advised that your solution will be tested in ReCodEx. Try not to be
-	excessively creative in your implementation. For instance, there is no need for
-	using cookies or manually set headers in any way. On the other hand, if you need
-	to set HTTP response code, use standard PHP builtin
-	<a href="http://php.net/manual/en/function.http-response-code.php"><code>http_response_code()</code></a>
-</p>
-
-<p>
-	The student results page is here merely to test whether your front controler sanitizes query parameters correctly.
-</p>
