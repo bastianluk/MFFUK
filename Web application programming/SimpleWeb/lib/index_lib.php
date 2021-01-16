@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . "/lib.php");
+
 function getMethod() : string
 {
     return $_SERVER["REQUEST_METHOD"];

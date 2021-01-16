@@ -1,6 +1,6 @@
 <?php
 
-function checkedBadRequest($condtion)
+function checkedBadRequest($condition)
 {
     if (!$condition)
     {
@@ -22,9 +22,14 @@ function checkedRedirectOther($condition, $redirect)
 {
     if (!$condition)
     {
-        header( "Location: {$redirect}", true, 303 );
-        exit();
+        redirectOther($redirect);
     }
 }
 
-//function checkedAction(bool $condtion, $function, array $parameters)
+function redirectOther($redirect)
+{
+    header( "Location: {$redirect}", true, 303 );
+    exit();
+}
+
+//function checkedAction(bool $condition, $function, array $parameters)

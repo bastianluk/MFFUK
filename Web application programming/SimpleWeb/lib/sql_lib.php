@@ -1,5 +1,8 @@
 <?php
 
+require_once(__DIR__ . "/../entities/item.php");
+require_once(__DIR__ . "/../entities/listItem.php");
+
 class SqlContext
 {
     private $connection;
@@ -20,9 +23,6 @@ class SqlContext
         $query = 'SELECT i.id, i.name, l.amount, l.position FROM list AS l JOIN items AS i ON l.item_id = i.id';
         $queryResult = self::execute($query);
 
-        require_once(__DIR__ . "/../entities/item.php");
-        require_once(__DIR__ . "/../entities/listItem.php");
-
         $items = [];
         while ($row = $queryResult->fetch_assoc())
         {
@@ -36,17 +36,16 @@ class SqlContext
 
     public function upsertItemToList(string $name, int $amount)
     {
-        throw new Exception("test");
-        $item = findItemByName($name);
+        $item = self::findItemByName($name);
         if(!isset($item))
         {
-            $item = createItem($name);
+            $item = self::createItem($name);
         }
 
-        updateAmountInList($item, $amount);
+        self::updateAmountInList($item, $amount);
     }
 
-    private function findItemByName($default = null)
+    private function findItemByName(string $name, $default = null)
     {
         $itemQuery = 'SELECT * FROM items WHERE name = "' . $this->connection->real_escape_string($name) . '"';
         $itemQueryResult = self::execute($itemQuery);
@@ -62,42 +61,23 @@ class SqlContext
 
     public function createItem(string $name) : Item
     {
-        $createQuery = 'INSERT INTO items (name) VALUES (' . $this->connection->real_escape_string($name) . ')';
+        $createQuery = 'INSERT INTO items (name) VALUES ("' . $this->connection->real_escape_string($name) . '")';
         $createQueryResult = self::execute($createQuery);
 
-        if ($row = $createQueryResult->fetch_assoc())
-        {
-            $item = new Item($row['id'], $row['name']);
-            return $item;
-        }
-
-        return findItemByName($name);
+        return self::findItemByName($name);
     }
 
     private function updateAmountInList($item, int $amount)
     {
-        $listItemId = findIdOfListItemIByItemId($item->id);
+        $listItemId = self::findIdOfListItemIByItemId($item->id);
         if(!isset($listItemId))
         {
-            $listItemId = createListItemIByItemId($listItemId);
+            $listItemId = self::createListItemIByItemId($item->id);
         }
 
-        $oldAmount = getListItemAmountById($listItemId);
+        $oldAmount = self::getListItemAmountById($listItemId);
         $newAmount = $oldAmount + $amount;
-        setAmount($listItemId, $newAmount);
-    }
-
-    private function getListItemAmountById($id)
-    {
-        $itemQuery = "SELECT amount FROM list WHERE id = $id";
-        $itemQueryResult = self::execute($itemQuery);
-
-        if ($row = $itemQueryResult->fetch_assoc())
-        {
-            return $row['amount'];
-        }
-
-        return 0;
+        self::setAmount($listItemId, $newAmount);
     }
 
     private function findIdOfListItemIByItemId(int $item_id, $default = null)
@@ -115,17 +95,12 @@ class SqlContext
 
     private function createListItemIByItemId(int $item_id)
     {
-        $maxPosition = getMaxListPosition();
+        $maxPosition = self::getMaxListPosition();
         $newPosition = $maxPosition + 1;
         $createQuery = "INSERT INTO list (item_id, amount, position) VALUES ($item_id, 0, $newPosition)";
         $createQueryResult = self::execute($createQuery);
 
-        if ($row = $createQueryResult->fetch_assoc())
-        {
-            return $row['item_id'];
-        }
-
-        return findIdOfListItemIByItemId($item_id);
+        return self::findIdOfListItemIByItemId($item_id);
     }
 
     private function getMaxListPosition()
@@ -135,6 +110,19 @@ class SqlContext
         if ($row = $maxQueryResult->fetch_assoc())
         {
             return $row['maxPos'];
+        }
+
+        return 0;
+    }
+
+    private function getListItemAmountById($id)
+    {
+        $itemQuery = "SELECT amount FROM list WHERE id = $id";
+        $itemQueryResult = self::execute($itemQuery);
+
+        if ($row = $itemQueryResult->fetch_assoc())
+        {
+            return $row['amount'];
         }
 
         return 0;

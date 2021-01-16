@@ -1,6 +1,5 @@
 <?php
 
-require_once(__DIR__ . "/lib/lib.php");
 require_once(__DIR__ . "/lib/index_lib.php");
 
 main();
@@ -10,9 +9,9 @@ function main()
     define('rudamentaryValidation', 42); // to prevent direct access to templates
 
     $method = getMethod();
-    $parameters = $method == 'POST' ? $_POST : $_GET;
-    $page = getPageOrRedirectHome($parameters);
+    $page = getPageOrRedirectHome($_GET);
     $fullPath = getPathOrNotFound($page);
+    $parameters = $method == 'POST' ? $_POST : $_GET;
     processRequest($method, $fullPath, $parameters);
 }
 
@@ -40,7 +39,7 @@ function processRequest(string $method, $relativePath, array $parameters)
     $requiredParameters = file_exists($parametersFullPath) ? require $parametersFullPath : [];
     foreach ($requiredParameters as $key => $param)
     {
-        $value = get($parameters, $key);
+        $value = safeGet($parameters, $key);
         $checkResult = checkParameterValue($param, $value);
         checkedBadRequest($checkResult);
 
@@ -52,11 +51,11 @@ function processRequest(string $method, $relativePath, array $parameters)
         $$key = $value;
     }
 
-    $isPost = $method === 'POST';
+    $isPost = $method == 'POST';
     if ($isPost)
     {
         require $templateFullPath;
-        redirect(getHomeUrl());
+        redirectOther(getHomeUrl());
     }
     else
     {

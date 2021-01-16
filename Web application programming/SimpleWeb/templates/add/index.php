@@ -4,16 +4,14 @@ require_once(__DIR__ . "/../../lib/subpage_lib.php");
 
 validateCall();
 
-require_once(__DIR__ . "/../../entities/listItem.php");
-require_once(__DIR__ . "/../../lib/sql_lib.php");
+add($name, $amount);
 
-add();
-
-function add()
+function add($name, $amount)
 {
-    checkedBadRequest(parameterValid($name, $amount));
+    require_once(__DIR__ . "/../../lib/sql_lib.php");
 
-    upsertItemToList($name, $amount);
+    $context = new SqlContext();
+    $context->upsertItemToList($name, $amount);
 }
 
 function parametersValid($name, $amount)
