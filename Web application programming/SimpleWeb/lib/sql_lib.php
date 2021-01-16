@@ -14,7 +14,7 @@ class SqlContext
         $this->connection = new mysqli($db_config['server'], $db_config['login'], $db_config['password'], $db_config['database']);
         if ($this->connection->connect_error)
         {
-            die("Could not connect to the database");
+            throw new Exception("Connect error:" . $this->connection->connect_error);
         }
     }
 
@@ -128,15 +128,37 @@ class SqlContext
         return 0;
     }
 
-    private function setAmount(int $id, int $amount)
+    public function setAmount(int $id, int $amount)
     {
         $updateQuery = "UPDATE list SET amount = $amount WHERE id = $id";
         $updateQueryResult = self::execute($updateQuery);
     }
 
-    private function deleteListItem($id)
+    public function deleteListItemAt($id, $position)
     {
-        // Delete + move positions of other elements;
+        $deleteQuery = "DELETE FROM list WHERE id = $id";
+        $deleteQueryResult = self::execute($updateQuery);
+
+        $updateQuery = "UPDATE list SET position = position - 1 WHERE position > $position";
+        $updateQueryResult = self::execute($updateQuery);
+    }
+
+    public function moveListItemTo($id, $oldPosition, $newPosition)
+    {
+        $updateSpecificQuery = "UPDATE list SET position = $newPosition WHERE id = $id";
+        $updateSpecificQueryResult = self::execute($updateQuery);
+
+        if ($oldPosition > $newPosition)
+        {
+            $updateQuery = "UPDATE list SET position = position + 1 WHERE id != $id AND $newPsition <= position AND position < $oldPosition";
+            $updateQueryResult = self::execute($updateQuery);
+        }
+
+        if ($oldPosition < $newPosition)
+        {
+            $updateQuery = "UPDATE list SET position = position - 1 WHERE id != $id AND $oldPsition < position AND position <= $newPosition";
+            $updateQueryResult = self::execute($updateQuery);
+        }
     }
 
     private function execute(string $query)

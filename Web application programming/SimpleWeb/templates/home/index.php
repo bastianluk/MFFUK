@@ -33,7 +33,7 @@ $columns = [
     </thead>
     <tbody id="shopping-list-body">
         <?php foreach ($listItems as $listItem) { ?>
-        <tr>
+        <tr id="<?= $listItem->id; ?>">
             <td class="w-50"><?= htmlspecialchars($listItem->item->name); ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
             <td class="w-25"></td>
@@ -58,4 +58,4 @@ $columns = [
     </div>
 </form>
 
-<script src="index.js" type="text/javascript"></script>
+<script src="templates/home/index.js" type="text/javascript"></script>
