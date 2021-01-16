@@ -21,12 +21,12 @@ function preprocessGalleryData(imgData)
         return data;
     })
 
-    let done = [];
+    let visited = [];
     let groups = [];
     indexedData.forEach(data =>
     {
         let members = [];
-        addSimilar(done, members, data, groups);
+        addSimilar(visited, members, data, groups);
         safeAddNewGroup(groups, members)
     });
 
@@ -44,39 +44,41 @@ function preprocessGalleryData(imgData)
         }
         else
         {
+            // there is just one member, can access directly
             coalescedGroupMembers.push(group.members[0]);
         }
     });
-    safeAddNewGroup(readyGroups, coalescedGroupMembers, imgData);
+    // add remaining
+    safeAddNewGroup(readyGroups, coalescedGroupMembers);
 
-    readyGroups.sort(comparator);
+    //readyGroups.sort(comparator);
 
     let groupMembers = readyGroups.map(group => group.members);
     return groupMembers;
 }
 
-function addSimilar(done, members, current, groups)
+function addSimilar(visited, members, current, groups)
 {
-    if (!done.includes(current))
+    if (!visited.includes(current))
     {
         members.push(current);
-        done.push(current);
-        current.similar.forEach(similar => addSimilar(done, members, similar, groups));
+        visited.push(current);
+        current.similar.forEach(similar => addSimilar(visited, members, similar, groups));
     }
     else
     {
         if (!members.includes(current))
         {
-            // "late comer" - references something already grouped
+            // "latecomer" - references something already grouped, find group, add all to bag of members
             let index = groups.findIndex(g => g.members.includes(current));
             let existingGroup = groups[index];
-            console.log(existingGroup);
             existingGroup.members.forEach(member => members.push(member));
+            // delete old group
             groups.splice(index, 1);
         }
         else
         {
-            // would be a cycle: is done and is in members
+            // would be a cycle: is visited and is in members, dont want to process again
         }
     }
 }
@@ -89,15 +91,15 @@ function comparator(objectA, objectB)
 
 function compareCreatedProperty(objectA, objectB)
 {
-    let dateA = objectA.created.getTime();
-    let dateB = objectB.created.getTime();
+    let dateA = new Date(objectA.created).getTime();
+    let dateB = new Date(objectB.created).getTime();
 
     return dateA < dateB ? -1 : (dateA > dateB ? 1 : 0);
 }
 
 function compareIndexProperty(objectA, objectB)
 {
-    return objectA.index < objectB.index ? -1 : 1;
+    return objectA.index <= objectB.index ? -1 : 1;
 }
 
 function safeAddNewGroup(groups, members)
