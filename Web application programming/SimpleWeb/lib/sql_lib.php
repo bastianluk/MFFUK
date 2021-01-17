@@ -137,7 +137,7 @@ class SqlContext
         return self::findIdOfListItemIByItemId($item_id);
     }
 
-    private function getMaxListPosition()
+    public function getMaxListPosition()
     {
         $maxQuery = 'SELECT MAX(position) AS maxPos FROM list';
         $maxQueryResult = self::execute($maxQuery);

@@ -47,7 +47,10 @@ function moveAction(button, change)
     };
     let formData = objectToFormData(dataObject);
 
-    fetchRequest(url, "POST", formData, "follow", function() {});
+    fetchRequest(url, "POST", formData, "follow", function()
+    {
+        window.location.replace(getPageUrl("home/index"));
+    });
 }
 
 function editAction(tableBody, button)
@@ -76,16 +79,27 @@ function deleteAction(button)
 {
     let row = getRowFromButton(button);
     let url = getPageUrl("delete/index");
+    let rowPosition = parseInt(row.getAttribute("data-position"));
 
     let dataObject = {
         id: parseInt(row.id),
-        position: parseInt(row.getAttribute("data-position"))
+        position: rowPosition
     };
     let formData = objectToFormData(dataObject);
 
     fetchRequest(url, "POST", formData, "follow", function()
     {
-        row.parentNode.removeChild(row);
+        let tableBody = row.parentNode;
+        Array.from(tableBody.children).forEach(childRow =>
+        {
+            let currentPosition = parseInt(childRow.getAttribute("data-position"));
+            if (currentPosition > rowPosition)
+            {
+                let newPosition = currentPosition - 1;
+                childRow.setAttribute("data-position", newPosition.toString());
+            }
+        });
+        tableBody.removeChild(row);
     });
 }
 
@@ -153,19 +167,24 @@ function fetchRequest(url, method, body, redirect, onSuccess)
     })
     .then(response =>
     {
+        console.log(response);
         if (!response.ok)
         {
-            if (!(response.redirected && response.status == 303))
+            response.text()
+            .then(text =>
             {
-                return response.text()
-                .then(text =>
-                {
-                    throw new Exception(text);
-                });
-            }
+                throw new Exception(text);
+            });
         }
 
-        onSuccess();
+        if (response.redirected)
+        {
+            window.location.replace(response.url);
+        }
+        else
+        {
+            onSuccess();
+        }
     })
     .catch(error => error.message);
 }

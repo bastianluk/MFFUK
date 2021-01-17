@@ -8,7 +8,7 @@ add($name, $amount);
 function add($name, $amount)
 {
     require_once(__DIR__ . "/../../lib/lib.php");
-    checkedNotFound(parametersValid($name, $amount));
+    checkedBadRequest(parametersValid($name, $amount));
 
     require_once(__DIR__ . "/../../lib/sql_lib.php");
     $context = new SqlContext();

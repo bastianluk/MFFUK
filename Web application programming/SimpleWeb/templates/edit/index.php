@@ -8,7 +8,7 @@ edit($id, $amount);
 function edit($id, $amount)
 {
     require_once(__DIR__ . "/../../lib/lib.php");
-    checkedNotFound(parametersValid($id, $amount));
+    checkedBadRequest(parametersValid($id, $amount));
 
     require_once(__DIR__ . "/../../lib/sql_lib.php");
     $context = new SqlContext();

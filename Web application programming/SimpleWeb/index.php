@@ -28,7 +28,7 @@ function main()
 function getPageOrRedirectHome($parameters) : string
 {
     $page = getPage($parameters);
-    checkedRedirectOther(isset($page), getHomeUrl());
+    checkedBadRequest(isset($page));
 
     return $page;
 }
@@ -64,7 +64,11 @@ function processRequest(string $method, $relativePath, array $parameters)
     if ($isPost)
     {
         require $templateFullPath;
-        redirectOther(getHomeUrl());
+        $redirect = safeGet($parameters, "redirectOnPost");
+        if (isset($redirect))
+        {
+            redirectOther(getHomeUrl());
+        }
     }
     else
     {

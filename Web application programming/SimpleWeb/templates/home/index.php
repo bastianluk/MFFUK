@@ -39,12 +39,8 @@ $columns = [
             <td class="w-75"><?= htmlspecialchars($listItem->item->name); ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
             <td class="w-25">
-                <?php if($key > 0) { ?>
-                    <button class="down-button">/\</button>
-                <?php } ?>
-                <?php if($key < $listCount-1) { ?>
-                    <button class="up-button">\/</button>
-                <?php } ?>
+                <button class="down-button">/\</button>
+                <button class="up-button">\/</button>
             </td>
             <td class="w-25">
                 <button class="edit-button">EDIT</button>
@@ -61,7 +57,8 @@ $columns = [
         <label for="name">Name:</label>
         <input list="knowItems" name="name" id="name">
         <label for="amount">Amount:</label>
-        <input type="number" name="amount" id="amount" min="0">
+        <input type="number" name="amount" id="amount" min="1">
+        <input type="text" name="redirectOnPost" id="redirect" value="true" style = "display: none";>
     </div>
 
     <div class="input">

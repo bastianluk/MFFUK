@@ -8,7 +8,7 @@ move($id, $oldPosition, $newPosition);
 function move($id, $oldPosition, $newPosition)
 {
     require_once(__DIR__ . "/../../lib/lib.php");
-    checkedNotFound(parametersValid($id, $oldPosition, $newPosition));
+    checkedBadRequest(parametersValid($id, $oldPosition, $newPosition));
 
     require_once(__DIR__ . "/../../lib/sql_lib.php");
     $context = new SqlContext();

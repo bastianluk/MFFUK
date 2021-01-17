@@ -19,8 +19,13 @@ function isIdValid($id)
 
 function isPositionValid($position)
 {
+    require_once(__DIR__ . "/sql_lib.php");
+    $context = new SqlContext();
+    $maxPosition = $context->getMaxListPosition();
+    $maxAllowedPosition = $maxPosition == 0 ? 1 : $maxPosition;
+
     return isset($position) && (
-        is_numeric($position) && $position > 0
+        is_numeric($position) && 0 < $position && $position <= $maxAllowedPosition
     );
 }
 

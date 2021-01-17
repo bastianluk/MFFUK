@@ -8,7 +8,7 @@ delete($id, $position);
 function delete($id, $position)
 {
     require_once(__DIR__ . "/../../lib/lib.php");
-    checkedNotFound(parametersValid($id, $position));
+    checkedBadRequest(parametersValid($id, $position));
 
     require_once(__DIR__ . "/../../lib/sql_lib.php");
     $context = new SqlContext();
