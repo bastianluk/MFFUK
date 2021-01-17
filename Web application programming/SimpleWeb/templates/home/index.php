@@ -6,6 +6,7 @@ require_once(__DIR__ . "/../../lib/subpage_lib.php");
 
 require_once(__DIR__ . "/_data.php");
 $listItems = get_listItems();
+$listCount = count($listItems);
 $columns = [
     'listItem' => 'Item',
     'amount' => 'Amount',
@@ -33,12 +34,22 @@ $columns = [
         </tr>
     </thead>
     <tbody id="shopping-list-body">
-        <?php foreach ($listItems as $listItem) { ?>
-        <tr id="<?= $listItem->id; ?>" position="<?= $listItem->position; ?>">
+        <?php foreach ($listItems as $key => $listItem) { ?>
+        <tr id="<?= $listItem->id; ?>" data-position="<?= $listItem->position; ?>">
             <td class="w-75"><?= htmlspecialchars($listItem->item->name); ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
-            <td class="w-25"></td>
-            <td class="w-50"></td>
+            <td class="w-25">
+                <?php if($key > 0) {?>
+                    <button class="down-button">/\</button>
+                <?php } ?>
+                <?php if($key < $listCount-1) {?>
+                    <button class="up-button">\/</button>
+                <?php } ?>
+            </td>
+            <td class="w-50">
+                <button class="edit-button">EDIT</button>
+                <button class="delete-button">DELETE</button>
+            </td>
         </tr>
         <?php } ?>
     </tbody>

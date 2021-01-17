@@ -6,15 +6,27 @@
 
 delete($id, $position);
 
-function delete(int $id, int $position)
+function delete($id, $position)
 {
-    require_once(__DIR__ . "/../../lib/sql_lib.php");
+    require_once(__DIR__ . "/../../lib/lib.php");
+    checkedNotFound(parametersValid($id, $position));
 
+    require_once(__DIR__ . "/../../lib/sql_lib.php");
     $context = new SqlContext();
     $context->deleteListItemAt($id, $position);
 }
 
-function parametersValid()
+function parametersValid($id, $position)
 {
-    return true;
+    return isIdValid($id) && isPositionValid($position);
+}
+function isIdValid($id)
+{
+    return isset($id) && is_numeric($id);
+}
+function isPositionValid($position)
+{
+    return isset($position) && (
+        is_numeric($position) && $position > 0
+    );
 }

@@ -1,15 +1,11 @@
 <?php
 
-require_once(__DIR__ . "/../../lib/subpage_lib.php");
-
+//require_once(__DIR__ . "/../../lib/subpage_lib.php");
 //validateCall();
 
-require_once(__DIR__ . "/../../entities/listItem.php");
-
-function get_listItems()
+function get_listItems() : array
 {
     require_once(__DIR__ . "/../../lib/sql_lib.php");
-
     $context = new SqlContext();
     $listItems = $context->getAllListItems();
 

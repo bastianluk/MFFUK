@@ -52,7 +52,6 @@ function processRequest(string $method, $relativePath, array $parameters)
         $value = safeGet($parameters, $key);
         $checkResult = checkParameterValue($param, $value);
         checkedBadRequest($checkResult);
-
         if ($param == 'int')
         {
             $value = (int)$value;
