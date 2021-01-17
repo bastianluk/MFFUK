@@ -49,8 +49,6 @@ $columns = [
     <div class="input">
         <label for="name">Name:</label>
         <input list="knowItems" name="name" id="name">
-    </div>
-    <div class="input">
         <label for="amount">Amount:</label>
         <input type="number" name="amount" id="amount" min="0">
     </div>

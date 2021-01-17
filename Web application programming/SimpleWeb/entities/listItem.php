@@ -13,6 +13,6 @@ class ListItem
         $this->id = $id;
         $this->item = $item;
         $this->amount = $amount;
-        $this->$position = $position;
+        $this->position = $position;
     }
 }

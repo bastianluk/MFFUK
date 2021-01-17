@@ -9,8 +9,8 @@ try
 catch (Exception $exception)
 {
     $homeUrl = getHomeUrl(); // Lets hope there is nothing wrong in the home page code :)
-    $message = urlencode("Exception occured:" . $exception->getMessage());
-    $newUrl = $homeUrl . "&message=$message";
+    $encodedMessage = urlencode("Exception occured:" . $exception->getMessage());
+    $newUrl = $homeUrl . "&message=$encodedMessage";
     checkedRedirectOther(isset($page), $newUrl);
 }
 
@@ -70,9 +70,10 @@ function processRequest(string $method, $relativePath, array $parameters)
     else
     {
         require $templatePrefix . "/_header.php";
-        $message = safeGet($parameters, "message")
+        $message = safeGet($parameters, "message");
         if (isset($message))
         {
+            $decodedMessage = urldecode($message);
             require $templatePrefix . "/_message.php";
         }
         require $templateFullPath;

@@ -15,7 +15,7 @@ function buttonAdder()
             row.children[2].appendChild(moveDownButton);
         }
 
-        if (index < array.length)
+        if (index < rows.length)
         {
             let moveUpButton = createButton("up-button", "\\/", function()
             {
@@ -55,8 +55,9 @@ function createButton(className, text, delegate)
 
 function move(row, change)
 {
-    let oldPosition = row.position
+    let oldPosition = row.position;
     let newPosition = oldPosition + change;
+    let url = window.location.pathname;
     let parametrizedUrl = url + "?page=move/index&id=" + row.id + "&oldPosition=" + oldPosition + "&newPosition=" + newPosition;
     let method = "POST";
     let result = fetch(parametrizedUrl, { method });
@@ -75,8 +76,8 @@ function makeEditable(id)
         // Use new FormData() ?
         alert("save");
         let url = window.location.pathname;
-        console.log(url);
-        let amount = row.children[1].find('input').val();
+        let input = row.getElementsByClassName("edit-input");
+        let amount = input[0].value;
         let parametrizedUrl = url + "?page=edit/index&id=" + id + "&amount=" + amount;
         let method = "POST";
         let result = fetch(parametrizedUrl, { method });
@@ -99,6 +100,7 @@ function makeEditable(id)
     let input = document.createElement("input");
     input.type = "number";
     input.min = 1;
+    input.classList.add("edit-input");
     input.name = "edit-input";
     input.id = "edit-input";
     input.value = oldValue;

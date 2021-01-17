@@ -55,7 +55,7 @@ class SqlContext
     public function deleteListItemAt($id, $position)
     {
         $deleteQuery = "DELETE FROM list WHERE id = $id";
-        $deleteQueryResult = self::execute($updateQuery);
+        $deleteQueryResult = self::execute($deleteQuery);
 
         $updateQuery = "UPDATE list SET position = position - 1 WHERE position > $position";
         $updateQueryResult = self::execute($updateQuery);
@@ -64,17 +64,17 @@ class SqlContext
     public function moveListItemTo(int $id, int $oldPosition, int $newPosition)
     {
         $updateSpecificQuery = "UPDATE list SET position = $newPosition WHERE id = $id";
-        $updateSpecificQueryResult = self::execute($updateQuery);
+        $updateSpecificQueryResult = self::execute($updateSpecificQuery);
 
         if ($oldPosition > $newPosition)
         {
-            $updateQuery = "UPDATE list SET position = position + 1 WHERE id != $id AND $newPsition <= position AND position < $oldPosition";
+            $updateQuery = "UPDATE list SET position = position + 1 WHERE id <> $id AND $newPosition <= position AND position < $oldPosition";
             $updateQueryResult = self::execute($updateQuery);
         }
 
         if ($oldPosition < $newPosition)
         {
-            $updateQuery = "UPDATE list SET position = position - 1 WHERE id != $id AND $oldPsition < position AND position <= $newPosition";
+            $updateQuery = "UPDATE list SET position = position - 1 WHERE id <> $id AND $oldPosition < position AND position <= $newPosition";
             $updateQueryResult = self::execute($updateQuery);
         }
     }
