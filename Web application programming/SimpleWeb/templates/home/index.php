@@ -35,8 +35,8 @@ $columns = [
     </thead>
     <tbody id="shopping-list-body">
         <?php foreach ($listItems as $key => $listItem) { ?>
-        <tr id="<?= $listItem->id; ?>" data-position="<?= $listItem->position; ?>">
-            <td class="w-75"><?= htmlspecialchars($listItem->item->name); ?></td>
+        <tr id="<?= $listItem->id ?>" data-position="<?= $listItem->position ?>">
+            <td class="w-75"><?= htmlspecialchars($listItem->item->name) ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
             <td class="w-25">
                 <button class="down-button">/\</button>
@@ -58,7 +58,7 @@ $columns = [
         <input list="knowItems" name="name" id="name">
         <label for="amount">Amount:</label>
         <input type="number" name="amount" id="amount" min="1">
-        <input type="text" name="redirectOnPost" id="redirect" value="true" style = "display: none";>
+        <input type="text" name="redirectOnPost" id="redirect" value="true" style = "display: none">
     </div>
 
     <div class="input">
@@ -66,4 +66,4 @@ $columns = [
     </div>
 </form>
 
-<script src="templates/home/index.js" type="text/javascript"></script>
+<script src="templates/home/index.js"></script>
