@@ -1,7 +1,6 @@
 <?php
 
-// require_once(__DIR__ . "/../../lib/subpage_lib.php");
-
+require_once(__DIR__ . "/../../lib/subpage_lib.php");
 // validateCall();
 
 delete($id, $position);
@@ -19,14 +18,4 @@ function delete($id, $position)
 function parametersValid($id, $position)
 {
     return isIdValid($id) && isPositionValid($position);
-}
-function isIdValid($id)
-{
-    return isset($id) && is_numeric($id);
-}
-function isPositionValid($position)
-{
-    return isset($position) && (
-        is_numeric($position) && $position > 0
-    );
 }
