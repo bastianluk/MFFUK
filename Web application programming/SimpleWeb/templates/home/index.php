@@ -39,14 +39,14 @@ $columns = [
             <td class="w-75"><?= htmlspecialchars($listItem->item->name); ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
             <td class="w-25">
-                <?php if($key > 0) {?>
+                <?php if($key > 0) { ?>
                     <button class="down-button">/\</button>
                 <?php } ?>
-                <?php if($key < $listCount-1) {?>
+                <?php if($key < $listCount-1) { ?>
                     <button class="up-button">\/</button>
                 <?php } ?>
             </td>
-            <td class="w-50">
+            <td class="w-25">
                 <button class="edit-button">EDIT</button>
                 <button class="delete-button">DELETE</button>
             </td>
@@ -55,7 +55,7 @@ $columns = [
     </tbody>
 </table>
 
-<h2>Add new listItem</h2>
+<h2>Add to the list</h2>
 <form action="?page=add/index" method="post" id="newItem">
     <div class="input">
         <label for="name">Name:</label>

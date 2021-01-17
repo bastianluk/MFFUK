@@ -6,11 +6,11 @@ function eventAdder()
 
     addClickEventsTo("down-button", function(button)
     {
-        moveAction(tableBody, button, -1);
+        moveAction(button, -1);
     });
     addClickEventsTo("up-button", function(button)
     {
-        moveAction(tableBody, button, 1);
+        moveAction(button, 1);
     });
     addClickEventsTo("edit-button", function(button)
     {
@@ -47,7 +47,7 @@ function moveAction(button, change)
     };
     let formData = objectToFormData(dataObject);
 
-    let result = fetchRequest(url, "POST", formData, "follow", function() {});
+    fetchRequest(url, "POST", formData, "follow", function() {});
 }
 
 function editAction(tableBody, button)
