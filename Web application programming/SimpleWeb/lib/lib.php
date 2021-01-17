@@ -4,8 +4,7 @@ function checkedBadRequest($condition)
 {
     if (!$condition)
     {
-        http_response_code(400);
-        exit();
+        throw new Exception("Bad request - incorrect parameters");
     }
 }
 
@@ -13,8 +12,7 @@ function checkedNotFound($condition)
 {
     if (!$condition)
     {
-        http_response_code(404);
-        exit();
+        throw new Exception("Requested page not found");
     }
 }
 

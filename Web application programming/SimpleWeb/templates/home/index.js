@@ -34,17 +34,7 @@ function addClickEventsTo(className, delegate)
     });
 }
 
-function createButton(className, text, delegate)
-{
-    let button = document.createElement("button");
-    button.classList.add(className);
-    button.textContent = text;
-    button.addEventListener("click", delegate);
-
-    return button;
-}
-
-function moveAction(tableBody, button, change)
+function moveAction(button, change)
 {
     let url = getPageUrl("move/index");
     let row = getRowFromButton(button);
@@ -57,10 +47,7 @@ function moveAction(tableBody, button, change)
     };
     let formData = objectToFormData(dataObject);
 
-    fetchRequest(url, "POST", formData, "follow", function()
-    {
-        changeToViewing(tableBody)
-    });
+    let result = fetchRequest(url, "POST", formData, "follow", function() {});
 }
 
 function editAction(tableBody, button)
@@ -94,12 +81,7 @@ function deleteAction(button)
         id: parseInt(row.id),
         position: parseInt(row.getAttribute("data-position"))
     };
-    let formData = new FormData();
-    let parameterKVPs = Object.entries(dataObject);
-    for (let [key, value] of parameterKVPs)
-    {
-        formData.append(key, value);
-    }
+    let formData = objectToFormData(dataObject);
 
     fetchRequest(url, "POST", formData, "follow", function()
     {
@@ -125,7 +107,6 @@ function saveAction(tableBody, row)
 
 function changeToViewing(tableBody)
 {
-    console.log("here");
     changeDisplayOnButtons(tableBody, "block")
     changeAmountElement(tableBody);
     removeElementsByClass(tableBody, "save-button");
@@ -164,7 +145,7 @@ function getEditFormElement(initValue)
 ///
 function fetchRequest(url, method, body, redirect, onSuccess)
 {
-    fetch(url,
+    return fetch(url,
     {
         method: method,
         body: body,
@@ -172,27 +153,21 @@ function fetchRequest(url, method, body, redirect, onSuccess)
     })
     .then(response =>
     {
-        if (!response.ok && !response.redirected)
+        if (!response.ok)
         {
-            response.text()
-            .then(text =>
+            if (!(response.redirected && response.status == 303))
             {
-                console.log(text);
-            })
-            return;
-        }
-
-        if (response.redirected)
-        {
-            console.log("redirected");
+                return response.text()
+                .then(text =>
+                {
+                    throw new Exception(text);
+                });
+            }
         }
 
         onSuccess();
     })
-    .catch((error) =>
-    {
-        console.log(error);
-    });
+    .catch(error => error.message);
 }
 
 
@@ -204,10 +179,21 @@ function getRowFromButton(button)
     let cell = button.parentElement;
     return cell.parentElement;
 }
+
 function getPageUrl(page)
 {
     let url = window.location.pathname;
     return url + "?page=" + page;
+}
+
+function createButton(className, text, delegate)
+{
+    let button = document.createElement("button");
+    button.classList.add(className);
+    button.textContent = text;
+    button.addEventListener("click", delegate);
+
+    return button;
 }
 
 function objectToFormData(dataObject)

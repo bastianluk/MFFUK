@@ -9,7 +9,7 @@ try
 catch (Exception $exception)
 {
     $homeUrl = getHomeUrl(); // Lets hope there is nothing wrong in the home page code :)
-    $encodedMessage = urlencode("Exception occured:" . $exception->getMessage());
+    $encodedMessage = urlencode("Exception occured: " . $exception->getMessage());
     $newUrl = $homeUrl . "&message=$encodedMessage";
     checkedRedirectOther(isset($page), $newUrl);
 }
