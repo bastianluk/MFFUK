@@ -1,7 +1,7 @@
 <?php
 
-require_once(__DIR__ . "/../entities/item.php");
-require_once(__DIR__ . "/../entities/listItem.php");
+require_once(__DIR__ . "/entities/item.php");
+require_once(__DIR__ . "/entities/listItem.php");
 
 class SqlContext
 {

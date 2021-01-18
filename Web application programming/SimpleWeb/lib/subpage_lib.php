@@ -19,7 +19,7 @@ function isIdValid($id)
 
 function isPositionValid($position)
 {
-    require_once(__DIR__ . "/sql_lib.php");
+    require_once(__DIR__ . "/../data/sqlContext.php");
     $context = new SqlContext();
     $maxPosition = $context->getMaxListPosition();
     $maxAllowedPosition = $maxPosition == 0 ? 1 : $maxPosition;

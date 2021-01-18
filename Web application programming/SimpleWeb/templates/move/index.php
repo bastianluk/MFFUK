@@ -10,7 +10,7 @@ function move($id, $oldPosition, $newPosition)
     require_once(__DIR__ . "/../../lib/lib.php");
     checkedBadRequest(parametersValid($id, $oldPosition, $newPosition));
 
-    require_once(__DIR__ . "/../../lib/sql_lib.php");
+    require_once(__DIR__ . "/../../data/sqlContext.php");
     $context = new SqlContext();
     $context->moveListItemTo($id, $oldPosition, $newPosition);
 }

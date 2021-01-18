@@ -5,7 +5,7 @@
 
 function get_listItems() : array
 {
-    require_once(__DIR__ . "/../../lib/sql_lib.php");
+    require_once(__DIR__ . "/../../data/sqlContext.php");
     $context = new SqlContext();
     $listItems = $context->getAllListItems();
 

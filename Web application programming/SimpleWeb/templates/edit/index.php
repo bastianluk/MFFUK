@@ -10,7 +10,7 @@ function edit($id, $amount)
     require_once(__DIR__ . "/../../lib/lib.php");
     checkedBadRequest(parametersValid($id, $amount));
 
-    require_once(__DIR__ . "/../../lib/sql_lib.php");
+    require_once(__DIR__ . "/../../data/sqlContext.php");
     $context = new SqlContext();
     $context->setAmount($id, $amount);
 }
