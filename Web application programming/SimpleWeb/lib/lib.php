@@ -4,7 +4,7 @@ function checkedBadRequest($condition)
 {
     if (!$condition)
     {
-        throw new Exception("Bad request - incorrect parameters");
+        throw new Exception("400 Bad request - Incorrect parameters.");
     }
 }
 
@@ -12,10 +12,11 @@ function checkedNotFound($condition)
 {
     if (!$condition)
     {
-        throw new Exception("Requested page not found");
+        throw new Exception("404 Not found - Requested page not found.");
     }
 }
 
+/*
 function checkedRedirectOther($condition, $redirect)
 {
     if (!$condition)
@@ -23,6 +24,7 @@ function checkedRedirectOther($condition, $redirect)
         redirectOther($redirect);
     }
 }
+*/
 
 function redirectOther($redirect)
 {

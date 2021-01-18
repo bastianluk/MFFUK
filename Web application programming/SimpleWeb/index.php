@@ -11,31 +11,31 @@ catch (Exception $exception)
     $homeUrl = getHomeUrl(); // Lets hope there is nothing wrong in the home page code :)
     $encodedMessage = urlencode("Exception occured: " . $exception->getMessage());
     $newUrl = $homeUrl . "&message=$encodedMessage";
-    checkedRedirectOther(isset($page), $newUrl);
+    redirectOther($newUrl);
 }
 
 function main()
 {
-    define('rudamentaryValidation', 322); // to prevent direct access to templates
+    //define('rudamentaryValidation', 322); // to prevent direct access to templates
 
     $method = getMethod();
-    $page = getPageOrRedirectHome($_GET);
-    $fullPath = getPathOrNotFound($page);
+    $page = getPage($_GET);
+    $fullPath = getPath($page);
     $parameters = $method == 'POST' ? $_POST : $_GET;
     processRequest($method, $fullPath, $parameters);
 }
 
-function getPageOrRedirectHome($parameters) : string
+function getPage($parameters) : string
 {
-    $page = getPage($parameters);
+    $page = getPageValue($parameters);
     checkedBadRequest(isset($page));
 
     return $page;
 }
 
-function getPathOrNotFound($page)
+function getPath($page)
 {
-    $fullPath = getPath($page);
+    $fullPath = getPathValue($page);
     checkedNotFound(isset($fullPath));
 
     return $fullPath;
@@ -50,7 +50,7 @@ function processRequest(string $method, $relativePath, array $parameters)
     foreach ($requiredParameters as $key => $param)
     {
         $value = safeGet($parameters, $key);
-        $checkResult = checkParameterValue($param, $value);
+        $checkResult = isCorrectlyTyped($param, $value);
         checkedBadRequest($checkResult);
         if ($param == 'int')
         {

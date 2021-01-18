@@ -1,4 +1,4 @@
-<div class="message-block">
+<div class="messageBlock">
     <h4>Message</h4>
-    <?= $decodedMessage ?>
+    <p><?= $decodedMessage ?></p>
 </div>

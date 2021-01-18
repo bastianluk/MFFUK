@@ -159,6 +159,7 @@ function getEditFormElement(initValue)
 ///
 function fetchRequest(url, method, body, redirect, onSuccess)
 {
+    // Wouldnt need to return.
     return fetch(url,
     {
         method: method,
@@ -167,16 +168,15 @@ function fetchRequest(url, method, body, redirect, onSuccess)
     })
     .then(response =>
     {
-        console.log(response);
-        if (!response.ok)
+        //console.log(response);
+        if (!response.ok && !response.redirected)
         {
             response.text()
             .then(text =>
             {
-                throw new Exception(text);
+                throw new Error(text);
             });
         }
-
         if (response.redirected)
         {
             window.location.replace(response.url);
@@ -186,7 +186,12 @@ function fetchRequest(url, method, body, redirect, onSuccess)
             onSuccess();
         }
     })
-    .catch(error => error.message);
+    .catch((error) =>
+    {
+        console.log(error);
+        let messageBlock = createMessageBlock(error.message);
+        document.body.insertBefore(messageBlock, document.body.firstChild);
+    });
 }
 
 
@@ -213,6 +218,23 @@ function createButton(className, text, delegate)
     button.addEventListener("click", delegate);
 
     return button;
+}
+
+function createMessageBlock(message)
+{
+    let block = document.createElement("div");
+    block.classList.add("messageBlock");
+
+    let title = document.createElement("h4");
+    title.textContent = "Message";
+
+    let paragraph = document.createElement("p");
+    paragraph.textContent = message;
+
+    block.appendChild(title);
+    block.appendChild(paragraph);
+
+    return block;
 }
 
 function objectToFormData(dataObject)

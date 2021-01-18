@@ -25,7 +25,7 @@ function safeGet(array $array, string $name, $default = null)
     return $array[$name];
 }
 
-function getPage($parameters)
+function getPageValue($parameters)
 {
     $page = safeGet($parameters, 'page');
     $page = isset($page) ? validateComposition($page) : NULL;
@@ -38,7 +38,7 @@ function validateComposition($value)
     return $matchResult ? $value : NULL;
 }
 
-function getPath(string $page)
+function getPathValue(string $page)
 {
     $path = getIndexTemplatePath($page);
     $path = !isset($path) ? getNamedTemplatePath($page) : $path;
@@ -62,7 +62,7 @@ function getTemplatePath($suffix)
     return file_exists($path) ? "$suffix" : NULL;
 }
 
-function checkParameterValue($param, $value)
+function isCorrectlyTyped($param, $value)
 {
     if (!isset($value))
     {

@@ -14,7 +14,7 @@ class SqlContext
         $this->connection = new mysqli($db_config['server'], $db_config['login'], $db_config['password'], $db_config['database']);
         if ($this->connection->connect_error)
         {
-            throw new Exception("Connect error:" . $this->connection->connect_error);
+            throw new Exception("Connect error:" . $this->connection->connect_error. ".");
         }
     }
 
@@ -171,6 +171,6 @@ class SqlContext
 
     private function handle_error()
     {
-        throw new Exception("Query error: " . $this->connection->error);
+        throw new Exception("Query error: " . $this->connection->error . ".");
     }
 }
