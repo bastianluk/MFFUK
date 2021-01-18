@@ -20,6 +20,10 @@ function eventAdder()
     {
         deleteAction(button);
     });
+    addClickEventsTo("mass-delete-button", function(button)
+    {
+        massDeleteAction();
+    });
 }
 
 function addClickEventsTo(className, delegate)
@@ -103,6 +107,35 @@ function deleteAction(button)
     });
 }
 
+function massDeleteAction()
+{
+    let input = document.getElementById("mass-delete-input");
+    let pattern = input.value.toString();
+    let nameCells = document.getElementsByClassName("name-cell");
+    let matchingNameCells = Array.from(nameCells).filter(cell => isMathing(cell, pattern));
+    let names = matchingNameCells.map(cell => getNameCellValue(cell));
+    let message = "Do you really want to delete:" + names.join(", ");
+
+    if (names.length == 0)
+    {
+        window.alert("No matching elements found.");
+        return;
+    }
+
+    if (window.confirm(message))
+    {
+        let url = getPageUrl("delete/ids");
+        let ids = matchingNameCells.map(cell => getNameCellRowId(cell));
+        let data = {
+            ids: ids
+        };
+        fetchRequest(url, "POST", objectToFormData(data), "follow", function()
+        {
+            window.location.replace(getPageUrl("home/index"));
+        });
+    }
+}
+
 function saveAction(tableBody, row)
 {
     let url = getPageUrl("edit/index")
@@ -153,6 +186,23 @@ function getEditFormElement(initValue)
     return form;
 }
 
+function isMathing(cell, pattern)
+{
+    let name = getNameCellValue(cell);
+    let match = name.match(pattern);
+
+    return match != null;
+}
+
+function getNameCellValue(cell)
+{
+    return cell.textContent;
+}
+
+function getNameCellRowId(cell)
+{
+    return cell.parentNode.id;
+}
 
 ///
 /// Fetch API

@@ -35,3 +35,17 @@ function isAmountValid($amount)
         is_numeric($amount) && $amount > 0
     );
 }
+
+function isArrayOfIds($ids)
+{
+    return (
+        is_array($ids) &&
+        array_reduce(
+            $ids,
+            function ($carry, $id) {
+                return $carry && isIdValid($id);
+            },
+            true
+        )
+    );
+}

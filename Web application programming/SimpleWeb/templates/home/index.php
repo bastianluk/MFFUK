@@ -36,7 +36,7 @@ $columns = [
     <tbody id="shopping-list-body">
         <?php foreach ($listItems as $key => $listItem) { ?>
         <tr id="<?= $listItem->id ?>" data-position="<?= $listItem->position ?>">
-            <td class="w-75"><?= htmlspecialchars($listItem->item->name) ?></td>
+            <td class="w-75 name-cell"><?= htmlspecialchars($listItem->item->name) ?></td>
             <td class="w-25"><?= $listItem->amount ?></td>
             <td class="w-25">
                 <button class="down-button">/\</button>
@@ -65,5 +65,19 @@ $columns = [
         <input type="submit" value="Add"/>
     </div>
 </form>
+
+<h2>Mass delete</h2>
+<div class="input">
+    <form id="mass-delete-form">
+        <div class="input">
+            <label for="mass-delete-input">Delete 'by' patern</label>
+            <input type="text" name="mass-delete-input" id="mass-delete-input">
+        </div>
+    </form>
+
+    <div class="input">
+        <button class="mass-delete-button">DELETE ALL</button>
+    </div>
+</div>
 
 <script src="templates/home/index.js"></script>

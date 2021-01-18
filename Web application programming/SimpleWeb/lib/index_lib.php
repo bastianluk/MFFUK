@@ -69,6 +69,13 @@ function isCorrectlyTyped($param, $value)
         return false;
     }
 
+    if (is_array($param))
+    {
+        $exploded = explode(",", $value);
+        require_once(__DIR__ . "/subpage_lib.php");
+        return isArrayOfIds($exploded);
+    }
+
     switch ($param) {
         case 'int':
             return is_numeric($value);
