@@ -40,6 +40,8 @@ Recommender Systems
  - RS tries to understand user’s needs through observed behavior (provide suitable results for these needs without being explicitly asked)
  - Implicit query
 
+> RS are software agents that elicit the interests and preferences of individual consumers […] and make recommendations accordingly. They have the potential to support and improve the quality of the decisions consumers make while searching for and selecting products online. (Xiao & Benbasat 20071)
+
 #### Search Engines
 
  - Users know in advance what they want (and is able to specify it)
@@ -73,6 +75,9 @@ Recommendation perspective
 
 > Tell me what is popular among my peers
 
+ - User profile & contextual parameters
+ - community data
+
 ##### Problems
 
  - snowball effect
@@ -82,13 +87,9 @@ Recommendation perspective
 
 > Show me more of what I have liked
 
-##### Problems
-
 #### Knowledge-based
 
 > Tell me what fits my needs the best
-
-##### Problems
 
 #### Hybrid
 
@@ -107,14 +108,120 @@ Recommendation perspective
 
 ### Simple non-personalized recommending algorithms
 
- - popularity based
- - > who did this, did that as well
+ 1. popularity based
+ 2. > who did this, did that as well
    - SQL aggregation query
    - item to item recommendation
 
 ### Simple personalized recommending algorithms
 
- - user-based KNN
+ 1. user-based KNN
    - KNN - k nearest neighbours (k items that are the most similar to item X)
    - we have some list of past actions
    - based on list of past actions (like ratings of movies, with some similarity - cosine etc), find KNN
+
+
+## Collaborative filtering
+
+(used to be; < 2014) The most prominent approach to generate recommendations
+ - used by large, commercial e-commerce sites
+ - well-understood, various algorithms and variations exist
+ - applicable in many domains (book, movies, DVDs, ..)
+
+Approach
+ - use the "wisdom of the crowd" to recommend items
+
+Basic assumption and idea
+ - Users give ratings to catalog items (implicitly or explicitly)
+ - Customers who had similar tastes in the past, will have similar tastes in the future
+
+### Approach
+
+Input
+ - Only a matrix of given user–item ratings
+
+Output types
+ - A (numerical) prediction indicating to what degree the current user will like or dislike a certain item
+   - Less relevant nowadays
+   - Shown somewhere in the product description
+ - A top-N list of recommended items
+   - This is what you need in the end anyway
+
+### User-based nearest-neighbor collaborative filtering
+
+Assumption
+ - user preferences remain stable and consistent over time
+   - solution
+     - decay of relevance
+     - remove old data
+     - detect changes in preference
+
+Technique
+- given active user Alice and an item i
+  - find a set of users who liked the same items alice in the past and who rated i
+  - use e.g. avg of their ratings to predict if alice likes i
+  - repeat for all items unseen by the user and recommend the best-rated
+
+To solve:
+ 1. how to measure similarity of users
+    - Pearson correlation (Jaccard similarity, cosine similarity)
+      - It takes into account the biases
+      - Assumption: what is rated below average was disliked
+ 2. how many neighbors should be considered
+    - can be trained
+      - only some degree of similarity wanted etc
+ 3. how to generate the rating of the item from other users
+    - average + weight based deviation
+
+![userknn](notes-img/userknn.png)
+
+User-based KNN is said to be "memory-based"
+ - the rating matrix is directly used to find neighbors / make predictions
+   - Everything is calculated at the time of the request
+ - does not scale for most real-world scenarios
+ - large e-commerce sites / social networks have tens of millions of customers and millions of items
+
+Model-based approaches
+ - based on an offline pre-processing or "model-learning" phase
+   - Represent users and/or items as a set of features, which are easy to operate with
+ - at run-time, only the learned model is used to make predictions
+ - models are updated / re-trained periodically
+ - large variety of techniques used
+ - model-building and updating can be computationally expensive
+ - **item-based KNN is an example for model-based approaches**
+
+### Item-based nearest-neighbor collaborative filtering
+
+Similarity between items, not users, to make predictions
+
+> Out of the items rated by user A, we find the most similar items to item i based on rating by other users, and make the prediction based on the rating given by the user A to those similar items.
+
+(Inverse of User based)
+
+Advantage:
+ - based on the ratio of users to items and stability of those vectors
+
+
+ - Pre-processing approach by Amazon.com (in 2003)
+ - Calculate all pair-wise item similarities in advance
+
+
+## Explicit ratings
+
+ - **Probably the most precise ratings** (ehm... Attribute ratings, reviews, detailed implicit feedback nowadays...)
+ - Most commonly used (1 to 5, 1 to 7 Likert response scales, likes/dislikes)
+ - Research topics
+   - Optimal granularity of scale; indication that 10-point scale is better accepted in movie dom.
+     - Different domains addopted other common scales
+   - Multidimensional ratings (multiple ratings per movie such as ratings for actors and sound)
+     - Booking.com rating
+
+Main problems
+ - **Users not always willing to rate many items**
+   - number of available ratings could be too small → sparse rating matrices → poor recommendation quality
+ - How to stimulate users to rate more items?
+ - What else to use?
+
+
+
+
