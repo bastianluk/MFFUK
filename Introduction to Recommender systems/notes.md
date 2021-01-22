@@ -205,8 +205,40 @@ Advantage:
  - Pre-processing approach by Amazon.com (in 2003)
  - Calculate all pair-wise item similarities in advance
 
+![itembasedknnalg](notes-img/itembasedknnalg.png)
 
-## Explicit ratings
+#### Pros:
+
+ - well-understood, works well in some domains, no knowledge engineering required
+
+#### Cons:
+ - requires user community, sparsity problems, no integration of other knowledge sources, no explanation of results
+
+
+#### Questions:
+
+1. What is the best CF method?
+   - In which situation and which domain? Inconsistent findings; always the same domains and data sets; differences between methods are often very small (1/100)
+2. How to evaluate the prediction quality?
+   - separate lecture on this – gets even more important nowdays
+   - MAE / RMSE: What does an MAE of 0.7 actually mean?
+   - Serendipity (novelty and surprising effect of recommendations)
+     - Not yet fully understood (still true)
+4. What about multi-dimensional ratings?
+   - not many application domains - instead, what about implicit feedback
+
+### Other approaches
+
+ - Recurrsive CF
+ - Graph based
+   - Spreading activation
+ - Association rule mining
+   - Market Basket Analysis
+ - Probabilistic methods
+
+## Ratings
+
+### Explicit ratings
 
  - **Probably the most precise ratings** (ehm... Attribute ratings, reviews, detailed implicit feedback nowadays...)
  - Most commonly used (1 to 5, 1 to 7 Likert response scales, likes/dislikes)
@@ -222,6 +254,37 @@ Main problems
  - How to stimulate users to rate more items?
  - What else to use?
 
+### Implicit ratings (feedback)
+
+ - Typically collected by the web shop or application in which the recommender system is embedded
+ - When a customer buys an item, for instance, many recommender systems interpret this behavior as a positive rating
+ - Clicks, page views, time spent on some page, demo downloads …
+ - Implicit ratings can be collected constantly and do not require additional efforts from the side of the user
+ - Implicit ratings can be used in addition to explicit ones; question of correctness of interpretation
+
+Main problem
+ - One cannot be sure whether the user **behavior** is **correctly interpreted**
+ - For example, a user might not like all the books he or she has bought; the user also might have bought a book for someone else
 
 
+## Cold start problem (Data sparsity problems)
 
+How to recommend **new items** (invisible)? What to recommend to **new users** (nothing to recommend to him)?
+
+### Straightforward approaches
+ - Ask/force users to rate a set of items
+   - they will hate you
+ - Use another method (e.g., content-based, demographic or simply non-personalized) in the initial phase
+   - bias problems from "previous versions", but generally OK
+ - Default voting: assign default values to items that only one of the two users to be compared has rated (Breese et al. 1998)
+   - ... And the performance is...
+
+### Alternatives
+ - Use better algorithms (beyond nearest-neighbor approaches)
+ - Example:
+   - In nearest-neighbor approaches, the set of sufficiently similar neighbors might be too small to make good predictions
+   - Assume "transitivity" of neighborhoods
+
+### Problem illustration
+
+![coldstart](notes-img/coldstart.png)
