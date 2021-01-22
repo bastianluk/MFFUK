@@ -288,3 +288,6 @@ How to recommend **new items** (invisible)? What to recommend to **new users** (
 ### Problem illustration
 
 ![coldstart](notes-img/coldstart.png)
+
+## Matrix completion (factorization)
+
