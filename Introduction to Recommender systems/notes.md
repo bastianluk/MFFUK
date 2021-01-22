@@ -33,7 +33,39 @@ Mít (argumenty podloženou) představu o vhodném návrhu RecSys dle
 
 ## Recommender System
 
-### Definition
+### **Definition**
+
+Recommender Systems
+ - Users do not know what they want (or do not know how to ask for it)
+ - RS tries to understand user’s needs through observed behavior (provide suitable results for these needs without being explicitly asked)
+ - Implicit query
+
+#### Search Engines
+
+ - Users know in advance what they want (and is able to specify it)
+ - Explicit query submitted by the user
+ - Evaluation through known „correct“ answers for the query
+
+
+#### Personalized Adds
+ - Except from being stupid most of the time (blame the lack of feedback and devs. vision)
+ - Mostly works extra-site, without elementary indication of user’s needs
+   - Often, the basic principle of RecSys (mutual benefits) is violated
+
+
+### Purpose and success criteria
+
+Different perspectives/aspects
+ - Depends on domain and purpose
+ - No holistic evaluation scenario exists (there is no „correct“ recommender)
+
+Retrieval perspective (search engine)
+ - Reduce search costs (you could find it as well, but this is faster)
+ - Provide "correct" proposals
+
+Recommendation perspective
+ - Serendipity – identify items from the Long Tail
+
 
 ### Approaches
 
@@ -61,3 +93,28 @@ Mít (argumenty podloženou) představu o vhodném návrhu RecSys dle
 #### Hybrid
 
 > Composition of before mentioned systems
+
+### Lifecycle
+
+ 1. Get User Feedback
+ 2. Learn user preference
+ 3. Upon demand,  recommend objects
+
+ - The process is asynchronous  by nature
+ - That seriously complicate things
+
+## Algorithms
+
+### Simple non-personalized recommending algorithms
+
+ - popularity based
+ - > who did this, did that as well
+   - SQL aggregation query
+   - item to item recommendation
+
+### Simple personalized recommending algorithms
+
+ - user-based KNN
+   - KNN - k nearest neighbours (k items that are the most similar to item X)
+   - we have some list of past actions
+   - based on list of past actions (like ratings of movies, with some similarity - cosine etc), find KNN
