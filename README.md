@@ -1,11 +1,20 @@
 # MFFUK
 
-(Hopefully) Usable materials I collected during my studies @ [MFF UK](https://www.mff.cuni.cz/studium/bcmgr/ok/ib3a23.htm).  
-Most of them are in Czech.
+(Hopefully) Usable materials I collected during my studies @ [MFF UK](https://www.mff.cuni.cz/studium/bcmgr/ok/ib3a23.htm).
+Most of them are in Czech (especially from earlier years, but later on notes are mostly in english)
 
 ## Lists of courses taken
 
-### \[Current\] Summer Semester 2019/2020
+### \[Current\] Winter Semester 2019/2020
+
+- Introduction to Recommender Systems
+- Modern database principles
+- Operating Systems
+- Web applications programming
+- (English language exam)
+
+
+### Summer Semester 2019/2020
 
 - Intro to Software Engineering
 - Linear Optimalization
@@ -13,40 +22,39 @@ Most of them are in Czech.
 - XML Technologies
 - Software project
 
-
 ### Winter Semester 2019/2020
 
-- Compiler Principles 
-- Data Organisation and Processing I 
-- Database Applications 
+- Compiler Principles
+- Data Organisation and Processing I
+- Database Applications
 - Information Security I
 - Propositional and Predicate Logic
 
 ### Summer Semester 2018/2019
 
-- Advanced C# and .NET platform I 
-- Automata and Grammars 
-- Combinatorics and Graphs 
-- Database systems 
-- Introduction to UNIX 
+- Advanced C# and .NET platform I
+- Automata and Grammars
+- Combinatorics and Graphs
+- Database systems
+- Introduction to UNIX
 
 ### Winter Semester 2018/2019
 
-- Algorithms and Data structures II 
-- C# and .NET platform 
+- Algorithms and Data structures II
+- C# and .NET platform
 - Principles of Computers
-- Probability and Statistics 
+- Probability and Statistics
 
 ### Summer Semester 2017/2018
 
-- Algorithms and Data structures I 
-- Linear Algebra II 
-- Mathematical Analysis II 
+- Algorithms and Data structures I
+- Linear Algebra II
+- Mathematical Analysis II
 - Programming II (C#)
 
 ### Winter Semester 2017/2018
 
-- Discrete Maths 
+- Discrete Maths
 - Introduction to PC Networking
 - Linear Algebra I
 - Mathematical Analysis I
