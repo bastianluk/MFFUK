@@ -123,6 +123,8 @@ Recommendation perspective
 
 ## Collaborative filtering
 
+> Tell me what is popular among my peers
+
 (used to be; < 2014) The most prominent approach to generate recommendations
  - used by large, commercial e-commerce sites
  - well-understood, various algorithms and variations exist
@@ -290,4 +292,115 @@ How to recommend **new items** (invisible)? What to recommend to **new users** (
 ![coldstart](notes-img/coldstart.png)
 
 ## Matrix completion (factorization)
+
+![matrixdecomp](notes-img/matrixdecomp.png)
+
+![matrixconcept](notes-img/matrixconcept.png)
+
+### Decomposition how to
+
+Comes from machine learning
+
+Gradient descent
+
+Target function:
+ - sum of squared errors + regularization (without it it would be good on training data, not on actual predictions)
+![matrixfunc](notes-img/matrixfunc.png)
+
+
+ - where  λ  is the weight of the regularization term (i. e., a constant giving the importance of the regularization term)
+ - Minimization of the above loss function using stochastic gradient descent (or any other optimization algorithms)
+
+Through derivations of the before mentioned function, or rather the partial loss functions that summed up make up the original one, it adjusts the values of factors
+
+### Algorithm
+
+Input: matrix M with n rows and m columns, integer K,  real number eps, real number lambda
+```
+Create U and V matrices and initialize their values randomly (U has n rows, K columns; V has K rows, m columns)
+While U x V does not approximate M well enough (or the maximal number of iterations is not reached)
+    For each known element x of M in a random order
+        Let i and j denote the row and column of x
+        Let x’ be the dot product of the corresponding row of U and column of V
+        err = x’ – x
+        for (k=0; k < K; k++)
+            u_i,k(i,k) 🡨 u_i,k(i,k) - eps*err*v_k,j(k,j) – lambda*u_i,k(i,k)
+            analogous for v_k,j
+        end for
+    end for
+end while
+```
+
+### How to set the parameters ε, λ and K ?
+
+ - ε - affects speed/rate and ability of convergence - local VS global min
+ - λ - regularization parameter - limits/binds the value (prevents obviously big incorrect values)
+ - K - limits the theoretical minimum of the error / how much it can learn
+
+1. Select a subset of the known values of M
+2. Execute the previous matrix factorisation algorithm using the selected subset only
+3. Evaluate the result of the factorisation using the non-selected known values of M, i.e., check how well the product U x V estimates the non-selected, but known values of M
+   - In order to measure how well U x V estimates the non-selected, but known values of M, one can use for example the mean absolute error (MAE) or mean squared error (MSE), see e.g. Wikipedia
+4. Repeat steps 2 and 3 for various settings of the values of the parameters, and select the parameter values that give the best result
+5. Execute the algorithm using the selected  parameter values using ALL the known values of M, and finally estimate the missing values of M using the product of U and V
+
+### Disadvantages
+
+ - Static set of items and users (what about new ones?)
+    - Batch-trained – newest response is never in the models
+    - Iterative local updates possible, but new users/items are stil a problem
+ - Optimize w.r.t. Irrelevant error (RMSE)
+   - training against minimal rating error but we want minimal ranking error
+ - Learning rate vs. Regularization hyperparameters
+ - Local optimum vs. global optimum
+   - More ellaborated optimizers
+     - https://ruder.io/optimizing-gradient-descent/
+ - Memory-efficient implementation
+   - sparse representation of M
+   - Sparse matrix in scipy.sparse (i,j,value)
+
+![matrixparam](notes-img/matrixparam.png)
+
+![matrixoptim](notes-img/matrixoptim.png)
+ - some avg rating
+ - bias of a user
+   - some users rate higher in general
+ - bias of an item
+   - good in general?
+ - latent factors of the user/item
+   - multidimensional
+
+### BPR factorization
+
+Takes into account ranking correctness
+
+Instead of rating errors, focus on ranking correctness
+ - Triples of user, good and bad object
+ - For these pairs, good object should be rated higher than the bad one
+ - (unary feedback originally, but graded possible)
+
+We want to keep the relation of rating of good item for a user is higher than rating of bad item
+
+In practice: bought (known) itemss are good, all else is bad (unknown)
+
+![matrixbpr](notes-img/matrixbpr.png)
+
+ - bad items should be sampled
+ - use sigmoid function to translate ranking error values to binary values
+
+=> 3 rules (update for user, good items, bad items) to replace the updates in the original Alg.
+
+## Content-based recommendation
+
+> Show me more of what I have liked
+
+ - While CF – methods do not require any information about the items,
+   - it might be reasonable to exploit such information; and recommend fantasy novels to people who liked fantasy novels in the past
+ - What do we need:
+   - some information about the available items such as the genre ("content")
+   - some sort of user profile describing what the user likes (the preferences)
+ - The task:
+   - learn user preferences
+   - locate/recommend items that are "similar" to the user preferences
+
 
