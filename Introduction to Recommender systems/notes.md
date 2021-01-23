@@ -403,4 +403,134 @@ In practice: bought (known) itemss are good, all else is bad (unknown)
    - learn user preferences
    - locate/recommend items that are "similar" to the user preferences
 
+### What is the "content"?
+
+ - Most CB-recommendation techniques were applied to recommending text documents.
+   - Like web pages or newsgroup messages for example.
+   - Now also multimedia content (fashion, music) or e-commerce
+ - Content of items can also be represented as text documents.
+   - With textual descriptions of their basic characteristics.
+   - Structured: Each item is described by the same set of attributes
+
+### Task - simple approach
+
+Compute the similarity of an unseen item with the user profile based on the keyword overlap
+(e.g. using the Dice coefficient)
+
+### Representation
+
+In a simple impl: usually keywords/tags
+
+![contentjacc](notes-img/contentjacc.png)
+
+#### Problems
+
+ - in particular when automatically extracted as
+   - not every word has similar importance
+   - longer documents have a higher chance to have an overlap with the user profile
+
+#### Solution - Standard measure: TF-IDF
+
+ - Encodes text documents in multi-dimensional Euclidian space
+   - weighted term vector
+ - TF (term frequency): Measures the importance of the term => how often a term appears (density in a document)
+   - assuming that important terms appear more often
+   - normalization has to be done in order to take document length into account
+ - IDF (inverse document frequencys): Important terms should be unique to one document => Aims to reduce the weight of terms that appear in all documents
+   - May not be relevant in some cases (e.g. Male vs. Female attribute on dating sites)
+
+![contenttfidf](notes-img/contenttfidf.png)
+### Improving the vector space model
+
+ - 2vec models
+ - BERT
+ - or similar
+
+#### word2vec
+
+ - turn all words to predefined sized vector
+
+ - if the vector of 2 words is similar, they appear in a similar context
+
+# LATER in detail
+
+##### Text / multivalue
+
+text -> vector of words -> similarity vector (vector of all the words with the values meaning word w_i is in the original text) -> use some similarity to compare items/texts...
+
+##### Nominal / value
+
+similar, jsut text with one word
+
+##### Numeric
+
+some difference rate but there are problems:
+
+ - quantiles
+ - cumulative distribution function
+#### Other
+
+ - rule based improvements - mostly in preprocessing
+ - **feature selection** - is the attribute actually important (holiday description)
+
+### Cosine similarity
+
+![simcosine](notes-img/simcosine.png)
+
+### Recommending items
+
+Simple method: **nearest neighbors**
+ - we have the user history of items, per item we have its weight a set of similar items, we can aggregate over that and show the top k elements of that list
+
+May be relevant for item-based recommendations
+ - Most similar items to the currently viewed one
+ - Still used in smaller e-commerce (either based on content or collaborative similarity)
+
+Other options?
+ - Any aggregation of user’s preferences?
+
+#### Rocchio's method (Vector Space Model)
+
+User positive and user negative vector + distance (stay close to positive and far from negative)
+
+Originally for „conversational“ (interactive/iterative) query retrieval systems
+Query-based retrieval: Rocchio's method
+The SMART System: Users are allowed to rate (relevant/irrelevant) retrieved documents (feedback)
+The system then learns a prototype of relevant/irrelevant documents
+Queries are then automatically extended with additional terms/weight of relevant documents
+
+The paradigm fits well also for recommender systems
+
+Some modern loss functions are based on a similar principles (e.g. Contrastive loss for siamese networks)
+
+![contentrocchio](notes-img/contentrocchio.png)
+
+### Disadvantages
+
+**the bubble**
+
+Overspecialization
+ - Algorithms tend to propose **"more of the same"**
+ - Or: too similar news items
+ - Multicriterial optimization (diversity, novelty), fairness-aware approaches
+
+Keywords alone may not be sufficient to judge quality/relevance of a document or web page
+ - up-to-date-ness, usability, aesthetics, writing style
+ - **content may also be limited / too short**
+ - content may not be automatically extractable (multimedia)
+   - Not so big issue today
+
+Ramp-up phase required
+ - Some training data is still required
+ - Web 2.0: Use other sources to learn the user preferences
+
+### Advantages
+
+no cold-start!!!
+
+
+## Knowladge-based models
+
+> Tell me what fits my needs the best
+
 
