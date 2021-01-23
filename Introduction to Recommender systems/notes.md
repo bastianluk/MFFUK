@@ -529,8 +529,254 @@ Ramp-up phase required
 no cold-start!!!
 
 
-## Knowladge-based models
+## Knowledge-based models
 
 > Tell me what fits my needs the best
+
+Move from recommending similar to recommending better objects
+
+### Motivation
+
+Products with **low number of available ratings** - expensive cars and villas
+
+Time span plays an important role
+ - five-year-old ratings for computers
+ - user lifestyle or family situation changes
+
+Customers want to **define** their **requirements explicitly**
+ - "the color of the car should be black"
+
+### Approaches
+
+1. Constraint-based
+   - based on explicitly defined set of recommendation rules _(partially)_ fulfill recommendation rules
+2. Case-based
+   - Item-based: give me similar items, however with larger display
+
+**(edge of query retrieval and recommender systems)**
+ - users specify the requirements
+ - systems try to identify solutions
+ - if no solution can be found, users change requirements (or partial solution is given)
+ - Not always, we may learn knowledge RS rules from collaborative data
+
+#### Constraint-based recommender systems
+
+Knowledge base
+ - usually mediates between user model and item properties
+ - variables
+   - user model features (requirements), Item features (catalogue)
+ - set of constraints
+   - logical implications (IF user requires A THEN proposed item should possess feature B)
+   - hard and soft/weighted constraints
+   - solution preferences
+
+Derive a set of recommendable items
+ - fulfilling set of applicable constraints
+ - applicability of constraints depends on current user model
+ - explanations – transparent line of reasoning
+
+##### Tasks
+
+ 1. Find a set of user requirements such that a subset of items fulfills all constraints
+    - ask user which requirements should be relaxed/modified such that some items exist that do not violate any constraint
+ 2. Find a subset of items that satisfy the maximum set of weighted constraints
+    - similar to find a maximally succeeding subquery (XSS)
+    - all proposed items have to fulfill the same set of constraints
+    - compute relaxations based on predetermined weights
+ 3. Rank items according to weights of satisfied soft constraints
+    - rank items based on the ratio of fulfilled constraints
+    - does not require additional ranking scheme
+
+![knowledgeconstraint](notes-img/knowledgeconstraint.png)
+
+#### Case-based recommender systems
+
+Items are retrieved using similarity measures
+
+Distance similarity
+ - ![knowledgecase](notes-img/knowledgecase.png)
+   - sim(p, r) expresses for each item attribute value φr(p) its distance to the customer requirement r ∈ REQ
+   - w_r is the importance weight for requirement r
+
+In real world, customer  would like to
+ - maximize certain properties. i.e. resolution of a camera, "more is better"(MIB)
+ - minimize certain properties. i.e. price of a camera, "less is better"(LIB)
+ - Target within some values, e.g. Price between x,y
+
+![knowledgecasetransform](notes-img/knowledgecasetransform.png)
+
+##### Interacting with case-based recommenders
+
+ - Customers maybe not know what they are seeking
+ - **Critiquing** is an effective way to support such navigations
+ - Customers specify their change requests (price or mpix) that are not satisfied by the current item (entry item)
+
+![knowledgecasecrit.](notes-img/knowledgecasecrit.png)
+
+###### **Compound**
+
+Operate over **multiple properties** can improve the efficiency of recommendation dialogs
+You can try to learn attribute-level preferences from the interaction data (if you have them), or apply general policies (item A is better than item B for most settings)
+
+
+### Limitations
+
+ - cost of knowledge acquisition
+   - from domain experts
+   - from users
+   - from web resources
+ - accuracy of preference models
+   - very fine granular preference models require many interaction cycles
+   - collaborative filtering models preference implicitly
+ - independence assumption can be challenged
+   - preferences are not always independent from each other
+ - No known commercial usage
+   - (but the generic concept of price per value with optional personalization is viable)
+
+## RecSys evaluation
+
+> If You want to double your success rate, you should double your failure rate.
+(=> experiment a lot)
+
+Types:
+ 1. Off-line evaluation
+    - Based on historical data
+    - Aiming to predict hidden part of the data
+    - A lot of improvements recently
+ 2. Lab studies (User Studies)
+    - Expressly created for the purpose of the study
+    - Extraneous variables can be controlled more easy by selecting study participants
+      - Possibility to get more feedback
+    - But doubts may exist about participants motivated by money or prizes
+    - Participants should behave as they would in a real-world enviroment
+ 3. Field studies (On-line, A/B testing)
+    - Conducted in an preexisting real-world enviroment
+    - Users are intrinsically motivated to use a system
+
+
+### Online studies
+
+Success = more money
+
+A/B testing
+ - Evaluate metric as close to the actual target variable as possible
+ - Retailer’s target variable is profit
+   - i.e. Netflix’s target variable is monthly subscribes
+   - Usually, larger overal consumption increase profit
+ - Broadcaster’s target variable may be influenceness / total mass of readers
+
+The direct effect on target variables may be too small
+ - How much does one small parameter change affect retention of users?
+
+The target variables may be hard to measure directly
+- E.g. has long-term effect only / cannot extrapolate all external variables
+
+Proxy variables
+ - Loyalty of user, Conversions rate, Basket size / value, Click through rate, Shares / Follows /…
+
+![evalonline](notes-img/evalonline.png)
+
+#### Technical metrics
+
+**Always design evaluation metrics with respect to your target variable**
+
+
+ - **!!Response time!!**
+ - Train / re-train / model update time
+ - Memory / CPU consumption
+   - How large can we grow with current infrastructure?
+
+Recall on objects
+ - Is portion of your objects ignored? Are there too many low-profit bestsellers?
+
+Ability to predict
+ - Can you calculate recommendations for all users?
+ - For which groups of users are we better than baseline?
+
+#### Disadvantage
+
+ - It costs a lot!
+ - some users get suboptimal recommendations (solvable)
+   - **MULTIARMED BANDITS**
+     - use maximum of bandits with minimal regret (the difference of the reward of using too many to using the actual best recsys)
+     - Algorithms
+       - Epsilon-gready alg
+         - we have some stats for recsys 1 through k
+         - with propability 1-ε we use the best one, and with ε we choose something else - over time will converge to the best one while not using the sub-par recsys too often
+       - Upper confidence bounds
+         - ![evalbanditsconf](notes-img/evalbanditsconf.png)
+       - Thompson sampling
+         - similar to above, but this uses Beta distribution and based on a random number it chooses
+
+
+
+### DarkSide
+
+ - It is possible to incorporate some providers metrics into the recommendation proces
+   - i.e. recommend items with higher profit
+ - Do that wisely (or, rather, not at all)
+   - Your credibility is at stake if someone finds out
+   - User trust is in recommendations is one of the most important features determining the long-term effect of recommender  - systems
+   - Do not behave like ALZA recently...
+     - sued for putting things into shopping carts without users knowing
+
+### Lab studies
+
+ - Same as on-line experiments
+ - Questionnaire
+   - Features otherwise harder to detect directly
+   - Helpfulness / Ease of use / Relevance
+   - Trust
+   - Novelty to the user etc.
+ - Physiological response
+   - Eye tracking etc.
+
+
+ - Key criterion in lab studies is that subjects should well approximate behavior of your real users
+   - This may be harder than it seems
+   - Carefully consider what tasks to give him/her and then re-think it once more ☺
+
+![evallab](notes-img/evallab.png)
+
+#### Advantage
+
+ - no real cost in terms of sub-par recomms to real users
+ - ability to question afterwards
+ - physiological response
+
+#### Disadvantages
+
+ - possible cost
+ - are the people in the study actually representative?
+
+### Offline studies
+
+#### Simulation on existing dataset
+
+Train / Validation / Test split
+Random (bootstrap) – only in case of very large datasets
+Cross-validation variants
+Temporal splits – better than CV for RecSys (causality problems), however lower support in non-recsys audience
+Event-based simulation – the best option from causality perspective, most expensive
+Prediction of „correct“ objects
+According to some metic / metrics
+
+Beware of the effect of causality
+How did users get to the objects they actually rated?
+In your data, store available choices
+In 3rd party data, you may observe general popularity of individual items
+
+Correct evaluation protocol:
+For each method and set of parameters:
+Learn model on TRAIN set
+Evaluate prediction on VALIDATION set
+Select best parameters for each method
+For each method:
+Learn model on TRAIN + VALIDATION set
+Evaluate prediction on TEST set
+Compare results
+
+Never use any knowledge of the test set data
+E.g. For mean ratings, object similarities etc.
 
 
