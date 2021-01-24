@@ -753,30 +753,154 @@ Ability to predict
 
 #### Simulation on existing dataset
 
-Train / Validation / Test split
-Random (bootstrap) – only in case of very large datasets
-Cross-validation variants
-Temporal splits – better than CV for RecSys (causality problems), however lower support in non-recsys audience
-Event-based simulation – the best option from causality perspective, most expensive
-Prediction of „correct“ objects
-According to some metic / metrics
+ - Train / Validation / Test split
+   - Random (bootstrap) – only in case of very large datasets
+     - **Split data 3 ways**
+       - Train
+       - Validate
+         - mainly if more hyper parameters
+         - if best is selected, retrain with train = train + validate
+       - Test
+         - test the trained model
+   - Cross-validation variants
+   - **Temporal splits** – better than CV for RecSys (causality problems)
+     - however lower support in non-recsys audience
+     - also has a problem with the fact that the system is learning on data that is **from a window that is a month ago** (not a real example)
+   - Event-based simulation – the best option from causality perspective, most expensive
+     - a
 
-Beware of the effect of causality
-How did users get to the objects they actually rated?
-In your data, store available choices
-In 3rd party data, you may observe general popularity of individual items
+
+
+Prediction of „correct“ objects
+ - According to some metic / metrics
+
+For small data sets:
+
+![offvalid](notes-img/offvalid.png)
+
+
+**Beware of the effect of causality**
+ - How did users get to the objects they actually rated?
+ - In your data, store available choices
+ - In 3rd party data, you may observe general popularity of individual items
 
 Correct evaluation protocol:
-For each method and set of parameters:
-Learn model on TRAIN set
-Evaluate prediction on VALIDATION set
-Select best parameters for each method
-For each method:
-Learn model on TRAIN + VALIDATION set
-Evaluate prediction on TEST set
-Compare results
+ - For each method and set of parameters:
+   - Learn model on TRAIN set
+   - Evaluate prediction on VALIDATION set
+ - Select best parameters for each method
+ - For each method:
+   - Learn model on TRAIN + VALIDATION set
+   - Evaluate prediction on TEST set
+ - Compare results
 
-Never use any knowledge of the test set data
-E.g. For mean ratings, object similarities etc.
+ - **Never use any knowledge of the test set data**
+   - E.g. For mean ratings, object similarities etc.
+
+#### Other options:
+
+ - Monte Carlo Cross Validation (select membership to train or test at random)
+ - Temporal splits (older data as train set, newer as test set)
+   - Prefered if enough data (causality effects)
+ - Off-line simulation **(flow of inbound and outbound events)**
+   - Important for Reinforcement learning and similar approaches
+   - High temporal complexity
+ - Various de-biasing techniques (counterfactual / off-policy evaluation, missing-not-at-random)
+   - Rather complex topic, hopefully, later today
+
+#### Metrics
+
+ - Relevance of the recommended objects / Ranking metrics
+   - User visited / rated / purchased… the objects, which the method recommends
+   - **nDCG**, **MAP**, Precision, **Precision@top-k**, Recall, Liftindex, RankingScore,…
+ - Rating error metrics
+   - User rated some objects, how large is the prediction error on those?
+   - MAE, RMSE,…
+ - Novelty
+   - Does the user already know / visited recommended objects?
+   - This may be both positive and negative depending on task
+     - However it is always trivial
+     - No need of complex system to recommend previously visited objects
+ - Diversity
+   - Are all the recommendations similar to each other?
+   - Relevance vs. Diversity tradeoff
+   - **Intra-List Diversity**
+ - Coverage
+   - how many items were recommended (over time)
+ - Serendipity
+   - unplanned fortunate discovery
+   - new and relevant object
 
 
+##### Evaluation in information retrieval (IR)
+
+![offtruthtable](notes-img/offtruthtable.png)
+
+**Precision**: a measure of exactness, determines the fraction of relevant items retrieved out of all items retrieved
+![offprec](notes-img/offprec.png)
+
+**Recall**: a measure of completeness, determines the fraction of relevant items retrieved out of all relevant items
+![offrec](notes-img/offrec.png)
+
+The problem is that that doesnt reflect order and "relevance" => **Limit on top-k**
+ - Precision@top-k
+ - Recall@top-k
+
+
+Position within top-k does not matter
+ - The list is short enough that user observe it all
+ - With increasing k, this becames less applicable
+
+==>
+
+##### Rank aware methods
+
+ - RankScore,
+ - Lift index
+ - **Normalized Discounted Cumulative Gain**
+   - ![offndcg](notes-img/offndcg.png)
+
+ - Rankscore (exponential reduction) < Liftscore (linear red.) < NDCG (log. red.)
+
+###### Mean Average Precision (MAP)
+
+ - a ranked precision metric that places emphasis on highly ranked correct predictions (hits)
+ - essentially it is the average of precision values determined after each successful prediction, i.e.
+
+![offmap](notes-img/offmap.png)
+
+#### Debiasing
+
+##### Biases - Presentation bias
+
+![evalpresent](notes-img/evalpresent.png)
+
+ - What (where) was shown to the user affects what feedback we received
+ - How to evaluate novel RS that would recommend something else
+   - Than what users received & evaluated
+   - Hard question in general, intensive research topic
+     - Off-policy evaluation or counterfactual evaluation (what would be the results, if policy B was applied)
+     - Part of the feedback received on random(ized) data
+     - https://arxiv.org/pdf/1003.0146.pdf (Section 4: evaluation, assuming independence of events)
+
+###### Example
+
+![evalpresentex](notes-img/evalpresentex.png)
+
+##### Missing not at random for Implicit feedback
+
+ - Classical off-line evaluation expects Missing at random data
+ - **absence of (positive) feedback** is either because the item is **unknown positive or irrelevant**
+   - For aggregational statistics to be valid, it is important that the chance of being unknown positive or irrelevant is the same for all data with no feedback
+   - Not true in real-world for some cases
+   - Probability that the item is known by the user => **propensity** (probability - user would use this if it was known to him)
+   - Well-known movies may have higher propensity (users ignore them willingly)
+     - MISSING NOT AT RANDOM
+     - Evaluation should be de-biased accordingly (we need to estimate the propensity)
+
+E.g - I dont rate things I dont like
+
+Paper
+ - Thorsten Joachims et al. https://arxiv.org/pdf/1608.04468.pdf; https://ylongqi.com/paper/YangCXWBE18.pdf
+
+![evaldebias](notes-img/evaldebias.png)
