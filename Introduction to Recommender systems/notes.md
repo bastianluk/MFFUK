@@ -1090,7 +1090,108 @@ Compute Stochastic Gradient Descent over a batch of data points, then update
  - Momentum
  - Adaptive learning rates
 
+### Usage
 
+ - **Feature extraction directly from the content**
+   - Image, text, audio, etc.
+   - Instead of metadata
+   - For hybrid algorithms
+ - **Heterogenous data handled easily**
+ - **Dynamic/Sequential behaviour** modeling with RNNs
+ - More accurate representation learning of users and items
+   - Natural extension of CF & more
+ - RecSys is a complex domain
+   - Deep learning worked well in other complex domains
+   - Worth a try
 
+### Best practices
 
+ - **Start simple**
+   - Add improvements later
+ - Optimize code
+   - GPU/CPU optimizations may differ
+ - **Scalability is key**
+ - Opensource code
+ - Experiment (also) on public datasets
+ - **Don’t use very small datasets**
+ - Don’t work on irrelevant tasks, e.g. rating prediction
 
+### Embedding
+
+ - a (learned) real value vector  representing an entity
+
+Also known as:
+ - Latent feature vector
+ - (Latent) representation
+
+Similar entities’ embeddings are similar
+
+#### Use in recommenders
+
+ - Initialization of item representation in more advanced  algorithms
+ - Item-to-item recommendations
+
+#### Matrix fact. as learning embeddings
+
+MF: user & item embedding learning
+ - Similar feature vectors
+   - Two items are similar
+   - Two users are similar
+   - User prefers item
+
+MF representation as a simplictic neural  network
+ - Input: one-hot encoded user ID
+ - Input to hidden weights: user feature  matrix
+ - Hidden layer: user feature vector
+ - Hidden to output weights: item feature  matrix
+ - Output: preference (of the user) over the  items
+
+![dlembed](notes-img/dlembed.png)
+
+#### Word2vec
+
+[Mikolov et. al, 2013a]
+
+transforms words to their embeddings and it keeps similarity -> embedding is similar if the words appear in the same/similar context
+
+ - Representation learning of words
+ - Shallow model
+ - Data: (target) word + context pairs
+   - Sliding window on the document
+   - Context = words near the target
+     - In sliding window
+     - 1-5 words in both directions
+ - Two models
+   - Continous Bag of Words (CBOW)
+   - Skip-gram
+
+##### CBOW
+
+ - Continuous Bag of Words
+ - Maximalizes the probability of the target word given the  context
+ - Model
+   - Input: one-hot encoded words
+   - Input to hidden weights
+     - Embedding matrix of words
+   - Hidden layer
+     - Sum of the embeddings of the words in the context
+   - Hidden to output weights
+   - Softmax transformation
+     - Smooth approximation of the max operator
+     - Highlights the highest value
+ - Output: likelihood of words of the corpus given the context
+
+Embeddings are taken from the input to hidden matrix
+ - Hidden to output matrix also has item representations (but not used)
+
+![dlcbow](notes-img/dlcbow.png)
+
+##### Skip-gram
+
+Window of context
+
+![dlskipgram](notes-img/dlskipgram.png)
+
+![dlskipwindow](notes-img/dlskipwindow.png)
+
+![dlskipexample](notes-img/dlskipexample.png)
