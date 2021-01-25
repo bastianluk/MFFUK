@@ -904,3 +904,162 @@ Paper
  - Thorsten Joachims et al. https://arxiv.org/pdf/1608.04468.pdf; https://ylongqi.com/paper/YangCXWBE18.pdf
 
 ![evaldebias](notes-img/evaldebias.png)
+
+### Sequance-aware evaluation
+
+Based on some sequence of events we want the system to respond with something specific
+
+It simulates IRL use of the system
+
+Simple implementation
+ - session similarity -> KNN on the session level
+ - weighted approach - decay for older items in item to item recommendations
+
+![evalseq1](notes-img/evalseq.png)
+
+![evalseq2](notes-img/evalseq2.png)
+
+![evalseq3](notes-img/evalseq3.png)
+
+#### Partitioning
+
+![evalseq4](notes-img/evalseq4.png)
+
+![evalseq5](notes-img/evalseq5.png)
+
+## Hybrid recommender systems
+
+Combine the advantages of content and collaborative approaches
+
+Different hybridization designs
+ 1. Parallel use of several systems + aggregation
+ 2. Monolithic exploiting different features
+ 3. Pipelined invocation of different systems
+
+### Monolithic
+
+![hybridmono](notes-img/hybridmono.png)
+
+#### Content-boosted collaborative filtering
+
+ - [Prem Melville et al. 2002]
+ - **Based on content features additional ratings are created**
+ - E.g. Alice likes Items 1 and 3 (unary ratings)
+   - Item7 is similar to 1 and 3 by a degree of 0.75
+   - Thus Alice likes Item7 by 0.75
+ - Item matrices become less sparse
+ - Significance weighting and adjustment factors
+   - Peers with more co-rated items are more important
+   - Higher confidence in content-based prediction, if higher number of own ratings
+
+
+#### Spreading activation
+
+![hybridspread](notes-img/hybridspread.png)
+
+Page rank like
+
+![hybridspreadbetter](notes-img/hybridspreadbetter.png)
+
+![hybridspreadformula](notes-img/hybridspreadformula.png)
+
+
+#### BPRMCA
+
+from matrix factorization
+
+Latent factors of similar items should also be similar - cosine similarity / distance of the latent factors
+
+![hybridbprmca](notes-img/hybridbprmca.png)
+
+### Parallelized hybridization design
+
+ - Output of several existing implementations combined
+ - Least invasive design
+ - Some weighting or voting scheme
+   - Weights can be learned dynamically
+   - Extreme case of dynamic weighting is switching
+
+#### Problem
+
+The output of 2 recsys can have no overlap resulting in us using just 1 system anyway.
+
+#### Hybridization
+
+Can use multiarm bandits per item in the top k
+
+or weighted approach - normalize results so they can be comparable
+
+
+
+#### Fuzzy D'Hondt's algorithm
+
+Similar to votes => mandates translation in elections
+
+If some recsys gives good results in 40% of the cases, it should be represented accordingly in the number of top-K elements recommended.
+
+Minimize the over represented party (reduce votes when a mandate is assigned and choose again)
+
+In Fuzzy reduced not by some fixed amount but relevancy amount
+![hybridfuzzy](notes-img/hybridfuzzy.png)
+
+### Pipelined hybridization designs
+
+ - One recommender system pre-processes some input for the subsequent one
+   - Cascade
+   - Meta-level
+
+ - Refinement of recommendation lists (cascade)
+ - Learning of model (e.g. collaborative knowledge-based meta-level)
+
+#### Cascade
+
+ - Successor's recommendations are restricted by predecessor
+   - ![hybridcascade](notes-img/hybridcascade.png)
+ - Where forall k > 1
+   - ![hybridcascade2](notes-img/hybridcascade2.png)
+ - Subsequent recommender may not introduce additional items
+   - Thus produces very precise results
+
+ - Recommendation list is continually reduced
+ - First recommender excludes items
+   - Remove absolute no-go items (e.g. knowledge-based)
+ - Second recommender assigns score
+   - Ordering and refinement (e.g. collaborative)
+
+#### Meta-level
+
+ - Successor exploits a model delta built by predecessor
+   - ![hybridmeta](notes-img/hybridmeta.png)
+
+##### Examples
+
+Fab
+ - instead of updating the input, we change the parameters of the next model in line
+ - Online news domain
+ - CB recommender builds user models based on weighted term vectors
+ - CF identifies similar peers based on these user models but makes recommendations based on ratings
+
+Collaborative constraint-based meta-level RS
+ - to the matrix of factors we add factors that we are updating
+ - Collaborative filtering learns a constraint base
+ - Knowledge-based RS computes recommendations
+
+## Deep Learning (DL)
+
+![dlnetwork](notes-img/dlnetwork.png)
+
+![dllearning](notes-img/dllearning.png)
+
+ - effective from a certain size - mostly for larger data sets
+
+Neural model
+![dlneural](notes-img/dlneural.png)
+
+
+
+
+
+
+
+
