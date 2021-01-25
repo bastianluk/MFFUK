@@ -14,9 +14,9 @@ Klíčové algoritmy (měli byste být schopni je poměrně detailně popsat - t
  - [x] multi-armed bandits (znát detailně alespoň jednu metodu výběru ramen)
 
 Vědět co jsou / na jakém principu fungují / co zhruba obsahují:
- - [ ] evaluace doporučovacích systémů ( off-line / user study / A/B testing; cross-validation; click through rate /  conversions / precision / recall / RMSE / nDCG / MAP; proč je nutné provádět evaluaci? Jak poznat že je jeden  doporučovač lepší než jiný?)
+ - [x] evaluace doporučovacích systémů ( off-line / user study / A/B testing; cross-validation; click through rate /  conversions / precision / recall / RMSE / nDCG / MAP; proč je nutné provádět evaluaci? Jak poznat že je jeden  doporučovač lepší než jiný?)
  - [ ] context-aware recommendation: způsoby zapojení kontextu + typické varianty kontextu (teprve bude probráno),
- - [ ] sequence-based / sequence-aware doporučování a vyhodnocování
+ - [x] sequence-based / sequence-aware doporučování a vyhodnocování
  - [ ] explanations: proč jsou důležité + jak je vytvářet (teprve bude probráno),
  - [x] implicit / explicit feedback: příklady, výhody a nevýhody, jak zpětnou vazbu zpracovávat
  - [x] content-based vs. knowledge-based algoritmy,
@@ -1053,11 +1053,42 @@ Collaborative constraint-based meta-level RS
 
  - effective from a certain size - mostly for larger data sets
 
-Neural model
-![dlneural](notes-img/dlneural.png)
+### Neural model
 
 
+ - ![dlneural](notes-img/dlneural.png)
 
+ - how to set weights?
+   - from matrix fact. => stochastic gradient descent
+     - set randomly, then train
+     - ![dlback](notes-img/dlback.png)
+
+### Neuron
+
+ - ![dlneuron](notes-img/dlneuron.png)
+
+### Problems
+
+#### Vanishing gradient
+
+ - Sigmoid causing slow updates
+ - ![dlslow](notes-img/dlslow.png)
+
+
+#### Overfitting
+
+##### Redundancy
+
+prevent by redundancy - remove some percentage of nodes and the network shoulkd still know how to work
+
+##### Mini-batches
+
+Compute Stochastic Gradient Descent over a batch of data points, then update
+
+### Modern feedforward networks
+
+ - Momentum
+ - Adaptive learning rates
 
 
 
