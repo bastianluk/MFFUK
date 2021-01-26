@@ -22,9 +22,9 @@ Vědět co jsou / na jakém principu fungují / co zhruba obsahují:
  - [x] content-based vs. knowledge-based algoritmy,
  - [ ] typické nasazení doporučovacích algoritmů + jaké přístupy se hodí (homepage/kategorie/detail produktu; doporučování v  sociálních sítích; POIs - points of interest; hudební doporučovače; doporučování módy... )
  - [x] typické problémy doporučovacích systémů (sparsity/cold start problem, quality of content, scalability, up-to-date  modely),
- - [x] deep learning (convolutional neural network, autoencoders, **recurrent neural networks**, 2vec models + kdy se (ne)dají použít, jaké jsou jejich (ne)výhody)
+ - [x] deep learning (convolutional neural network, autoencoders, recurrent neural networks, 2vec models + kdy se (ne)dají použít, jaké jsou jejich (ne)výhody)
 
-Mít (argumenty podloženou) představu o vhodném návrhu RecSys dle
+**Mít (argumenty podloženou) představu o vhodném návrhu RecSys dle**
  - velikosti datové sady, sparsity, kvality CB dat
  - rychlosti stárnutí objektů / fluktuace uživatelů
  - domény + cílů uživatelů a provozovatele
@@ -240,6 +240,19 @@ Advantage:
 
 ## Ratings
 
+Explicit
+ - Provided via website GUI
+ - Rating an object via Likert Scale
+ - Comparing objects explicitly is not so common
+ - Missing in small E-Commerces
+
+Implicit
+ - Virtually any event could be used as feedback
+ - Tracked via JavaScript
+   - Dwell time
+   - Number of page views, Scrolling, mouse events, copy text, printing
+   - Purchase process etc.
+
 ### Explicit ratings
 
  - **Probably the most precise ratings** (ehm... Attribute ratings, reviews, detailed implicit feedback nowadays...)
@@ -267,6 +280,27 @@ Main problems
 Main problem
  - One cannot be sure whether the user **behavior** is **correctly interpreted**
  - For example, a user might not like all the books he or she has bought; the user also might have bought a book for someone else
+
+![feedimplex](notes-img/feedimplex.png)
+
+#### Context of user feedback
+
+![feedcontext](notes-img/feedcontext.png)
+
+#### Negative user feedback
+
+(The best proxy we have so far)
+ - No (not enough) feedback is negative
+   - Visit only for 10 seconds
+   - Saw only a half of the video
+   - Did not read the text up to the end…
+
+##### On categories
+
+![feednegativecat](notes-img/feednegativecat.png)
+
+Some objects could be ignored, because user was not aware of them, not becouse he/she did not like them
+ - E.g. they were displayed below the visible area
 
 
 ## Cold start problem (Data sparsity problems)
@@ -1386,6 +1420,8 @@ OR
 
 ##### Long-Short Term Memory (LSTM)
 
+input + hidden state used to update a gate, then it uses its memory to update the hidden state
+
 [Hochreiter & Schmidhuber, 1999]
 
 Instead of rewriting the hidden state during update, add a delta
@@ -1407,7 +1443,50 @@ Hidden state is separated into two (read before you write)
 
 ##### Gated Recurrent Unit (GRU)
 
+hidden state + input, then with hidden state again
+
 ![dlgru](notes-img/dlgru.png)
+
+
+### GRU4Rec
+
+[Hidasi et. al, 2015]
+
+Network structure
+ - **Input: one hot encoded item ID**
+ - Optional embedding layer
+ - GRU layer(s)
+ - **Output: scores over all items**
+ - Target: the next item in the session
+
+![dlgru4rec](notes-img/dlgru4rec.png)
+
+Adapting GRU to session-based recommendations
+ - Sessions of (very) different length & lots of short
+sessions: session-parallel mini-batching
+ - Lots of items (inputs, outputs): sampling on the output
+ - The goal is ranking: listwise loss functions on pointwise/pairwise scores
+
+Training:
+ - add chain sessions together
+
+![dlgru4rec2](notes-img/dlgru4rec2.png)
+
+### Conclusion
+
+ - Deep Learning is now in RecSys
+
+ - Huge potential, but lot to do
+   - E.g. Explore more advanced DL techniques
+
+ - Current research directions
+   - Item embeddings
+   - Deep collaborative filtering
+   - Feature extraction from content
+   - Session-based recommendations with RNNs
+ - Scalability should be kept in mind
+ - Don’t fall for the hype BUT don’t disregard the achievements of DL and its potential for RecSys
+
 
 
 
