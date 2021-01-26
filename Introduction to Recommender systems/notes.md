@@ -22,7 +22,7 @@ Vědět co jsou / na jakém principu fungují / co zhruba obsahují:
  - [x] content-based vs. knowledge-based algoritmy,
  - [ ] typické nasazení doporučovacích algoritmů + jaké přístupy se hodí (homepage/kategorie/detail produktu; doporučování v  sociálních sítích; POIs - points of interest; hudební doporučovače; doporučování módy... )
  - [x] typické problémy doporučovacích systémů (sparsity/cold start problem, quality of content, scalability, up-to-date  modely),
- - [ ] deep learning (convolutional neural network, autoencoders, recurrent neural networks, 2vec models + kdy se (ne)dají použít, jaké jsou jejich (ne)výhody)
+ - [x] deep learning (convolutional neural network, autoencoders, **recurrent neural networks**, 2vec models + kdy se (ne)dají použít, jaké jsou jejich (ne)výhody)
 
 Mít (argumenty podloženou) představu o vhodném návrhu RecSys dle
  - velikosti datové sady, sparsity, kvality CB dat
@@ -66,7 +66,7 @@ Retrieval perspective (search engine)
  - Provide "correct" proposals
 
 Recommendation perspective
- - Serendipity – identify items from the Long Tail
+ - Serendipity  - identify items from the Long Tail
 
 
 ### Approaches
@@ -222,7 +222,7 @@ Advantage:
 1. What is the best CF method?
    - In which situation and which domain? Inconsistent findings; always the same domains and data sets; differences between methods are often very small (1/100)
 2. How to evaluate the prediction quality?
-   - separate lecture on this – gets even more important nowdays
+   - separate lecture on this  - gets even more important nowdays
    - MAE / RMSE: What does an MAE of 0.7 actually mean?
    - Serendipity (novelty and surprising effect of recommendations)
      - Not yet fully understood (still true)
@@ -322,9 +322,9 @@ While U x V does not approximate M well enough (or the maximal number of iterati
     For each known element x of M in a random order
         Let i and j denote the row and column of x
         Let x’ be the dot product of the corresponding row of U and column of V
-        err = x’ – x
+        err = x’  - x
         for (k=0; k < K; k++)
-            u_i,k(i,k) 🡨 u_i,k(i,k) - eps*err*v_k,j(k,j) – lambda*u_i,k(i,k)
+            u_i,k(i,k) 🡨 u_i,k(i,k) - eps*err*v_k,j(k,j)  - lambda*u_i,k(i,k)
             analogous for v_k,j
         end for
     end for
@@ -347,7 +347,7 @@ end while
 ### Disadvantages
 
  - Static set of items and users (what about new ones?)
-    - Batch-trained – newest response is never in the models
+    - Batch-trained  - newest response is never in the models
     - Iterative local updates possible, but new users/items are stil a problem
  - Optimize w.r.t. Irrelevant error (RMSE)
    - training against minimal rating error but we want minimal ranking error
@@ -394,7 +394,7 @@ In practice: bought (known) itemss are good, all else is bad (unknown)
 
 > Show me more of what I have liked
 
- - While CF – methods do not require any information about the items,
+ - While CF  - methods do not require any information about the items,
    - it might be reasonable to exploit such information; and recommend fantasy novels to people who liked fantasy novels in the past
  - What do we need:
    - some information about the available items such as the genre ("content")
@@ -573,7 +573,7 @@ Knowledge base
 Derive a set of recommendable items
  - fulfilling set of applicable constraints
  - applicability of constraints depends on current user model
- - explanations – transparent line of reasoning
+ - explanations  - transparent line of reasoning
 
 ##### Tasks
 
@@ -754,7 +754,7 @@ Ability to predict
 #### Simulation on existing dataset
 
  - Train / Validation / Test split
-   - Random (bootstrap) – only in case of very large datasets
+   - Random (bootstrap)  - only in case of very large datasets
      - **Split data 3 ways**
        - Train
        - Validate
@@ -763,10 +763,10 @@ Ability to predict
        - Test
          - test the trained model
    - Cross-validation variants
-   - **Temporal splits** – better than CV for RecSys (causality problems)
+   - **Temporal splits**  - better than CV for RecSys (causality problems)
      - however lower support in non-recsys audience
      - also has a problem with the fact that the system is learning on data that is **from a window that is a month ago** (not a real example)
-   - Event-based simulation – the best option from causality perspective, most expensive
+   - Event-based simulation  - the best option from causality perspective, most expensive
      - a
 
 
@@ -1195,3 +1195,223 @@ Window of context
 ![dlskipwindow](notes-img/dlskipwindow.png)
 
 ![dlskipexample](notes-img/dlskipexample.png)
+
+## Deep Collaborative Filtering
+
+Extension over matrix fact.
+
+### Boltzmann machiness
+
+#### Restricted (RBM)
+
+Training:
+1. Set visible units based on data
+2. Sample hidden units
+3. Sample visible units
+4. Modify weights to approach the configuration of visible units to the data
+
+Note:
+ - Weights are same on both ways
+
+![dlrbm](notes-img/dlrbm.png)
+
+#### Deep (DBM)
+
+Same as restricted, but once we sample one layer, we fix it and add a layer.
+
+![dldbm](notes-img/dldbm.png)
+
+### Autoencoders
+
+![dlauto](notes-img/dlauto.png)
+
+### DeepCF methods
+
+#### TDSSM (Temporal Deep Semantic Structured Model)
+
+Similar to MV-DNN
+User features are the combination of a static and a temporal part
+The time dependent part is modeled by an RNN
+
+![dltdssm](notes-img/dltdssm.png)
+
+## Feature Extraction from Content
+
+ - Hybrid CF+CBF systems
+   - Interaction data + metadata
+
+
+ - Model based hybrid solutions
+   - Initializing
+     - Obtain item representation based on metadata
+     - Use this representation as initial item features
+   - **Regularizing**
+     - Obtain metadata based representations
+     - The interaction based representation should be close to the metadata based
+     - Add regularizing term to loss of this difference
+     - latent factors should also be similar if items are similar
+   - **Joining**
+     - Obtain metadata based representations
+     - Have the item feature vector be a concatenation
+       - Fixed metadata based part
+       - Learned interaction based part
+
+ - Deep learning is capable of direct feature extraction
+   - Work with content directly
+   - Instead (or beside) metadata
+
+Images
+ - E.g.: product pictures, video thumbnails/frames
+ - Extraction: convolutional networks
+ - Applications (e.g.):
+   - Fashion
+   - Video
+
+Text
+ - E.g.: product description, content of the product, reviews
+ - Extraction
+   - RNNs
+   - 1D convolution networks
+   - Weighted word embeddings
+   - Paragraph vectors
+   - BERT  - last year’s essay slides
+ - Applications (e.g.):
+   - News
+   - Books
+   - Publications
+
+Music/audio
+ - Extraction: convolutional networks (or RNNs, or autoencoders)
+
+### Convolutional Neural Networks (CNN)
+
+Speciality of images
+ - Huge amount of information
+   - 3 channels (RGB)
+   - Lots of pixels
+   - Number of weights required to fully connect a 320x240  image to 2048 hidden units:
+     - `3*320*240*2048 = 471,859,200`
+ - Locality
+   - Objects’ presence are independent of their location or  orientation
+   - Objects are spatially restricted
+
+![dlconvlayers](notes-img/dlconvlayers.png)
+
+#### Pooling
+
+![dlconvpooling](notes-img/dlconvpooling.png)
+
+![dlconvpooling2](notes-img/dlconvpooling2.png)
+
+
+### Visual BPR
+
+[He & McAuley, 2016]
+
+Model composed of
+ - Bias terms
+ - MF model
+ - Visual part
+   - Pretrained CNN features
+   - Dimension reduction through „embedding”
+   - The product of this visual item feature and a learned user feature vector is used in the  model
+ - Visual bias
+   - Product of the pretrained CNN features and a global bias vector over its features
+
+BPR loss
+ - Tested on clothing datasets (9-25% improvement)
+ - ![dlexample](notes-img/dlexample.png)
+ - Whole new fashion RecSys research area emerged after this. E.g. **Finding outfits** (i.e. Products matching together)
+
+### Music representations
+
+[Oord et. al, 2013]
+
+ - Extends iALS/WMF with audio  features
+   - To overcome cold-start
+ - Music feature extraction
+   - Time-frequency representation
+   - Applied CNN on 3 second  samples
+   - Latent factor of the clip: average   - predictions on consecutive  windows of the  - clip
+ - Integration with MF
+   - (a) Minimize distance between  music features  - and the MF’s  feature vectors
+   - (b) Replace the item features  with the music  - features  (minimize original loss)
+
+![dlmusic](notes-img/dlmusic.png)
+
+### Text information improving recommendations
+
+[Bansal et. al, 2016]
+
+ - Paper recommendation
+ - Item representation
+   - Text representation
+     - Two layer GRU (RNN): bidirectional layer  - followed by a unidirectional layer
+     - Representation is created by pooling over the  - hidden states of the sequence
+   - ID based representation (item feature vector)
+   - Final representation: ID + text added
+ - Multi-task learning
+   - Predict both user scores
+   - And likelihood of tags
+ - End-to-end training
+   - All parameters are trained simultaneously (no  - pretraining)
+   - Loss
+     - User scores: weighted MSE (like in iALS)
+     - Tags: weighted log likelihood (unobserved  - tags are downweighted)
+
+## Session-based recommendations with RNNs
+
+Intent: next item prediction (next with some attribute)
+
+### Recurrent neural networks
+
+networks that updates its own hidden state
+
+![dlrnnsession](notes-img/dlrnnsession.png)
+
+![dlrnn](notes-img/dlrnn.png)
+
+
+#### Problems
+
+Exploding/vanishing gradient => they forget or overgrade
+
+![dlvanishexplode](notes-img/dlvanishexplode.png)
+
+Solution
+ - clipping
+
+
+OR
+
+##### Long-Short Term Memory (LSTM)
+
+[Hochreiter & Schmidhuber, 1999]
+
+Instead of rewriting the hidden state during update, add a delta
+ - s_t: = s_t-1 + delta s_t:
+ - Keeps the contribution of earlier inputs relevant
+
+Information flow is controlled by gates
+ - Gates depend on input and the hidden state
+ - Between 0 and 1
+ - Forget gate (f): 0/1 à reset/keep hidden state
+ - Input gate (i): 0/1 à don’t/do consider the contribution of the input
+ - Output gate (o): how much of the memory is written to the hidden state
+
+Hidden state is separated into two (read before you write)
+ - Memory cell (c): internal state of the LSTM cell
+ - Hidden state (h): influences gates, updated from the memory cell
+
+![dlltsm](notes-img/dlltsm.png)
+
+##### Gated Recurrent Unit (GRU)
+
+![dlgru](notes-img/dlgru.png)
+
+
+
+
+
+
+
