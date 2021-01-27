@@ -5,7 +5,7 @@ Most of them are in Czech (especially from earlier years, but later on notes are
 
 ## Lists of courses taken
 
-### \[Current\] Winter Semester 2019/2020
+### \[Current\] Winter Semester 2020/2021
 
 - Introduction to Recommender Systems
 - Modern database principles
