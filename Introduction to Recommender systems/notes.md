@@ -15,12 +15,12 @@ Klíčové algoritmy (měli byste být schopni je poměrně detailně popsat - t
 
 Vědět co jsou / na jakém principu fungují / co zhruba obsahují:
  - [x] evaluace doporučovacích systémů ( off-line / user study / A/B testing; cross-validation; click through rate /  conversions / precision / recall / RMSE / nDCG / MAP; proč je nutné provádět evaluaci? Jak poznat že je jeden  doporučovač lepší než jiný?)
- - [ ] context-aware recommendation: způsoby zapojení kontextu + typické varianty kontextu (teprve bude probráno),
+ - [x] context-aware recommendation: způsoby zapojení kontextu + typické varianty kontextu (teprve bude probráno),
  - [x] sequence-based / sequence-aware doporučování a vyhodnocování
- - [ ] explanations: proč jsou důležité + jak je vytvářet (teprve bude probráno),
+ - [x] explanations: proč jsou důležité + jak je vytvářet (teprve bude probráno),
  - [x] implicit / explicit feedback: příklady, výhody a nevýhody, jak zpětnou vazbu zpracovávat
  - [x] content-based vs. knowledge-based algoritmy,
- - [ ] typické nasazení doporučovacích algoritmů + jaké přístupy se hodí (homepage/kategorie/detail produktu; doporučování v  sociálních sítích; POIs - points of interest; hudební doporučovače; doporučování módy... )
+ - [x] typické nasazení doporučovacích algoritmů + jaké přístupy se hodí (homepage/kategorie/detail produktu; doporučování v  sociálních sítích; POIs - points of interest; hudební doporučovače; doporučování módy... )
  - [x] typické problémy doporučovacích systémů (sparsity/cold start problem, quality of content, scalability, up-to-date  modely),
  - [x] deep learning (convolutional neural network, autoencoders, recurrent neural networks, 2vec models + kdy se (ne)dají použít, jaké jsou jejich (ne)výhody)
 
@@ -1472,7 +1472,7 @@ Training:
 
 ![dlgru4rec2](notes-img/dlgru4rec2.png)
 
-### Conclusion
+### Conclusion on DL
 
  - Deep Learning is now in RecSys
 
@@ -1488,9 +1488,136 @@ Training:
  - Don’t fall for the hype BUT don’t disregard the achievements of DL and its potential for RecSys
 
 
+## Context aware recommenders
+
+> Context is any information or conditions  that can influence the perception of the  usefulness of an item for a user.
+
+### Motivation
+
+ - Recommend avacation
+   - Winter vs.summer
+ - Recommend apurchase
+   - Gift vs. foryourself
+ - Recommend amovie
+   - With girlfriend in a movie theater vs.athome with a group offriends
+ - Recommend arecipe
+   - Alone vs. with my kids
+ - Recommendmusic
+   - When you have a happy vs. sadmood.
 
 
 
+ - Physical context
+   - time, position, and activityof the user, weather, light, and temperature...
+ - Social context
+   - the presence and role of other people around the user
+ - Interaction media context
+   - the device used to access the system and the type of media that are browsed and personalized (text, music, images, movies, ...)
+ - Modal context
+   - The state of mind of the user, the user’s goals,  mood, experience, and cognitive capabilities.
+
+**Not always:**
+ - I like Ferrari cars (5 stars) but it is unlikely that I  will buy one!
+ - I gave 5 stars to a camera –this does not mean  that I will buy another camera if I haveone
+
+### What Context isRelevant?
+
+“Shindler’s List” has been rated 5 stars by john on January 27th (Remembranceday)
+ - In this case January 27th is expressing relevant context
+
+### How to
+
+ 1. A Traditional (Bi-dimensional) Model of Recommendation
+   - ![contexttrad](notes-img/contexttrad.png)
+ 2. Multidimensional Model
+   - ![contextmulti](notes-img/contextmulti.png)
+ 3. Context filtering
+   - ![contextfiltering](notes-img/contextfiltering.png)
+ 4. Tensors
+   - ![contexttensor](notes-img/contexttensor.png)
+ 5. DL
+   - context2vec, product with users and items
 
 
+## Rec on mobile devices
 
+Dwell time on hand-held is smaller than on desktop
+
+The size of screen lowers the margin of errors
+
+Interaction is more direct
+
+## External data
+
+> antikvariat
+
+Single item in stock
+Few content-based attributes
+
+### Linked Open Data
+
+external data source
+
+usually graph based
+
+#### Problems
+
+speed
+
+## Explanations
+
+there is no explicit query shown => user has be able to guess, how the recsys got to recommending an item
+
+### Goals
+
+ - Transparency
+   - Provide information so the user can comprehend the reasoning used to generate a specific recommendation
+   - Provide information as to why one item was preferred over another
+ - Validity
+   - Allow a user to check the validity of a recommendation
+   - Not necessarily related to transparency
+     - E.g., a neural network (NN) decides that product matches to requirements
+     - Transparent disclosure of NN’s computations will not help, but a comparison of required and offered product features  - allows customer to judge the recommendation’s quality.
+ - Trustworthiness
+   - Trust building can be viewed as a mechanism for reducing the complexity of human decision making in uncertain situations
+   - Reduce the uncertainty about the quality of a recommendation
+ - Persuasiveness
+   - Persuasive explanations for recommendations aim to change the user's buying behavior
+   - E.g., a recommender may intentionally dwell on a product's positive aspects and keep quiet about various negative aspects
+ - Effectiveness
+   - The support a user receives for making high-quality decisions
+   - Help the customer discover his or her preferences
+   - Help users make better decisions
+ - Efficiency
+   - Reduce the decision-making effort
+   - Reduce the time needed for decision making
+   - Another measure might also be the perceived cognitive effort
+ - Satisfaction
+   - Improve the overall satisfaction stemming from the use of a recommender system
+ - Relevance
+   - Additional information may be required in conversational recommenders
+   - Explanations can be provided to justify why additional information is needed from the user
+ - Comprehensibility
+   - Recommenders can never be sure about the knowledge of their users
+   - Support the user by relating the user's known concepts to the concepts employed by the recommender
+ - Education
+   - Educate users to help them better understand the product domain
+   - Deep knowledge about the domain helps customers rethink their preferences and evaluate the pros and cons of different  - solutions
+   - Eventually, as customers become more informed, they are able to make wiser purchasing decisions
+
+
+ - The aforementioned aims for generating explanations can be interrelated
+   - Persuasiveness+ → Trust-
+   - Effectiveness+ → Trust+
+…
+
+Explanation should be precise
+
+ - Even simple statements like
+   - > people who bought this bought that
+ - or
+   - > because you liked/bought
+ - or
+   - matches (these) keywords
+
+![expl](notes-img/expl.png)
