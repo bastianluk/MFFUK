@@ -675,11 +675,11 @@ Other options?
 
 User positive and user negative vector + distance (stay close to positive and far from negative)
 
-Originally for „conversational“ (interactive/iterative) query retrieval systems
-Query-based retrieval: Rocchio's method
-The SMART System: Users are allowed to rate (relevant/irrelevant) retrieved documents (feedback)
-The system then learns a prototype of relevant/irrelevant documents
-Queries are then automatically extended with additional terms/weight of relevant documents
+ - Originally for „conversational“ (interactive/iterative) query retrieval systems
+ - Query-based retrieval: Rocchio's method
+ - The SMART System: Users are allowed to rate (relevant/irrelevant) retrieved documents (feedback)
+   - The system then learns a prototype of relevant/irrelevant documents
+   - Queries are then automatically extended with additional terms/weight of relevant documents
 
 The paradigm fits well also for recommender systems
 
