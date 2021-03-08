@@ -780,7 +780,7 @@ Distance similarity
    - sim(p, r) expresses for each item attribute value φr(p) its distance to the customer requirement r ∈ REQ
    - w_r is the importance weight for requirement r
 
-In real world, customer  would like to
+In real world, customer would like to
  - maximize certain properties. i.e. resolution of a camera, "more is better"(MIB)
  - minimize certain properties. i.e. price of a camera, "less is better"(LIB)
  - Target within some values, e.g. Price between x,y
@@ -793,7 +793,7 @@ In real world, customer  would like to
  - **Critiquing** is an effective way to support such navigations
  - Customers specify their change requests (price or mpix) that are not satisfied by the current item (entry item)
 
-![knowledgecasecrit.](notes-img/knowledgecasecrit.png)
+![knowledgecasecrit](notes-img/knowledgecasecrit.png)
 
 ###### **Compound**
 
