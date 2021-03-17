@@ -1,0 +1,45 @@
+Lukas Bastian
+
+
+---------
+Referat 1
+---------
+
+Autor(i): Jirka Mayer
+
+Nastroj(e): Kubernetes
+
+Obsah referatu:
+	- 2 (ne vse bylo uplne nove, ale rozhodne zajimave)
+
+Kvalita prezentace:
+	- 2
+
+Dalsi komentare:
+Prezentace evidentne dopredu dobre pripravena a dobre strukturovana.
+
+Tool jako takovy a jeho potencial, i pres jeho v zasade jednoduchy napad, se da prezentovat hodiny a autor zvolil, dle meho nazoru, osah dobre tak, aby zaujal, ukazal neco vic, ale zaroven neslo o nejake extra detaily.
+
+Ocenuji schopnost autora reagovat na dotazy, paradoxne zejmena schopnost priznat, ze neco nevi, ale ze tady je nejaky zaklad toho, jak by to mohlo fungovat.
+
+---------
+Referat 2
+---------
+
+Autor(i): Vasek Srayer
+
+Nastroj(e): miro.com
+
+Obsah referatu:
+	- 3
+
+Kvalita prezentace:
+	- 4
+
+Dalsi komentare:
+Odvazny zpusob vedeni prezentace, mozna i proto v mych ocich trochu horsi kvalita, protoze se obcas spatne sledovalo deni - moc litajicich kurzoru a menici se pozadi. 
+
+Tool jako takovy moc zajimavy a nenapada me moc dalsich veci, ktere by se z nej dalo ukazat - alespon ne bez konkretniho projektu, protoze jde realne o sandbox s "neomezenymi" moznostmi.
+Zaroven jde ale o tool, ktery moc neocenim, proto nizsi zajimavost a odpovidajici skore u obsahu referatu.
+Pravdepodobne je to tool mireny na start-upy a tymy, ktere jsou distribuovane po svete a spatne se dohaduji veci pres cally, protoze to pro nekoho bude pozde/brzy vecer => asynchroni verze v podobe "nastenky" je urcite dobra.
+Ve vetsim kolektivu ale muze rychle nastat chaos a proto bych ho asi jen tak nepouzil.
