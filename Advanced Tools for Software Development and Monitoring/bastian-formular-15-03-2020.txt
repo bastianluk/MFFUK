@@ -13,10 +13,11 @@ Obsah referatu:
 	- 3
 
 Kvalita prezentace:
-	- 3
+	- 4
 
 Dalsi komentare:
-Nejsem si jisty, ze Cucumber v prezentovane podobe je nastroj na delsi referat - zaroven ukazka a komentare k ni byly dost "cyklicke".
+Nejsem si jisty, ze Cucumber v prezentovane podobe je nastroj na delsi referat - zaroven ukazka a komentare k ni byly dost "cyklicke", protoze byly az moc jednoduche.
+Pro prezentaci frameworku na 25 minut bych si pripravil delsi ukazku, aby nemuselo dochazet na tolik dotazu "slo by tohle a tohle udelat?". Snazil bych se ukazat silu nastroje.
 
 ---------
 Referat 2
@@ -27,13 +28,15 @@ Autor(i): Filip Horky
 Nastroj(e): npm
 
 Obsah referatu:
-	- 2
+	- 3
 
 Kvalita prezentace:
 	- 3
 
 Dalsi komentare:
-Strohe
+Jako primarne BE developer byl nahled pod poklicku npm zajimavy vylet, ale zaroven si nejsem jisty, nakolik jsem schopny komentovat obsah referatu.
+Dle meho nazoru odprezentovano dostatecne i stranou technicke hloubky, prezentace dobrepripravena, ale zaroven mohl byt projev prezentujiciho vic poutavy.
+Treba v porovnani s nasledujicim prezentujicim (referat 3 - Unisave) mi skoro prislo, ze prezentujici nudi sam sebe povidanim o nastroji, ktery si sam vybral. Prebytek entuziasmu je jiny, ale pravdepodobne lepsi problem.
 
 ---------
 Referat 3
@@ -44,10 +47,13 @@ Autor(i): Petr Simunek
 Nastroj(e): Unisave
 
 Obsah referatu:
-	- 4
+	- 2
 
 Kvalita prezentace:
-	- 4
+	- 3
 
 Dalsi komentare:
-Zbytecne uspechane, mozna moc ukazovani kodu aplikace, ne nutne navaznosti na ukazovanou technologii.
+Po prvnich par vetach me nastroj hodne zaujal - sam se zajimam o BE a pravdepodobne kazdeho vyvojare nekdy napadlo, ze by si sam udelal nejakou hru.
+Bohuzel mi prezentace prisla zbytecne uspechana a mozna az moc zamerena na ukazovany zdrojak, misto povidani o detailech nastroje - zajimalo by me vic detailu o tom, jak funguje tento framework "za oponou".
+Na druhou stranu jak uspechanost, tak zamereni na zdrojak prameni z toho, ze prezentujici je zapaleny do sveho projektu (zdrojovy kod pouzil pri prezentaci) a to samo o sobe cenim.
+
