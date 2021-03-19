@@ -1,0 +1,125 @@
+
+    <!doctype html>
+    <html>
+    <head>
+        <title>JavaScript example</title>
+        <style type="text/css">
+            .tab-heading {
+                background-color: #f6f6f6;
+                float: left;
+                margin: 1px .2em 0 0;
+                border-bottom-width: 0;
+                padding: 10px;
+                white-space: nowrap;
+                border: 1px solid #c5c5c5;
+                list-style: none;
+                font-size:1.2em;
+            }
+            .tab-heading.active {
+                border: 1px solid #003eff;
+                background: #007fff;
+                color: #ffffff;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            #container {
+                clear:both;
+            }
+            section {
+                border: 1px solid #c5c5c5;
+                max-width: 50%;
+            }
+            ul {
+                padding: 0;
+            }
+        </style>
+        <script>
+            // Notice manipulating DOM in the load event handler
+            window.addEventListener('load', function() {
+                let tabLinks = document.getElementsByClassName("tab-heading");
+                // TODO 1: attach event handler for the 'click' event to each element in tabLinks;
+                //         the handler should call selectTab(i) where i is index of the tab
+                // Does not work because mutable variable 'i' from the outer scope is accessed!:
+                // for (var i = 0; i < tabLinks.length; i++) {
+                //    tabLinks[i].addEventListener("click", function() { selectTab(i); });
+                //}
+
+                // Solution 1: use parameter
+                function attachListener(i) {
+                    tabLinks[i].addEventListener("click", function() { selectTab(i); });
+                }
+                for (let i = 0; i < tabLinks.length; i++) {
+                    attachListener(i);
+                }
+
+                // Solution 2: use foreach
+                // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice#Array-like_objects
+                let tabLinksArray = Array.prototype.slice.call(tabLinks);
+                tabLinksArray.forEach(function(tabLink, i) {
+                    tabLink.addEventListener("click", function() { selectTab(i); });
+                });
+
+                // Initially, select the first tab
+                selectTab(0);
+            });
+
+            /** @param n  index of the tab to select (zero based) */
+            function selectTab(n) {
+            // Implement body of this function.
+                // TODO 2: Comment out the following line
+                //alert("Selected tab " + n);
+
+
+                // TODO 3: Modify (CSS) classes of <li> elements so that all have the "tab-heading" class
+                //         and only the n-th <li> also has the "active" class.
+                // Hint: you may need to iterate over all <li> elements
+                let tabLinks = document.getElementsByClassName("tab-heading");
+                for (let i = 0; i < tabLinks.length; i++) {
+                     let tabLink = tabLinks[i];
+                     if (i == n) {
+                        tabLink.classList.add("active");
+                    }
+                    else {
+                        tabLink.classList.remove("active");
+                    }
+                }
+
+                // TODO 4: Modify style of each section so that only the section with content
+                //         for n-th tab is visible.
+                // Hint: the data-section attribute on each navigation <li> element contains the id of
+                // the corresponding tab; you can use element.getAttribute("data-section") to access the id
+                for (let i = 0; i < tabLinks.length; i++) {
+                    let tabLink = tabLinks[i];
+                    let id = tabLink.getAttribute("data-section");
+                    let section = document.getElementById(id);
+                    if (i == n) {
+                        section.style.display = "";
+                    }
+                    else {
+                        section.style.display = "none";
+                    }
+                };
+            }
+        </script>
+    </head>
+    <body>
+
+    <ul id="navigation">
+        <li class="tab-heading" data-section="first"><a href="#first">First tab</a></li>
+        <li class="tab-heading" data-section="second"><a href="#second">Second tab</a></li>
+        <li class="tab-heading" data-section="third"><a href="#third">Third tab</a></li>
+    </ul>
+    <div id="container">
+        <section id="first">Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</section>
+        <section id="second">Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. </section>
+        <section id="third">Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. </section>
+    </div>
+
+    <ul>
+        <li>Webik &copy; 2016</li>
+    </ul>
+
+    </body>
+    </html>

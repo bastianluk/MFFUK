@@ -1,0 +1,147 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>JavaScript example</title>
+    <style type="text/css">
+        p {
+            margin: 10px auto;
+            text-align: center;
+        }
+        body, input, textarea, button {
+            font-size: 100%;
+            line-height: 1.5;
+            font-family: Georgia, Times, "Times New Roman", serif;
+            color: #424242;
+        }
+        table  {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        tr:nth-child(2n+1) {
+            background-color: #E0E6FF;
+        }
+        tr:hover {
+            background-color: #C0C6FF;
+        }
+        td, th {
+            border: 1px solid black;
+            padding: 3px 8px;
+            text-align: right;
+        }
+        th {
+            text-align: center;
+        }
+        input[type=button] {
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        var employees = [
+            { name: "Tiger Nixon", salary: "320800" },
+            { name: "Garrett Winters", salary: "170750" },
+            { name: "Ashton Cox", salary: "86000" },
+            { name: "Cedric Kelly", salary: "433060" },
+            { name: "Airi Satou", salary: "162700" },
+            { name: "Brielle Williamson", salary: "372000" },
+            { name: "Herrod Chandler", salary: "137500" },
+            { name: "Rhona Davidson", salary: "327900" },
+            { name: "Colleen Hurst", salary: "205500" },
+            { name: "Sonya Frost", salary: "103600" },
+            { name: "Jena Gaines", salary: "90560" },
+            { name: "Quinn Flynn", salary: "342000" }
+        ];
+
+        /**
+         * Creates a table row with cells with given values and appends the row to table.
+         * Example of usage: addRow(table, ["Tiger Nixon", "320800"], "td");
+         *
+         * @param table  Table element to append to
+         * @param values  Array of cell values (e.g. ["Tiger Nixon", "320800"])
+         * @param cellElementName  Name of HTML tag for cells: either "td", or "th"
+         */
+        function addRow(table, values, cellElementName) {
+            var row = document.createElement("tr");
+            for (var i = 0; i < values.length; i++) {
+                var cell = document.createElement(cellElementName);
+                cell.textContent = values[i];
+                row.appendChild(cell);
+            }
+            table.appendChild(row);
+        }
+
+        function fillTable(table, data) {
+            for (var i = 0; i < data.length; i++) {
+                var values = [data[i].name, data[i].salary];
+                addRow(table, values, "td");
+            }
+
+            //data.map(function(record) { return [record.name, record.salary] })
+            //    .forEach(function(values) { addRow(table, values, "td"); });
+
+            //data.map(record => [record.name, record.salary])
+            //    .forEach(values => addRow(table, values, "td"));
+        }
+
+        function clearTable(table) {
+            // children is not an array, but a *live* collection; the following doesn't work:
+            //for (var i = 1; i < table.children.length; i++) {
+            //    table.removeChild(table.children[i]);
+            //}
+
+            while (table.children.length > 1) {
+                table.removeChild(table.lastChild);
+            }
+        }
+
+        window.onload = function() {
+            /* Add first heading table row with cells "Name" and "Salary" */
+            var table = document.getElementById("data-table");
+            addRow(table, ["Name", "Salary"], "th");
+
+            /* TODO 1: Fill table with data from variable employees
+               Optional: Do it without using a for loop.
+            */
+            fillTable(table, employees);
+
+            /* TODO 2: When the clear button is clicked, remove all table rows except the first row */
+            document.getElementById("clear").addEventListener("click", function() { clearTable(table) });
+
+            /* TODO 3: When filter-value <input> tag is changed, filter the table values so that it
+                       contains only employees whose name contain the entered value as a substring
+                       (hint: use str.indexOf(subStr) != -1 to  check for presence of substring)
+                */
+            document.getElementById("filter-button").addEventListener("click", function() {
+                clearTable(table);
+                var filter = document.getElementById("filter-value").value;
+                var newValues = employees.filter(function(item) {
+                    return item.name.indexOf(filter) != -1;
+                });
+                fillTable(table, newValues);
+            });
+
+            /* TODO 4: Filter table values as the user types (i.e. without the need to click the "Filter" button) */
+            document.getElementById("filter-value").addEventListener("keyup", function() {
+                clearTable(table);
+                var filter = document.getElementById("filter-value").value;
+                var newValues = employees.filter(function(item) {
+                    return item.name.indexOf(filter) != -1;
+                });
+                fillTable(table, newValues);
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+
+<div id="container">
+<table id="data-table"></table>
+
+<p><input type="button" value="Clear" id="clear"/></p>
+<p>Name filter: <input type="text" id="filter-value" /> <input type="button" value="Filter" id="filter-button"/></p>
+</div>
+
+</body>
+</html>

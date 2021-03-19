@@ -1,0 +1,1771 @@
+# Introduction to Recommender Systems
+
+- [Introduction to Recommender Systems](#introduction-to-recommender-systems)
+  - [What to focus on](#what-to-focus-on)
+  - [Recommender System](#recommender-system)
+    - [**Definition**](#definition)
+      - [Search Engines](#search-engines)
+      - [Personalized Adds](#personalized-adds)
+    - [Purpose and success criteria](#purpose-and-success-criteria)
+    - [Approaches](#approaches)
+      - [Collaborative filtering](#collaborative-filtering)
+        - [Problems](#problems)
+      - [Content-based](#content-based)
+      - [Knowledge-based](#knowledge-based)
+      - [Hybrid](#hybrid)
+    - [Lifecycle](#lifecycle)
+  - [Algorithms](#algorithms)
+    - [Simple non-personalized recommending algorithms](#simple-non-personalized-recommending-algorithms)
+    - [Simple personalized recommending algorithms](#simple-personalized-recommending-algorithms)
+  - [Collaborative filtering](#collaborative-filtering-1)
+    - [Approach](#approach)
+    - [User-based nearest-neighbor collaborative filtering](#user-based-nearest-neighbor-collaborative-filtering)
+    - [Item-based nearest-neighbor collaborative filtering](#item-based-nearest-neighbor-collaborative-filtering)
+      - [Pros:](#pros)
+      - [Cons:](#cons)
+      - [Questions:](#questions)
+    - [Other approaches](#other-approaches)
+  - [Ratings](#ratings)
+    - [Explicit ratings](#explicit-ratings)
+    - [Implicit ratings (feedback)](#implicit-ratings-feedback)
+      - [Context of user feedback](#context-of-user-feedback)
+      - [Negative user feedback](#negative-user-feedback)
+        - [On categories](#on-categories)
+  - [Cold start problem (Data sparsity problems)](#cold-start-problem-data-sparsity-problems)
+    - [Straightforward approaches](#straightforward-approaches)
+    - [Alternatives](#alternatives)
+    - [Problem illustration](#problem-illustration)
+  - [Matrix completion (factorization)](#matrix-completion-factorization)
+    - [Decomposition how to](#decomposition-how-to)
+    - [Algorithm](#algorithm)
+    - [How to set the parameters ε, λ and K ?](#how-to-set-the-parameters-ε-λ-and-k-)
+    - [Disadvantages](#disadvantages)
+    - [BPR factorization](#bpr-factorization)
+  - [Content-based recommendation](#content-based-recommendation)
+    - [What is the "content"?](#what-is-the-content)
+    - [Task - simple approach](#task---simple-approach)
+    - [Representation](#representation)
+      - [Problems](#problems-1)
+      - [Solution - Standard measure: TF-IDF](#solution---standard-measure-tf-idf)
+    - [Improving the vector space model](#improving-the-vector-space-model)
+      - [word2vec](#word2vec)
+        - [Text / multivalue](#text--multivalue)
+        - [Nominal / value](#nominal--value)
+        - [Numeric](#numeric)
+      - [Other](#other)
+    - [Cosine similarity](#cosine-similarity)
+    - [Recommending items](#recommending-items)
+      - [Rocchio's method (Vector Space Model)](#rocchios-method-vector-space-model)
+    - [Disadvantages](#disadvantages-1)
+    - [Advantages](#advantages)
+  - [Knowledge-based models](#knowledge-based-models)
+    - [Motivation](#motivation)
+    - [Approaches](#approaches-1)
+      - [Constraint-based recommender systems](#constraint-based-recommender-systems)
+        - [Tasks](#tasks)
+      - [Case-based recommender systems](#case-based-recommender-systems)
+        - [Interacting with case-based recommenders](#interacting-with-case-based-recommenders)
+          - [**Compound**](#compound)
+    - [Limitations](#limitations)
+  - [RecSys evaluation](#recsys-evaluation)
+    - [Online studies](#online-studies)
+      - [Technical metrics](#technical-metrics)
+      - [Disadvantage](#disadvantage)
+    - [DarkSide](#darkside)
+    - [Lab studies](#lab-studies)
+      - [Advantage](#advantage)
+      - [Disadvantages](#disadvantages-2)
+    - [Offline studies](#offline-studies)
+      - [Simulation on existing dataset](#simulation-on-existing-dataset)
+      - [Other options:](#other-options)
+      - [Metrics](#metrics)
+        - [Evaluation in information retrieval (IR)](#evaluation-in-information-retrieval-ir)
+        - [Rank aware methods](#rank-aware-methods)
+          - [Mean Average Precision (MAP)](#mean-average-precision-map)
+      - [Debiasing](#debiasing)
+        - [Biases - Presentation bias](#biases---presentation-bias)
+          - [Example](#example)
+        - [Missing not at random for Implicit feedback](#missing-not-at-random-for-implicit-feedback)
+    - [Sequance-aware evaluation](#sequance-aware-evaluation)
+      - [Partitioning](#partitioning)
+  - [Hybrid recommender systems](#hybrid-recommender-systems)
+    - [Monolithic](#monolithic)
+      - [Content-boosted collaborative filtering](#content-boosted-collaborative-filtering)
+      - [Spreading activation](#spreading-activation)
+      - [BPRMCA](#bprmca)
+    - [Parallelized hybridization design](#parallelized-hybridization-design)
+      - [Problem](#problem)
+      - [Hybridization](#hybridization)
+      - [Fuzzy D'Hondt's algorithm](#fuzzy-dhondts-algorithm)
+    - [Pipelined hybridization designs](#pipelined-hybridization-designs)
+      - [Cascade](#cascade)
+      - [Meta-level](#meta-level)
+        - [Examples](#examples)
+  - [Deep Learning (DL)](#deep-learning-dl)
+    - [Neural model](#neural-model)
+    - [Neuron](#neuron)
+    - [Problems](#problems-2)
+      - [Vanishing gradient](#vanishing-gradient)
+      - [Overfitting](#overfitting)
+        - [Redundancy](#redundancy)
+        - [Mini-batches](#mini-batches)
+    - [Modern feedforward networks](#modern-feedforward-networks)
+    - [Usage](#usage)
+    - [Best practices](#best-practices)
+    - [Embedding](#embedding)
+      - [Use in recommenders](#use-in-recommenders)
+      - [Matrix fact. as learning embeddings](#matrix-fact-as-learning-embeddings)
+      - [Word2vec](#word2vec-1)
+        - [CBOW](#cbow)
+        - [Skip-gram](#skip-gram)
+  - [Deep Collaborative Filtering](#deep-collaborative-filtering)
+    - [Boltzmann machiness](#boltzmann-machiness)
+      - [Restricted (RBM)](#restricted-rbm)
+      - [Deep (DBM)](#deep-dbm)
+    - [Autoencoders](#autoencoders)
+    - [DeepCF methods](#deepcf-methods)
+      - [TDSSM (Temporal Deep Semantic Structured Model)](#tdssm-temporal-deep-semantic-structured-model)
+  - [Feature Extraction from Content](#feature-extraction-from-content)
+    - [Convolutional Neural Networks (CNN)](#convolutional-neural-networks-cnn)
+      - [Pooling](#pooling)
+    - [Visual BPR](#visual-bpr)
+    - [Music representations](#music-representations)
+    - [Text information improving recommendations](#text-information-improving-recommendations)
+  - [Session-based recommendations with RNNs](#session-based-recommendations-with-rnns)
+    - [Recurrent neural networks](#recurrent-neural-networks)
+      - [Problems](#problems-3)
+        - [Long-Short Term Memory (LSTM)](#long-short-term-memory-lstm)
+        - [Gated Recurrent Unit (GRU)](#gated-recurrent-unit-gru)
+    - [GRU4Rec](#gru4rec)
+    - [Conclusion on DL](#conclusion-on-dl)
+  - [Context aware recommenders](#context-aware-recommenders)
+    - [Motivation](#motivation-1)
+    - [What Context isRelevant?](#what-context-isrelevant)
+    - [How to](#how-to)
+  - [Rec on mobile devices](#rec-on-mobile-devices)
+  - [External data](#external-data)
+    - [Linked Open Data](#linked-open-data)
+      - [Problems](#problems-4)
+  - [Explanations](#explanations)
+    - [Goals](#goals)
+
+## What to focus on
+
+Klíčové pojmy (v tomto byste neměli při zkoušce zaváhat):
+ - [x] co je doporučovací systém, co je jeho cílem, typický input & output,
+ - [x] základní taxonomie algoritmů (non-personalized, collaborative, content based, knowledge-based, hybrid) + příklady
+
+Klíčové algoritmy (měli byste být schopni je poměrně detailně popsat - tak abych uvěřil, že je případně dokážete i naprogramovat):
+ - [x] user/item-based KNN,
+ - [x] faktorizace matic (stochastic gradient descend),
+ - [x] základní content-based metody (podobnosti CB vlastností a jejich úskalí, TF-IDF, Vector Space Model)
+ - [x] item2vec (word2vec pro situaci, kdy zaměníme sekvence zobrazených items za věty)
+ - [x] multi-armed bandits (znát detailně alespoň jednu metodu výběru ramen)
+
+Vědět co jsou / na jakém principu fungují / co zhruba obsahují:
+ - [x] evaluace doporučovacích systémů ( off-line / user study / A/B testing; cross-validation; click through rate /  conversions / precision / recall / RMSE / nDCG / MAP; proč je nutné provádět evaluaci? Jak poznat že je jeden  doporučovač lepší než jiný?)
+ - [x] context-aware recommendation: způsoby zapojení kontextu + typické varianty kontextu (teprve bude probráno),
+ - [x] sequence-based / sequence-aware doporučování a vyhodnocování
+ - [x] explanations: proč jsou důležité + jak je vytvářet (teprve bude probráno),
+ - [x] implicit / explicit feedback: příklady, výhody a nevýhody, jak zpětnou vazbu zpracovávat
+ - [x] content-based vs. knowledge-based algoritmy,
+ - [x] typické nasazení doporučovacích algoritmů + jaké přístupy se hodí (homepage/kategorie/detail produktu; doporučování v  sociálních sítích; POIs - points of interest; hudební doporučovače; doporučování módy... )
+ - [x] typické problémy doporučovacích systémů (sparsity/cold start problem, quality of content, scalability, up-to-date  modely),
+ - [x] deep learning (convolutional neural network, autoencoders, recurrent neural networks, 2vec models + kdy se (ne)dají použít, jaké jsou jejich (ne)výhody)
+
+**Mít (argumenty podloženou) představu o vhodném návrhu RecSys dle**
+ - velikosti datové sady, sparsity, kvality CB dat
+ - rychlosti stárnutí objektů / fluktuace uživatelů
+ - domény + cílů uživatelů a provozovatele
+ - cílových zařízeních,...
+ - cca v rozsahu co jste dělali ve dvojcích/trojcích na cvičení podle zadaného webu
+
+## Recommender System
+
+### **Definition**
+
+Recommender Systems
+ - Users do not know what they want (or do not know how to ask for it)
+ - RS tries to understand user’s needs through observed behavior (provide suitable results for these needs without being explicitly asked)
+ - Implicit query
+
+> RS are software agents that elicit the interests and preferences of individual consumers […] and make recommendations accordingly. They have the potential to support and improve the quality of the decisions consumers make while searching for and selecting products online. (Xiao & Benbasat 20071)
+
+#### Search Engines
+
+ - Users know in advance what they want (and is able to specify it)
+ - Explicit query submitted by the user
+ - Evaluation through known „correct“ answers for the query
+
+
+#### Personalized Adds
+ - Except from being stupid most of the time (blame the lack of feedback and devs. vision)
+ - Mostly works extra-site, without elementary indication of user’s needs
+   - Often, the basic principle of RecSys (mutual benefits) is violated
+
+
+### Purpose and success criteria
+
+Different perspectives/aspects
+ - Depends on domain and purpose
+ - No holistic evaluation scenario exists (there is no „correct“ recommender)
+
+Retrieval perspective (search engine)
+ - Reduce search costs (you could find it as well, but this is faster)
+ - Provide "correct" proposals
+
+Recommendation perspective
+ - Serendipity  - identify items from the Long Tail
+
+
+### Approaches
+
+#### Collaborative filtering
+
+> Tell me what is popular among my peers
+
+ - User profile & contextual parameters
+ - community data
+
+##### Problems
+
+ - snowball effect
+ - **coldstart**
+
+#### Content-based
+
+> Show me more of what I have liked
+
+#### Knowledge-based
+
+> Tell me what fits my needs the best
+
+#### Hybrid
+
+> Composition of before mentioned systems
+
+### Lifecycle
+
+ 1. Get User Feedback
+ 2. Learn user preference
+ 3. Upon demand,  recommend objects
+
+ - The process is asynchronous  by nature
+ - That seriously complicate things
+
+## Algorithms
+
+### Simple non-personalized recommending algorithms
+
+ 1. popularity based
+ 2. > who did this, did that as well
+   - SQL aggregation query
+   - item to item recommendation
+
+### Simple personalized recommending algorithms
+
+ 1. user-based KNN
+   - KNN - k nearest neighbours (k items that are the most similar to item X)
+   - we have some list of past actions
+   - based on list of past actions (like ratings of movies, with some similarity - cosine etc), find KNN
+
+
+## Collaborative filtering
+
+> Tell me what is popular among my peers
+
+(used to be; < 2014) The most prominent approach to generate recommendations
+ - used by large, commercial e-commerce sites
+ - well-understood, various algorithms and variations exist
+ - applicable in many domains (book, movies, DVDs, ..)
+
+Approach
+ - use the "wisdom of the crowd" to recommend items
+
+Basic assumption and idea
+ - Users give ratings to catalog items (implicitly or explicitly)
+ - Customers who had similar tastes in the past, will have similar tastes in the future
+
+### Approach
+
+Input
+ - Only a matrix of given user–item ratings
+
+Output types
+ - A (numerical) prediction indicating to what degree the current user will like or dislike a certain item
+   - Less relevant nowadays
+   - Shown somewhere in the product description
+ - A top-N list of recommended items
+   - This is what you need in the end anyway
+
+### User-based nearest-neighbor collaborative filtering
+
+Assumption
+ - user preferences remain stable and consistent over time
+   - solution
+     - decay of relevance
+     - remove old data
+     - detect changes in preference
+
+Technique
+- given active user Alice and an item i
+  - find a set of users who liked the same items alice in the past and who rated i
+  - use e.g. avg of their ratings to predict if alice likes i
+  - repeat for all items unseen by the user and recommend the best-rated
+
+To solve:
+ 1. how to measure similarity of users
+    - Pearson correlation (Jaccard similarity, cosine similarity)
+      - It takes into account the biases
+      - Assumption: what is rated below average was disliked
+ 2. how many neighbors should be considered
+    - can be trained
+      - only some degree of similarity wanted etc
+ 3. how to generate the rating of the item from other users
+    - average + weight based deviation
+
+![userknn](notes-img/userknn.png)
+
+User-based KNN is said to be "memory-based"
+ - the rating matrix is directly used to find neighbors / make predictions
+   - Everything is calculated at the time of the request
+ - does not scale for most real-world scenarios
+ - large e-commerce sites / social networks have tens of millions of customers and millions of items
+
+Model-based approaches
+ - based on an offline pre-processing or "model-learning" phase
+   - Represent users and/or items as a set of features, which are easy to operate with
+ - at run-time, only the learned model is used to make predictions
+ - models are updated / re-trained periodically
+ - large variety of techniques used
+ - model-building and updating can be computationally expensive
+ - **item-based KNN is an example for model-based approaches**
+
+### Item-based nearest-neighbor collaborative filtering
+
+Similarity between items, not users, to make predictions
+
+> Out of the items rated by user A, we find the most similar items to item i based on rating by other users, and make the prediction based on the rating given by the user A to those similar items.
+
+(Inverse of User based)
+
+Advantage:
+ - based on the ratio of users to items and stability of those vectors
+
+
+ - Pre-processing approach by Amazon.com (in 2003)
+ - Calculate all pair-wise item similarities in advance
+
+![itembasedknnalg](notes-img/itembasedknnalg.png)
+
+#### Pros:
+
+ - well-understood, works well in some domains, no knowledge engineering required
+
+#### Cons:
+ - requires user community, sparsity problems, no integration of other knowledge sources, no explanation of results
+
+
+#### Questions:
+
+1. What is the best CF method?
+   - In which situation and which domain? Inconsistent findings; always the same domains and data sets; differences between methods are often very small (1/100)
+2. How to evaluate the prediction quality?
+   - separate lecture on this  - gets even more important nowdays
+   - MAE / RMSE: What does an MAE of 0.7 actually mean?
+   - Serendipity (novelty and surprising effect of recommendations)
+     - Not yet fully understood (still true)
+4. What about multi-dimensional ratings?
+   - not many application domains - instead, what about implicit feedback
+
+### Other approaches
+
+ - Recurrsive CF
+ - Graph based
+   - Spreading activation
+ - Association rule mining
+   - Market Basket Analysis
+ - Probabilistic methods
+
+## Ratings
+
+Explicit
+ - Provided via website GUI
+ - Rating an object via Likert Scale
+ - Comparing objects explicitly is not so common
+ - Missing in small E-Commerces
+
+Implicit
+ - Virtually any event could be used as feedback
+ - Tracked via JavaScript
+   - Dwell time
+   - Number of page views, Scrolling, mouse events, copy text, printing
+   - Purchase process etc.
+
+### Explicit ratings
+
+ - **Probably the most precise ratings** (ehm... Attribute ratings, reviews, detailed implicit feedback nowadays...)
+ - Most commonly used (1 to 5, 1 to 7 Likert response scales, likes/dislikes)
+ - Research topics
+   - Optimal granularity of scale; indication that 10-point scale is better accepted in movie dom.
+     - Different domains addopted other common scales
+   - Multidimensional ratings (multiple ratings per movie such as ratings for actors and sound)
+     - Booking.com rating
+
+Main problems
+ - **Users not always willing to rate many items**
+   - number of available ratings could be too small → sparse rating matrices → poor recommendation quality
+ - How to stimulate users to rate more items?
+ - What else to use?
+
+### Implicit ratings (feedback)
+
+ - Typically collected by the web shop or application in which the recommender system is embedded
+ - When a customer buys an item, for instance, many recommender systems interpret this behavior as a positive rating
+ - Clicks, page views, time spent on some page, demo downloads …
+ - Implicit ratings can be collected constantly and do not require additional efforts from the side of the user
+ - Implicit ratings can be used in addition to explicit ones; question of correctness of interpretation
+
+Main problem
+ - One cannot be sure whether the user **behavior** is **correctly interpreted**
+ - For example, a user might not like all the books he or she has bought; the user also might have bought a book for someone else
+
+![feedimplex](notes-img/feedimplex.png)
+
+#### Context of user feedback
+
+![feedcontext](notes-img/feedcontext.png)
+
+#### Negative user feedback
+
+(The best proxy we have so far)
+ - No (not enough) feedback is negative
+   - Visit only for 10 seconds
+   - Saw only a half of the video
+   - Did not read the text up to the end…
+
+##### On categories
+
+![feednegativecat](notes-img/feednegativecat.png)
+
+Some objects could be ignored, because user was not aware of them, not becouse he/she did not like them
+ - E.g. they were displayed below the visible area
+
+
+## Cold start problem (Data sparsity problems)
+
+How to recommend **new items** (invisible)? What to recommend to **new users** (nothing to recommend to him)?
+
+### Straightforward approaches
+ - Ask/force users to rate a set of items
+   - they will hate you
+ - Use another method (e.g., content-based, demographic or simply non-personalized) in the initial phase
+   - bias problems from "previous versions", but generally OK
+ - Default voting: assign default values to items that only one of the two users to be compared has rated (Breese et al. 1998)
+   - ... And the performance is...
+
+### Alternatives
+ - Use better algorithms (beyond nearest-neighbor approaches)
+ - Example:
+   - In nearest-neighbor approaches, the set of sufficiently similar neighbors might be too small to make good predictions
+   - Assume "transitivity" of neighborhoods
+
+### Problem illustration
+
+![coldstart](notes-img/coldstart.png)
+
+## Matrix completion (factorization)
+
+![matrixdecomp](notes-img/matrixdecomp.png)
+
+![matrixconcept](notes-img/matrixconcept.png)
+
+### Decomposition how to
+
+Comes from machine learning
+
+Gradient descent
+
+Target function:
+ - sum of squared errors + regularization (without it it would be good on training data, not on actual predictions)
+![matrixfunc](notes-img/matrixfunc.png)
+
+
+ - where  λ  is the weight of the regularization term (i. e., a constant giving the importance of the regularization term)
+ - Minimization of the above loss function using stochastic gradient descent (or any other optimization algorithms)
+
+Through derivations of the before mentioned function, or rather the partial loss functions that summed up make up the original one, it adjusts the values of factors
+
+### Algorithm
+
+Input: matrix M with n rows and m columns, integer K,  real number eps, real number lambda
+```
+Create U and V matrices and initialize their values randomly (U has n rows, K columns; V has K rows, m columns)
+While U x V does not approximate M well enough (or the maximal number of iterations is not reached)
+    For each known element x of M in a random order
+        Let i and j denote the row and column of x
+        Let x’ be the dot product of the corresponding row of U and column of V
+        err = x’  - x
+        for (k=0; k < K; k++)
+            u_i,k(i,k) 🡨 u_i,k(i,k) - eps*err*v_k,j(k,j)  - lambda*u_i,k(i,k)
+            analogous for v_k,j
+        end for
+    end for
+end while
+```
+
+### How to set the parameters ε, λ and K ?
+
+ - ε - affects speed/rate and ability of convergence - local VS global min
+ - λ - regularization parameter - limits/binds the value (prevents obviously big incorrect values)
+ - K - limits the theoretical minimum of the error / how much it can learn
+
+1. Select a subset of the known values of M
+2. Execute the previous matrix factorisation algorithm using the selected subset only
+3. Evaluate the result of the factorisation using the non-selected known values of M, i.e., check how well the product U x V estimates the non-selected, but known values of M
+   - In order to measure how well U x V estimates the non-selected, but known values of M, one can use for example the mean absolute error (MAE) or mean squared error (MSE), see e.g. Wikipedia
+4. Repeat steps 2 and 3 for various settings of the values of the parameters, and select the parameter values that give the best result
+5. Execute the algorithm using the selected  parameter values using ALL the known values of M, and finally estimate the missing values of M using the product of U and V
+
+### Disadvantages
+
+ - Static set of items and users (what about new ones?)
+    - Batch-trained  - newest response is never in the models
+    - Iterative local updates possible, but new users/items are stil a problem
+ - Optimize w.r.t. Irrelevant error (RMSE)
+   - training against minimal rating error but we want minimal ranking error
+ - Learning rate vs. Regularization hyperparameters
+ - Local optimum vs. global optimum
+   - More ellaborated optimizers
+     - https://ruder.io/optimizing-gradient-descent/
+ - Memory-efficient implementation
+   - sparse representation of M
+   - Sparse matrix in scipy.sparse (i,j,value)
+
+![matrixparam](notes-img/matrixparam.png)
+
+![matrixoptim](notes-img/matrixoptim.png)
+ - some avg rating
+ - bias of a user
+   - some users rate higher in general
+ - bias of an item
+   - good in general?
+ - latent factors of the user/item
+   - multidimensional
+
+### BPR factorization
+
+Takes into account ranking correctness
+
+Instead of rating errors, focus on ranking correctness
+ - Triples of user, good and bad object
+ - For these pairs, good object should be rated higher than the bad one
+ - (unary feedback originally, but graded possible)
+
+We want to keep the relation of rating of good item for a user is higher than rating of bad item
+
+In practice: bought (known) itemss are good, all else is bad (unknown)
+
+![matrixbpr](notes-img/matrixbpr.png)
+
+ - bad items should be sampled
+ - use sigmoid function to translate ranking error values to binary values
+
+=> 3 rules (update for user, good items, bad items) to replace the updates in the original Alg.
+
+## Content-based recommendation
+
+> Show me more of what I have liked
+
+ - While CF  - methods do not require any information about the items,
+   - it might be reasonable to exploit such information; and recommend fantasy novels to people who liked fantasy novels in the past
+ - What do we need:
+   - some information about the available items such as the genre ("content")
+   - some sort of user profile describing what the user likes (the preferences)
+ - The task:
+   - learn user preferences
+   - locate/recommend items that are "similar" to the user preferences
+
+### What is the "content"?
+
+ - Most CB-recommendation techniques were applied to recommending text documents.
+   - Like web pages or newsgroup messages for example.
+   - Now also multimedia content (fashion, music) or e-commerce
+ - Content of items can also be represented as text documents.
+   - With textual descriptions of their basic characteristics.
+   - Structured: Each item is described by the same set of attributes
+
+### Task - simple approach
+
+Compute the similarity of an unseen item with the user profile based on the keyword overlap
+(e.g. using the Dice coefficient)
+
+### Representation
+
+In a simple impl: usually keywords/tags
+
+![contentjacc](notes-img/contentjacc.png)
+
+#### Problems
+
+ - in particular when automatically extracted as
+   - not every word has similar importance
+   - longer documents have a higher chance to have an overlap with the user profile
+
+#### Solution - Standard measure: TF-IDF
+
+ - Encodes text documents in multi-dimensional Euclidian space
+   - weighted term vector
+ - TF (term frequency): Measures the importance of the term => how often a term appears (density in a document)
+   - assuming that important terms appear more often
+   - normalization has to be done in order to take document length into account
+ - IDF (inverse document frequencys): Important terms should be unique to one document => Aims to reduce the weight of terms that appear in all documents
+   - May not be relevant in some cases (e.g. Male vs. Female attribute on dating sites)
+
+![contenttfidf](notes-img/contenttfidf.png)
+### Improving the vector space model
+
+ - 2vec models
+ - BERT
+ - or similar
+
+#### word2vec
+
+ - turn all words to predefined sized vector
+
+ - if the vector of 2 words is similar, they appear in a similar context
+
+##### Text / multivalue
+
+text -> vector of words -> similarity vector (vector of all the words with the values meaning word w_i is in the original text) -> use some similarity to compare items/texts...
+
+##### Nominal / value
+
+similar, jsut text with one word
+
+##### Numeric
+
+some difference rate but there are problems:
+
+ - quantiles
+ - cumulative distribution function
+
+#### Other
+
+ - rule based improvements - mostly in preprocessing
+ - **feature selection** - is the attribute actually important (holiday description)
+
+### Cosine similarity
+
+![simcosine](notes-img/simcosine.png)
+
+### Recommending items
+
+Simple method: **nearest neighbors**
+ - we have the user history of items, per item we have its weight a set of similar items, we can aggregate over that and show the top k elements of that list
+
+May be relevant for item-based recommendations
+ - Most similar items to the currently viewed one
+ - Still used in smaller e-commerce (either based on content or collaborative similarity)
+
+Other options?
+ - Any aggregation of user’s preferences?
+
+#### Rocchio's method (Vector Space Model)
+
+User positive and user negative vector + distance (stay close to positive and far from negative)
+
+ - Originally for „conversational“ (interactive/iterative) query retrieval systems
+ - Query-based retrieval: Rocchio's method
+ - The SMART System: Users are allowed to rate (relevant/irrelevant) retrieved documents (feedback)
+   - The system then learns a prototype of relevant/irrelevant documents
+   - Queries are then automatically extended with additional terms/weight of relevant documents
+
+The paradigm fits well also for recommender systems
+
+Some modern loss functions are based on a similar principles (e.g. Contrastive loss for siamese networks)
+
+![contentrocchio](notes-img/contentrocchio.png)
+
+### Disadvantages
+
+**the bubble**
+
+Overspecialization
+ - Algorithms tend to propose **"more of the same"**
+ - Or: too similar news items
+ - Multicriterial optimization (diversity, novelty), fairness-aware approaches
+
+Keywords alone may not be sufficient to judge quality/relevance of a document or web page
+ - up-to-date-ness, usability, aesthetics, writing style
+ - **content may also be limited / too short**
+ - content may not be automatically extractable (multimedia)
+   - Not so big issue today
+
+Ramp-up phase required
+ - Some training data is still required
+ - Web 2.0: Use other sources to learn the user preferences
+
+### Advantages
+
+no cold-start!!!
+
+
+## Knowledge-based models
+
+> Tell me what fits my needs the best
+
+Move from recommending similar to recommending better objects
+
+### Motivation
+
+Products with **low number of available ratings** - expensive cars and villas
+
+Time span plays an important role
+ - five-year-old ratings for computers
+ - user lifestyle or family situation changes
+
+Customers want to **define** their **requirements explicitly**
+ - "the color of the car should be black"
+
+### Approaches
+
+1. Constraint-based
+   - based on explicitly defined set of recommendation rules _(partially)_ fulfill recommendation rules
+2. Case-based
+   - Item-based: give me similar items, however with larger display
+
+**(edge of query retrieval and recommender systems)**
+ - users specify the requirements
+ - systems try to identify solutions
+ - if no solution can be found, users change requirements (or partial solution is given)
+ - Not always, we may learn knowledge RS rules from collaborative data
+
+#### Constraint-based recommender systems
+
+Knowledge base
+ - usually mediates between user model and item properties
+ - variables
+   - user model features (requirements), Item features (catalogue)
+ - set of constraints
+   - logical implications (IF user requires A THEN proposed item should possess feature B)
+   - hard and soft/weighted constraints
+   - solution preferences
+
+Derive a set of recommendable items
+ - fulfilling set of applicable constraints
+ - applicability of constraints depends on current user model
+ - explanations  - transparent line of reasoning
+
+##### Tasks
+
+ 1. Find a set of user requirements such that a subset of items fulfills all constraints
+    - ask user which requirements should be relaxed/modified such that some items exist that do not violate any constraint
+ 2. Find a subset of items that satisfy the maximum set of weighted constraints
+    - similar to find a maximally succeeding subquery (XSS)
+    - all proposed items have to fulfill the same set of constraints
+    - compute relaxations based on predetermined weights
+ 3. Rank items according to weights of satisfied soft constraints
+    - rank items based on the ratio of fulfilled constraints
+    - does not require additional ranking scheme
+
+![knowledgeconstraint](notes-img/knowledgeconstraint.png)
+
+#### Case-based recommender systems
+
+Items are retrieved using similarity measures
+
+Distance similarity
+ - ![knowledgecase](notes-img/knowledgecase.png)
+   - sim(p, r) expresses for each item attribute value φr(p) its distance to the customer requirement r ∈ REQ
+   - w_r is the importance weight for requirement r
+
+In real world, customer would like to
+ - maximize certain properties. i.e. resolution of a camera, "more is better"(MIB)
+ - minimize certain properties. i.e. price of a camera, "less is better"(LIB)
+ - Target within some values, e.g. Price between x,y
+
+![knowledgecasetransform](notes-img/knowledgecasetransform.png)
+
+##### Interacting with case-based recommenders
+
+ - Customers maybe not know what they are seeking
+ - **Critiquing** is an effective way to support such navigations
+ - Customers specify their change requests (price or mpix) that are not satisfied by the current item (entry item)
+
+![knowledgecasecrit](notes-img/knowledgecasecrit.png)
+
+###### **Compound**
+
+Operate over **multiple properties** can improve the efficiency of recommendation dialogs
+You can try to learn attribute-level preferences from the interaction data (if you have them), or apply general policies (item A is better than item B for most settings)
+
+
+### Limitations
+
+ - cost of knowledge acquisition
+   - from domain experts
+   - from users
+   - from web resources
+ - accuracy of preference models
+   - very fine granular preference models require many interaction cycles
+   - collaborative filtering models preference implicitly
+ - independence assumption can be challenged
+   - preferences are not always independent from each other
+ - No known commercial usage
+   - (but the generic concept of price per value with optional personalization is viable)
+
+## RecSys evaluation
+
+> If You want to double your success rate, you should double your failure rate.
+(=> experiment a lot)
+
+Types:
+ 1. Off-line evaluation
+    - Based on historical data
+    - Aiming to predict hidden part of the data
+    - A lot of improvements recently
+ 2. Lab studies (User Studies)
+    - Expressly created for the purpose of the study
+    - Extraneous variables can be controlled more easy by selecting study participants
+      - Possibility to get more feedback
+    - But doubts may exist about participants motivated by money or prizes
+    - Participants should behave as they would in a real-world enviroment
+ 3. Field studies (On-line, A/B testing)
+    - Conducted in an preexisting real-world enviroment
+    - Users are intrinsically motivated to use a system
+
+
+### Online studies
+
+Success = more money
+
+A/B testing
+ - Evaluate metric as close to the actual target variable as possible
+ - Retailer’s target variable is profit
+   - i.e. Netflix’s target variable is monthly subscribes
+   - Usually, larger overal consumption increase profit
+ - Broadcaster’s target variable may be influenceness / total mass of readers
+
+The direct effect on target variables may be too small
+ - How much does one small parameter change affect retention of users?
+
+The target variables may be hard to measure directly
+- E.g. has long-term effect only / cannot extrapolate all external variables
+
+Proxy variables
+ - Loyalty of user, Conversions rate, Basket size / value, Click through rate, Shares / Follows /…
+
+![evalonline](notes-img/evalonline.png)
+
+#### Technical metrics
+
+**Always design evaluation metrics with respect to your target variable**
+
+
+ - **!!Response time!!**
+ - Train / re-train / model update time
+ - Memory / CPU consumption
+   - How large can we grow with current infrastructure?
+
+Recall on objects
+ - Is portion of your objects ignored? Are there too many low-profit bestsellers?
+
+Ability to predict
+ - Can you calculate recommendations for all users?
+ - For which groups of users are we better than baseline?
+
+#### Disadvantage
+
+ - It costs a lot!
+ - some users get suboptimal recommendations (solvable)
+   - **MULTIARMED BANDITS**
+     - use maximum of bandits with minimal regret (the difference of the reward of using too many to using the actual best recsys)
+     - Algorithms
+       - Epsilon-gready alg
+         - we have some stats for recsys 1 through k
+         - with propability 1-ε we use the best one, and with ε we choose something else - over time will converge to the best one while not using the sub-par recsys too often
+       - Upper confidence bounds
+         - ![evalbanditsconf](notes-img/evalbanditsconf.png)
+       - Thompson sampling
+         - similar to above, but this uses Beta distribution and based on a random number it chooses
+
+
+
+### DarkSide
+
+ - It is possible to incorporate some providers metrics into the recommendation proces
+   - i.e. recommend items with higher profit
+ - Do that wisely (or, rather, not at all)
+   - Your credibility is at stake if someone finds out
+   - User trust is in recommendations is one of the most important features determining the long-term effect of recommender  - systems
+   - Do not behave like ALZA recently...
+     - sued for putting things into shopping carts without users knowing
+
+### Lab studies
+
+ - Same as on-line experiments
+ - Questionnaire
+   - Features otherwise harder to detect directly
+   - Helpfulness / Ease of use / Relevance
+   - Trust
+   - Novelty to the user etc.
+ - Physiological response
+   - Eye tracking etc.
+
+
+ - Key criterion in lab studies is that subjects should well approximate behavior of your real users
+   - This may be harder than it seems
+   - Carefully consider what tasks to give him/her and then re-think it once more ☺
+
+![evallab](notes-img/evallab.png)
+
+#### Advantage
+
+ - no real cost in terms of sub-par recomms to real users
+ - ability to question afterwards
+ - physiological response
+
+#### Disadvantages
+
+ - possible cost
+ - are the people in the study actually representative?
+
+### Offline studies
+
+#### Simulation on existing dataset
+
+ - Train / Validation / Test split
+   - Random (bootstrap)  - only in case of very large datasets
+     - **Split data 3 ways**
+       - Train
+       - Validate
+         - mainly if more hyper parameters
+         - if best is selected, retrain with train = train + validate
+       - Test
+         - test the trained model
+   - Cross-validation variants
+   - **Temporal splits**  - better than CV for RecSys (causality problems)
+     - however lower support in non-recsys audience
+     - also has a problem with the fact that the system is learning on data that is **from a window that is a month ago** (not a real example)
+   - Event-based simulation  - the best option from causality perspective, most expensive
+     - a
+
+
+
+Prediction of „correct“ objects
+ - According to some metic / metrics
+
+For small data sets:
+
+![offvalid](notes-img/offvalid.png)
+
+
+**Beware of the effect of causality**
+ - How did users get to the objects they actually rated?
+ - In your data, store available choices
+ - In 3rd party data, you may observe general popularity of individual items
+
+Correct evaluation protocol:
+ - For each method and set of parameters:
+   - Learn model on TRAIN set
+   - Evaluate prediction on VALIDATION set
+ - Select best parameters for each method
+ - For each method:
+   - Learn model on TRAIN + VALIDATION set
+   - Evaluate prediction on TEST set
+ - Compare results
+
+ - **Never use any knowledge of the test set data**
+   - E.g. For mean ratings, object similarities etc.
+
+#### Other options:
+
+ - Monte Carlo Cross Validation (select membership to train or test at random)
+ - Temporal splits (older data as train set, newer as test set)
+   - Prefered if enough data (causality effects)
+ - Off-line simulation **(flow of inbound and outbound events)**
+   - Important for Reinforcement learning and similar approaches
+   - High temporal complexity
+ - Various de-biasing techniques (counterfactual / off-policy evaluation, missing-not-at-random)
+   - Rather complex topic, hopefully, later today
+
+#### Metrics
+
+ - Relevance of the recommended objects / Ranking metrics
+   - User visited / rated / purchased… the objects, which the method recommends
+   - **nDCG**, **MAP**, Precision, **Precision@top-k**, Recall, Liftindex, RankingScore,…
+ - Rating error metrics
+   - User rated some objects, how large is the prediction error on those?
+   - MAE, RMSE,…
+ - Novelty
+   - Does the user already know / visited recommended objects?
+   - This may be both positive and negative depending on task
+     - However it is always trivial
+     - No need of complex system to recommend previously visited objects
+ - Diversity
+   - Are all the recommendations similar to each other?
+   - Relevance vs. Diversity tradeoff
+   - **Intra-List Diversity**
+ - Coverage
+   - how many items were recommended (over time)
+ - Serendipity
+   - unplanned fortunate discovery
+   - new and relevant object
+
+
+##### Evaluation in information retrieval (IR)
+
+![offtruthtable](notes-img/offtruthtable.png)
+
+**Precision**: a measure of exactness, determines the fraction of relevant items retrieved out of all items retrieved
+![offprec](notes-img/offprec.png)
+
+**Recall**: a measure of completeness, determines the fraction of relevant items retrieved out of all relevant items
+![offrec](notes-img/offrec.png)
+
+The problem is that that doesnt reflect order and "relevance" => **Limit on top-k**
+ - Precision@top-k
+ - Recall@top-k
+
+
+Position within top-k does not matter
+ - The list is short enough that user observe it all
+ - With increasing k, this becames less applicable
+
+==>
+
+##### Rank aware methods
+
+ - RankScore,
+ - Lift index
+ - **Normalized Discounted Cumulative Gain**
+   - ![offndcg](notes-img/offndcg.png)
+
+ - Rankscore (exponential reduction) < Liftscore (linear red.) < NDCG (log. red.)
+
+###### Mean Average Precision (MAP)
+
+ - a ranked precision metric that places emphasis on highly ranked correct predictions (hits)
+ - essentially it is the average of precision values determined after each successful prediction, i.e.
+
+![offmap](notes-img/offmap.png)
+
+#### Debiasing
+
+##### Biases - Presentation bias
+
+![evalpresent](notes-img/evalpresent.png)
+
+ - What (where) was shown to the user affects what feedback we received
+ - How to evaluate novel RS that would recommend something else
+   - Than what users received & evaluated
+   - Hard question in general, intensive research topic
+     - Off-policy evaluation or counterfactual evaluation (what would be the results, if policy B was applied)
+     - Part of the feedback received on random(ized) data
+     - https://arxiv.org/pdf/1003.0146.pdf (Section 4: evaluation, assuming independence of events)
+
+###### Example
+
+![evalpresentex](notes-img/evalpresentex.png)
+
+##### Missing not at random for Implicit feedback
+
+ - Classical off-line evaluation expects Missing at random data
+ - **absence of (positive) feedback** is either because the item is **unknown positive or irrelevant**
+   - For aggregational statistics to be valid, it is important that the chance of being unknown positive or irrelevant is the same for all data with no feedback
+   - Not true in real-world for some cases
+   - Probability that the item is known by the user => **propensity** (probability - user would use this if it was known to him)
+   - Well-known movies may have higher propensity (users ignore them willingly)
+     - MISSING NOT AT RANDOM
+     - Evaluation should be de-biased accordingly (we need to estimate the propensity)
+
+E.g - I dont rate things I dont like
+
+Paper
+ - Thorsten Joachims et al. https://arxiv.org/pdf/1608.04468.pdf; https://ylongqi.com/paper/YangCXWBE18.pdf
+
+![evaldebias](notes-img/evaldebias.png)
+
+### Sequance-aware evaluation
+
+Based on some sequence of events we want the system to respond with something specific
+
+It simulates IRL use of the system
+
+Simple implementation
+ - session similarity -> KNN on the session level
+ - weighted approach - decay for older items in item to item recommendations
+
+![evalseq1](notes-img/evalseq.png)
+
+![evalseq2](notes-img/evalseq2.png)
+
+![evalseq3](notes-img/evalseq3.png)
+
+#### Partitioning
+
+![evalseq4](notes-img/evalseq4.png)
+
+![evalseq5](notes-img/evalseq5.png)
+
+## Hybrid recommender systems
+
+Combine the advantages of content and collaborative approaches
+
+Different hybridization designs
+ 1. Parallel use of several systems + aggregation
+ 2. Monolithic exploiting different features
+ 3. Pipelined invocation of different systems
+
+### Monolithic
+
+![hybridmono](notes-img/hybridmono.png)
+
+#### Content-boosted collaborative filtering
+
+ - [Prem Melville et al. 2002]
+ - **Based on content features additional ratings are created**
+ - E.g. Alice likes Items 1 and 3 (unary ratings)
+   - Item7 is similar to 1 and 3 by a degree of 0.75
+   - Thus Alice likes Item7 by 0.75
+ - Item matrices become less sparse
+ - Significance weighting and adjustment factors
+   - Peers with more co-rated items are more important
+   - Higher confidence in content-based prediction, if higher number of own ratings
+
+
+#### Spreading activation
+
+![hybridspread](notes-img/hybridspread.png)
+
+Page rank like
+
+![hybridspreadbetter](notes-img/hybridspreadbetter.png)
+
+![hybridspreadformula](notes-img/hybridspreadformula.png)
+
+
+#### BPRMCA
+
+from matrix factorization
+
+Latent factors of similar items should also be similar - cosine similarity / distance of the latent factors
+
+![hybridbprmca](notes-img/hybridbprmca.png)
+
+### Parallelized hybridization design
+
+ - Output of several existing implementations combined
+ - Least invasive design
+ - Some weighting or voting scheme
+   - Weights can be learned dynamically
+   - Extreme case of dynamic weighting is switching
+
+#### Problem
+
+The output of 2 recsys can have no overlap resulting in us using just 1 system anyway.
+
+#### Hybridization
+
+Can use multiarm bandits per item in the top k
+
+or weighted approach - normalize results so they can be comparable
+
+
+
+#### Fuzzy D'Hondt's algorithm
+
+Similar to votes => mandates translation in elections
+
+If some recsys gives good results in 40% of the cases, it should be represented accordingly in the number of top-K elements recommended.
+
+Minimize the over represented party (reduce votes when a mandate is assigned and choose again)
+
+In Fuzzy reduced not by some fixed amount but relevancy amount
+![hybridfuzzy](notes-img/hybridfuzzy.png)
+
+### Pipelined hybridization designs
+
+ - One recommender system pre-processes some input for the subsequent one
+   - Cascade
+   - Meta-level
+
+ - Refinement of recommendation lists (cascade)
+ - Learning of model (e.g. collaborative knowledge-based meta-level)
+
+#### Cascade
+
+ - Successor's recommendations are restricted by predecessor
+   - ![hybridcascade](notes-img/hybridcascade.png)
+ - Where forall k > 1
+   - ![hybridcascade2](notes-img/hybridcascade2.png)
+ - Subsequent recommender may not introduce additional items
+   - Thus produces very precise results
+
+ - Recommendation list is continually reduced
+ - First recommender excludes items
+   - Remove absolute no-go items (e.g. knowledge-based)
+ - Second recommender assigns score
+   - Ordering and refinement (e.g. collaborative)
+
+#### Meta-level
+
+ - Successor exploits a model delta built by predecessor
+   - ![hybridmeta](notes-img/hybridmeta.png)
+
+##### Examples
+
+Fab
+ - instead of updating the input, we change the parameters of the next model in line
+ - Online news domain
+ - CB recommender builds user models based on weighted term vectors
+ - CF identifies similar peers based on these user models but makes recommendations based on ratings
+
+Collaborative constraint-based meta-level RS
+ - to the matrix of factors we add factors that we are updating
+ - Collaborative filtering learns a constraint base
+ - Knowledge-based RS computes recommendations
+
+## Deep Learning (DL)
+
+![dlnetwork](notes-img/dlnetwork.png)
+
+![dllearning](notes-img/dllearning.png)
+
+ - effective from a certain size - mostly for larger data sets
+
+### Neural model
+
+
+ - ![dlneural](notes-img/dlneural.png)
+
+ - how to set weights?
+   - from matrix fact. => stochastic gradient descent
+     - set randomly, then train
+     - ![dlback](notes-img/dlback.png)
+
+### Neuron
+
+ - ![dlneuron](notes-img/dlneuron.png)
+
+### Problems
+
+#### Vanishing gradient
+
+ - Sigmoid causing slow updates
+ - ![dlslow](notes-img/dlslow.png)
+
+
+#### Overfitting
+
+##### Redundancy
+
+prevent by redundancy - remove some percentage of nodes and the network shoulkd still know how to work
+
+##### Mini-batches
+
+Compute Stochastic Gradient Descent over a batch of data points, then update
+
+### Modern feedforward networks
+
+ - Momentum
+ - Adaptive learning rates
+
+### Usage
+
+ - **Feature extraction directly from the content**
+   - Image, text, audio, etc.
+   - Instead of metadata
+   - For hybrid algorithms
+ - **Heterogenous data handled easily**
+ - **Dynamic/Sequential behaviour** modeling with RNNs
+ - More accurate representation learning of users and items
+   - Natural extension of CF & more
+ - RecSys is a complex domain
+   - Deep learning worked well in other complex domains
+   - Worth a try
+
+### Best practices
+
+ - **Start simple**
+   - Add improvements later
+ - Optimize code
+   - GPU/CPU optimizations may differ
+ - **Scalability is key**
+ - Opensource code
+ - Experiment (also) on public datasets
+ - **Don’t use very small datasets**
+ - Don’t work on irrelevant tasks, e.g. rating prediction
+
+### Embedding
+
+ - a (learned) real value vector  representing an entity
+
+Also known as:
+ - Latent feature vector
+ - (Latent) representation
+
+Similar entities’ embeddings are similar
+
+#### Use in recommenders
+
+ - Initialization of item representation in more advanced  algorithms
+ - Item-to-item recommendations
+
+#### Matrix fact. as learning embeddings
+
+MF: user & item embedding learning
+ - Similar feature vectors
+   - Two items are similar
+   - Two users are similar
+   - User prefers item
+
+MF representation as a simplictic neural  network
+ - Input: one-hot encoded user ID
+ - Input to hidden weights: user feature  matrix
+ - Hidden layer: user feature vector
+ - Hidden to output weights: item feature  matrix
+ - Output: preference (of the user) over the  items
+
+![dlembed](notes-img/dlembed.png)
+
+#### Word2vec
+
+[Mikolov et. al, 2013a]
+
+transforms words to their embeddings and it keeps similarity -> embedding is similar if the words appear in the same/similar context
+
+ - Representation learning of words
+ - Shallow model
+ - Data: (target) word + context pairs
+   - Sliding window on the document
+   - Context = words near the target
+     - In sliding window
+     - 1-5 words in both directions
+ - Two models
+   - Continous Bag of Words (CBOW)
+   - Skip-gram
+
+##### CBOW
+
+ - Continuous Bag of Words
+ - Maximalizes the probability of the target word given the  context
+ - Model
+   - Input: one-hot encoded words
+   - Input to hidden weights
+     - Embedding matrix of words
+   - Hidden layer
+     - Sum of the embeddings of the words in the context
+   - Hidden to output weights
+   - Softmax transformation
+     - Smooth approximation of the max operator
+     - Highlights the highest value
+ - Output: likelihood of words of the corpus given the context
+
+Embeddings are taken from the input to hidden matrix
+ - Hidden to output matrix also has item representations (but not used)
+
+![dlcbow](notes-img/dlcbow.png)
+
+##### Skip-gram
+
+Window of context
+
+![dlskipgram](notes-img/dlskipgram.png)
+
+![dlskipwindow](notes-img/dlskipwindow.png)
+
+![dlskipexample](notes-img/dlskipexample.png)
+
+## Deep Collaborative Filtering
+
+Extension over matrix fact.
+
+### Boltzmann machiness
+
+#### Restricted (RBM)
+
+Training:
+1. Set visible units based on data
+2. Sample hidden units
+3. Sample visible units
+4. Modify weights to approach the configuration of visible units to the data
+
+Note:
+ - Weights are same on both ways
+
+![dlrbm](notes-img/dlrbm.png)
+
+#### Deep (DBM)
+
+Same as restricted, but once we sample one layer, we fix it and add a layer.
+
+![dldbm](notes-img/dldbm.png)
+
+### Autoencoders
+
+![dlauto](notes-img/dlauto.png)
+
+### DeepCF methods
+
+#### TDSSM (Temporal Deep Semantic Structured Model)
+
+Similar to MV-DNN
+User features are the combination of a static and a temporal part
+The time dependent part is modeled by an RNN
+
+![dltdssm](notes-img/dltdssm.png)
+
+## Feature Extraction from Content
+
+ - Hybrid CF+CBF systems
+   - Interaction data + metadata
+
+
+ - Model based hybrid solutions
+   - Initializing
+     - Obtain item representation based on metadata
+     - Use this representation as initial item features
+   - **Regularizing**
+     - Obtain metadata based representations
+     - The interaction based representation should be close to the metadata based
+     - Add regularizing term to loss of this difference
+     - latent factors should also be similar if items are similar
+   - **Joining**
+     - Obtain metadata based representations
+     - Have the item feature vector be a concatenation
+       - Fixed metadata based part
+       - Learned interaction based part
+
+ - Deep learning is capable of direct feature extraction
+   - Work with content directly
+   - Instead (or beside) metadata
+
+Images
+ - E.g.: product pictures, video thumbnails/frames
+ - Extraction: convolutional networks
+ - Applications (e.g.):
+   - Fashion
+   - Video
+
+Text
+ - E.g.: product description, content of the product, reviews
+ - Extraction
+   - RNNs
+   - 1D convolution networks
+   - Weighted word embeddings
+   - Paragraph vectors
+   - BERT  - last year’s essay slides
+ - Applications (e.g.):
+   - News
+   - Books
+   - Publications
+
+Music/audio
+ - Extraction: convolutional networks (or RNNs, or autoencoders)
+
+### Convolutional Neural Networks (CNN)
+
+Speciality of images
+ - Huge amount of information
+   - 3 channels (RGB)
+   - Lots of pixels
+   - Number of weights required to fully connect a 320x240  image to 2048 hidden units:
+     - `3*320*240*2048 = 471,859,200`
+ - Locality
+   - Objects’ presence are independent of their location or  orientation
+   - Objects are spatially restricted
+
+![dlconvlayers](notes-img/dlconvlayers.png)
+
+#### Pooling
+
+![dlconvpooling](notes-img/dlconvpooling.png)
+
+![dlconvpooling2](notes-img/dlconvpooling2.png)
+
+
+### Visual BPR
+
+[He & McAuley, 2016]
+
+Model composed of
+ - Bias terms
+ - MF model
+ - Visual part
+   - Pretrained CNN features
+   - Dimension reduction through „embedding”
+   - The product of this visual item feature and a learned user feature vector is used in the  model
+ - Visual bias
+   - Product of the pretrained CNN features and a global bias vector over its features
+
+BPR loss
+ - Tested on clothing datasets (9-25% improvement)
+ - ![dlexample](notes-img/dlexample.png)
+ - Whole new fashion RecSys research area emerged after this. E.g. **Finding outfits** (i.e. Products matching together)
+
+### Music representations
+
+[Oord et. al, 2013]
+
+ - Extends iALS/WMF with audio  features
+   - To overcome cold-start
+ - Music feature extraction
+   - Time-frequency representation
+   - Applied CNN on 3 second  samples
+   - Latent factor of the clip: average   - predictions on consecutive  windows of the  - clip
+ - Integration with MF
+   - (a) Minimize distance between  music features  - and the MF’s  feature vectors
+   - (b) Replace the item features  with the music  - features  (minimize original loss)
+
+![dlmusic](notes-img/dlmusic.png)
+
+### Text information improving recommendations
+
+[Bansal et. al, 2016]
+
+ - Paper recommendation
+ - Item representation
+   - Text representation
+     - Two layer GRU (RNN): bidirectional layer  - followed by a unidirectional layer
+     - Representation is created by pooling over the  - hidden states of the sequence
+   - ID based representation (item feature vector)
+   - Final representation: ID + text added
+ - Multi-task learning
+   - Predict both user scores
+   - And likelihood of tags
+ - End-to-end training
+   - All parameters are trained simultaneously (no  - pretraining)
+   - Loss
+     - User scores: weighted MSE (like in iALS)
+     - Tags: weighted log likelihood (unobserved  - tags are downweighted)
+
+## Session-based recommendations with RNNs
+
+Intent: next item prediction (next with some attribute)
+
+### Recurrent neural networks
+
+networks that updates its own hidden state
+
+![dlrnnsession](notes-img/dlrnnsession.png)
+
+![dlrnn](notes-img/dlrnn.png)
+
+
+#### Problems
+
+Exploding/vanishing gradient => they forget or overgrade
+
+![dlvanishexplode](notes-img/dlvanishexplode.png)
+
+Solution
+ - clipping
+
+
+OR
+
+##### Long-Short Term Memory (LSTM)
+
+input + hidden state used to update a gate, then it uses its memory to update the hidden state
+
+[Hochreiter & Schmidhuber, 1999]
+
+Instead of rewriting the hidden state during update, add a delta
+ - s_t: = s_t-1 + delta s_t:
+ - Keeps the contribution of earlier inputs relevant
+
+Information flow is controlled by gates
+ - Gates depend on input and the hidden state
+ - Between 0 and 1
+ - Forget gate (f): 0/1 à reset/keep hidden state
+ - Input gate (i): 0/1 à don’t/do consider the contribution of the input
+ - Output gate (o): how much of the memory is written to the hidden state
+
+Hidden state is separated into two (read before you write)
+ - Memory cell (c): internal state of the LSTM cell
+ - Hidden state (h): influences gates, updated from the memory cell
+
+![dlltsm](notes-img/dlltsm.png)
+
+##### Gated Recurrent Unit (GRU)
+
+hidden state + input, then with hidden state again
+
+![dlgru](notes-img/dlgru.png)
+
+
+### GRU4Rec
+
+[Hidasi et. al, 2015]
+
+Network structure
+ - **Input: one hot encoded item ID**
+ - Optional embedding layer
+ - GRU layer(s)
+ - **Output: scores over all items**
+ - Target: the next item in the session
+
+![dlgru4rec](notes-img/dlgru4rec.png)
+
+Adapting GRU to session-based recommendations
+ - Sessions of (very) different length & lots of short
+sessions: session-parallel mini-batching
+ - Lots of items (inputs, outputs): sampling on the output
+ - The goal is ranking: listwise loss functions on pointwise/pairwise scores
+
+Training:
+ - add chain sessions together
+
+![dlgru4rec2](notes-img/dlgru4rec2.png)
+
+### Conclusion on DL
+
+ - Deep Learning is now in RecSys
+
+ - Huge potential, but lot to do
+   - E.g. Explore more advanced DL techniques
+
+ - Current research directions
+   - Item embeddings
+   - Deep collaborative filtering
+   - Feature extraction from content
+   - Session-based recommendations with RNNs
+ - Scalability should be kept in mind
+ - Don’t fall for the hype BUT don’t disregard the achievements of DL and its potential for RecSys
+
+
+## Context aware recommenders
+
+> Context is any information or conditions  that can influence the perception of the  usefulness of an item for a user.
+
+### Motivation
+
+ - Recommend avacation
+   - Winter vs.summer
+ - Recommend apurchase
+   - Gift vs. foryourself
+ - Recommend amovie
+   - With girlfriend in a movie theater vs.athome with a group offriends
+ - Recommend arecipe
+   - Alone vs. with my kids
+ - Recommendmusic
+   - When you have a happy vs. sadmood.
+
+
+
+ - Physical context
+   - time, position, and activityof the user, weather, light, and temperature...
+ - Social context
+   - the presence and role of other people around the user
+ - Interaction media context
+   - the device used to access the system and the type of media that are browsed and personalized (text, music, images, movies, ...)
+ - Modal context
+   - The state of mind of the user, the user’s goals,  mood, experience, and cognitive capabilities.
+
+**Not always:**
+ - I like Ferrari cars (5 stars) but it is unlikely that I  will buy one!
+ - I gave 5 stars to a camera –this does not mean  that I will buy another camera if I haveone
+
+### What Context isRelevant?
+
+“Shindler’s List” has been rated 5 stars by john on January 27th (Remembranceday)
+ - In this case January 27th is expressing relevant context
+
+### How to
+
+ 1. A Traditional (Bi-dimensional) Model of Recommendation
+   - ![contexttrad](notes-img/contexttrad.png)
+ 2. Multidimensional Model
+   - ![contextmulti](notes-img/contextmulti.png)
+ 3. Context filtering
+   - ![contextfiltering](notes-img/contextfiltering.png)
+ 4. Tensors
+   - ![contexttensor](notes-img/contexttensor.png)
+ 5. DL
+   - context2vec, product with users and items
+
+
+## Rec on mobile devices
+
+Dwell time on hand-held is smaller than on desktop
+
+The size of screen lowers the margin of errors
+
+Interaction is more direct
+
+## External data
+
+> antikvariat
+
+Single item in stock
+Few content-based attributes
+
+### Linked Open Data
+
+external data source
+
+usually graph based
+
+#### Problems
+
+speed
+
+## Explanations
+
+there is no explicit query shown => user has be able to guess, how the recsys got to recommending an item
+
+### Goals
+
+ - Transparency
+   - Provide information so the user can comprehend the reasoning used to generate a specific recommendation
+   - Provide information as to why one item was preferred over another
+ - Validity
+   - Allow a user to check the validity of a recommendation
+   - Not necessarily related to transparency
+     - E.g., a neural network (NN) decides that product matches to requirements
+     - Transparent disclosure of NN’s computations will not help, but a comparison of required and offered product features  - allows customer to judge the recommendation’s quality.
+ - Trustworthiness
+   - Trust building can be viewed as a mechanism for reducing the complexity of human decision making in uncertain situations
+   - Reduce the uncertainty about the quality of a recommendation
+ - Persuasiveness
+   - Persuasive explanations for recommendations aim to change the user's buying behavior
+   - E.g., a recommender may intentionally dwell on a product's positive aspects and keep quiet about various negative aspects
+ - Effectiveness
+   - The support a user receives for making high-quality decisions
+   - Help the customer discover his or her preferences
+   - Help users make better decisions
+ - Efficiency
+   - Reduce the decision-making effort
+   - Reduce the time needed for decision making
+   - Another measure might also be the perceived cognitive effort
+ - Satisfaction
+   - Improve the overall satisfaction stemming from the use of a recommender system
+ - Relevance
+   - Additional information may be required in conversational recommenders
+   - Explanations can be provided to justify why additional information is needed from the user
+ - Comprehensibility
+   - Recommenders can never be sure about the knowledge of their users
+   - Support the user by relating the user's known concepts to the concepts employed by the recommender
+ - Education
+   - Educate users to help them better understand the product domain
+   - Deep knowledge about the domain helps customers rethink their preferences and evaluate the pros and cons of different  - solutions
+   - Eventually, as customers become more informed, they are able to make wiser purchasing decisions
+
+
+ - The aforementioned aims for generating explanations can be interrelated
+   - Persuasiveness+ → Trust-
+   - Effectiveness+ → Trust+
+…
+
+Explanation should be precise
+
+ - Even simple statements like
+   - > people who bought this bought that
+ - or
+   - > because you liked/bought
+ - or
+   - matches (these) keywords
+
+![expl](notes-img/expl.png)
