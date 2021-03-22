@@ -5,24 +5,28 @@ Lukas Bastian
 Referat 1
 ---------
 
-Autor(i):
+Autor(i): Tomas Husak
 
 Nastroj(e): Jupyter Notebook
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 2
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 1
 
 Dalsi komentare:
+Zatim nejlepsi prezentace predmetu - dobre strukturovana, clovek evidentne se zajmem o prezentovany produkt a to uplne stacilo k tomu, aby v mych ocich dostal hodnotceni vyse.
+(2 z obsahu jenom protoze se me ten nastroj az tak netyka, respektive neni pro natolik zajimavy)
+Prosel nastroj od instalace, pres ukazani 3 environmentu/produktu, jejich rozdily a problemy + predstaveni konkurence/podobnych nastroju.
 
+Delsi hodnoceni bych napsal spis v pripade nespokojenosti. :)
 
 ---------
 Referat 2
 ---------
 
-Autor(i):
+Autor(i): Pavel Parizek
 
 Nastroj(e): program analysis tools
 
@@ -33,4 +37,4 @@ Kvalita prezentace:
 	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
 
 Dalsi komentare:
-
+Na Vase prani bez hodnoceni
