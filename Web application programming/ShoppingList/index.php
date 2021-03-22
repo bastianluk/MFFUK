@@ -56,6 +56,12 @@ function processRequest(string $method, $relativePath, array $parameters)
         {
             $value = (int)$value;
         }
+        if (is_array($param))
+        {
+            $exploded = explode(",", $value);
+            $mapped = array_map(function($item) { return (int)$item ;}, $exploded);
+            $value = $mapped;
+        }
 
         $$key = $value;
     }

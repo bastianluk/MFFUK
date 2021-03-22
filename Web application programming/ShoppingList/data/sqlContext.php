@@ -54,7 +54,7 @@ class SqlContext
 
     public function deleteListItemAt($id, $position)
     {
-        $deleteQuery = "DELETE FROM list WHERE id = $id";
+        $deleteQuery = "DELETE FROM list WHERE id = $id AND position = $position";
         $deleteQueryResult = self::execute($deleteQuery);
 
         $updateQuery = "UPDATE list SET position = position - 1 WHERE position > $position";
@@ -103,10 +103,10 @@ class SqlContext
 
     private function updateAmountInList($item, int $amount)
     {
-        $listItemId = self::findIdOfListItemIByItemId($item->id);
+        $listItemId = self::findIdOfListItemByItemId($item->id);
         if(!isset($listItemId))
         {
-            $listItemId = self::createListItemIByItemId($item->id);
+            $listItemId = self::createListItemByItemId($item->id);
         }
 
         $oldAmount = self::getListItemAmountById($listItemId);
@@ -114,7 +114,7 @@ class SqlContext
         self::setAmount($listItemId, $newAmount);
     }
 
-    private function findIdOfListItemIByItemId(int $item_id, $default = null)
+    private function findIdOfListItemByItemId(int $item_id, $default = null)
     {
         $itemQuery = "SELECT id FROM list WHERE item_id = $item_id";
         $itemQueryResult = self::execute($itemQuery);
@@ -127,23 +127,47 @@ class SqlContext
         return $default;
     }
 
-    private function createListItemIByItemId(int $item_id)
+    private function createListItemByItemId(int $item_id)
     {
         $maxPosition = self::getMaxListPosition();
         $newPosition = $maxPosition + 1;
         $createQuery = "INSERT INTO list (item_id, amount, position) VALUES ($item_id, 0, $newPosition)";
         $createQueryResult = self::execute($createQuery);
 
-        return self::findIdOfListItemIByItemId($item_id);
+        return self::findIdOfListItemByItemId($item_id);
     }
 
-    public function getMaxListPosition()
+    public function getMaxListPosition() : int
     {
         $maxQuery = 'SELECT MAX(position) AS maxPos FROM list';
         $maxQueryResult = self::execute($maxQuery);
         if ($row = $maxQueryResult->fetch_assoc())
         {
             return $row['maxPos'];
+        }
+
+        return 0;
+    }
+
+    public function deleteListItemsByIds(array $ids)
+    {
+        foreach ($ids as $id)
+        {
+            $position = self::getPositionOfListItemById($id);
+            if ($position !== 0)
+            {
+                self::deleteListItemAt($id, $position);
+            }
+        }
+    }
+
+    private function getPositionOfListItemById($id) : int
+    {
+        $postionQuery = "SELECT position FROM list WHERE id = $id";
+        $postionQueryResult = self::execute($postionQuery);
+        if ($row = $postionQueryResult->fetch_assoc())
+        {
+            return (int)$row['position'];
         }
 
         return 0;
