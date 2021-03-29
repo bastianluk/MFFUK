@@ -1,0 +1,20 @@
+Lukas Bastian
+
+
+---------
+Referat 1
+---------
+
+Autor(i): Michal Kyjovsky
+
+Nastroj(e): Apache Airflow
+
+Obsah referatu:
+	- 4
+
+Kvalita prezentace:
+	- 3
+
+Dalsi komentare:
+
+Prezentace dobra, ale dlouha. Evidentne s tim clovek umi, ale tohle nebylo na kratkou prezentaci - ne v prezentovane forme.
