@@ -17,4 +17,9 @@ Kvalita prezentace:
 
 Dalsi komentare:
 
-Prezentace dobra, ale dlouha. Evidentne s tim clovek umi, ale tohle nebylo na kratkou prezentaci - ne v prezentovane forme.
+Nevim, zda pouze na stala chyba v komunikaci, ale neslo o avizovanou kratkou prezentaci.
+Kdyby slo o dlouho, tak byla opravdu dobra - mozna trochu chaoticka po pripomenuti formatu, ale urcite bych hodnotil lepe.
+Jak pripravene materialy tak demo pristupne vsem ostatnim - nice touches.
+Evidentne s nastrojem clovek umi, pravdepodobne s nim pracuje v zamestnani a ma i zkusenosti s konkurenci, respektive podobnymi nastroji.
+Protoze s "big data" nepracuji, neocenim uplne nastroj jako takovy, ale obecne jako nejaky scheduler, ktery docela pekne graficky ukazoval,
+jaka cast z pipeline/flow uz prosla - umim si predstavit, ze to resi spoustu problemu, na ktere by clovek musel s vice ruznymi nastroji. Ostatne jak autor zminoval.
