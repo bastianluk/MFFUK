@@ -5,9 +5,9 @@ Lukas Bastian
 Referat 1
 ---------
 
-Autor(i):
+Autor(i): Michal Kyjovsky
 
-Nastroj(e):
+Nastroj(e): Approval testing pro C++
 
 Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
@@ -16,7 +16,7 @@ Kvalita prezentace:
 	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
 
 Dalsi komentare:
-
+Cpp, ne pro me.
 
 ---------
 Referat 2
@@ -24,7 +24,7 @@ Referat 2
 
 Autor(i):
 
-Nastroj(e):
+Nastroj(e): GraphQL + Strapi
 
 Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
@@ -41,7 +41,7 @@ Referat 3
 
 Autor(i):
 
-Nastroj(e):
+Nastroj(e): package manager APT
 
 Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
