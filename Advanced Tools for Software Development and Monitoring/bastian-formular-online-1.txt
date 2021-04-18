@@ -64,33 +64,17 @@ Obsah referatu:
 	- 2
 
 Kvalita prezentace:
-	- 2
+	- 3
 
 Dalsi komentare:
 Zajimave a stale nove. Sam jsem novacek a slo o opravdu dobre strukturovany uvod - postupne predstavovani konceptu a jak do sebe zapadaji, az pote detaily.
+Skoda technickych problemu, ale to nejde ovlivnit
 
 ---------
 Referat 5
 ---------
 
-Autor(i):
-
-Nastroj(e): Google Test
-
-Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
-
-Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
-
-Dalsi komentare:
-
-
----------
-Referat 6
----------
-
-Autor(i):
+Autor(i): Samuel Mintal
 
 Nastroj(e): Duplicacy
 
@@ -101,4 +85,22 @@ Kvalita prezentace:
 	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
 
 Dalsi komentare:
+Oceneuji na konci shrnuti vyhod a nevyhod - jinak jsem celou dobu premyslel, zejmena se zvolenym prikladem, jaky je nejaky rozhodujici faktor proc zvolit Duplicacy proti Githubu a private repository.
+Napada me potencialne problem s file size a muset u Githubu resit jeho verzi pro velke soubory.
 
+---------
+Referat 5
+---------
+
+Autor(i): Samuel Mintal
+
+Nastroj(e): Google Test
+
+Obsah referatu:
+	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+
+Kvalita prezentace:
+	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+
+Dalsi komentare:
+Pro me osobne nezajimavy nastroj, proto se zdrzuji hodnoceni.
