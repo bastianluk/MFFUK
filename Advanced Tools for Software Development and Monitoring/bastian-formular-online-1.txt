@@ -1,0 +1,104 @@
+Lukas Bastian
+
+
+---------
+Referat 1
+---------
+
+Autor(i): Matej Husar
+
+Nastroj(e): VS Multithreaded debugging
+
+Obsah referatu:
+	- 6
+
+Kvalita prezentace:
+	- 5
+
+Dalsi komentare:
+Nerelevantni
+
+---------
+Referat 2
+---------
+
+Autor(i): Matej Husar
+
+Nastroj(e): Lucidchart
+
+Obsah referatu:
+	- 5
+
+Kvalita prezentace:
+	- 4
+
+Dalsi komentare:
+Znam nastroj
+
+---------
+Referat 3
+---------
+
+Autor(i): Monika (...)
+
+Nastroj(e): Embold
+
+Obsah referatu:
+	- 4
+
+Kvalita prezentace:
+	- 3
+
+Dalsi komentare:
+Zajimalo by me, jak se k nastroji autorka dostala - na solo projekty to asi moc neni, pravdepodobne nekde v zamestnani hledali zpusob jak analyzovat projekt. Znam podobne nastroje (jednu light verzi podobneho nastroje jsem i psal jako projekt)
+
+---------
+Referat 4
+---------
+
+Autor(i): Michal Pulpan
+
+Nastroj(e): Docker
+
+Obsah referatu:
+	- 2
+
+Kvalita prezentace:
+	- 2
+
+Dalsi komentare:
+Zajimave a stale nove. Sam jsem novacek a slo o opravdu dobre strukturovany uvod - postupne predstavovani konceptu a jak do sebe zapadaji, az pote detaily.
+
+---------
+Referat 5
+---------
+
+Autor(i):
+
+Nastroj(e): Google Test
+
+Obsah referatu:
+	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+
+Kvalita prezentace:
+	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+
+Dalsi komentare:
+
+
+---------
+Referat 6
+---------
+
+Autor(i):
+
+Nastroj(e): Duplicacy
+
+Obsah referatu:
+	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+
+Kvalita prezentace:
+	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+
+Dalsi komentare:
+
