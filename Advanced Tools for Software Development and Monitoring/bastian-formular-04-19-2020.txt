@@ -5,24 +5,26 @@ Lukas Bastian
 Referat 1
 ---------
 
-Autor(i):
+Autor(i): Jiri Resler
 
 Nastroj(e): Selenium
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 3
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 5
 
 Dalsi komentare:
-
+Prezentujici mozna zbytecne nervozni - kdyz se rozpovidal po druhe polovine, tak byl projev mnohem lepsi.
+Nastroj znam jen castecne jako uzivatel a jedna z hlavnich nevyhod je na callu zminovany problem s "breaking changes" at uz v Selenium driveru nebo v Chrome driveru.
+Z pochopitelnych duvodu jsou na sobe zavisle, ale od Selenium testu jsme proto ustoupili ve prospech Roboto Framework testu. (Mozna bych tedy ocenil srovnani s dalsimi frameworky).
 
 ---------
 Referat 2
 ---------
 
-Autor(i):
+Autor(i): Sofya Sherstneva
 
 Nastroj(e): Mockito
 
@@ -33,4 +35,4 @@ Kvalita prezentace:
 	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
 
 Dalsi komentare:
-
+Hlavni vec, ktera mi stala v hlave bylo "proc vubec mockovat". To vetsinou ukazuje spis na spatny design, pokud potrebuji mockovat veci k jejich testovani.
