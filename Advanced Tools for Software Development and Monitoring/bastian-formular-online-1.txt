@@ -16,7 +16,8 @@ Kvalita prezentace:
 	- 5
 
 Dalsi komentare:
-Nerelevantni
+Nejsem si jisty, zda bych volil takovyto nastroj jako "dlouho" prezentaci.
+Bohuzel ani predani nepusobilo nejak vyjimecne minimalne v porovnani s dalsimi prezentujicimi, coz je skoda, protoze alespon podle slov autora mu tento nazor pomohl a cekal bych vetsi nadseni.
 
 ---------
 Referat 2
@@ -27,13 +28,14 @@ Autor(i): Matej Husar
 Nastroj(e): Lucidchart
 
 Obsah referatu:
-	- 5
-
-Kvalita prezentace:
 	- 4
 
+Kvalita prezentace:
+	- 3
+
 Dalsi komentare:
-Znam nastroj
+Nastroj sice znam, ale od posledni interakce s nim se par veci (zejmena grafickych) zmenilo - bylo dobre videt prezentaci - navic se to opravdu vyuziva minimalne na predmetu Uvod do softwaroveho inzenirstvi.
+Lepsi
 
 ---------
 Referat 3
@@ -47,10 +49,12 @@ Obsah referatu:
 	- 4
 
 Kvalita prezentace:
-	- 3
+	- 4
 
 Dalsi komentare:
-Zajimalo by me, jak se k nastroji autorka dostala - na solo projekty to asi moc neni, pravdepodobne nekde v zamestnani hledali zpusob jak analyzovat projekt. Znam podobne nastroje (jednu light verzi podobneho nastroje jsem i psal jako projekt)
+Zajimalo by me, jak se k nastroji autorka dostala - na solo projekty to asi moc neni, pravdepodobne nekde v zamestnani hledali zpusob jak analyzovat projekt. Znam podobne nastroje (jednu light verzi podobneho nastroje jsem i psal jako projekt na c#).
+U prezentace byla skoda, ze jsem si musel video zrychlit (ne vyrazne, asi 1.5x), aby to bylo v prijemnem tempu. Dokonce by to potom i lepe vychazelo na kratkou prezentaci.
+Dobre overview jednotlivych metrik, jak se pripojit, zaroven co co znamena.
 
 ---------
 Referat 4
@@ -64,11 +68,11 @@ Obsah referatu:
 	- 2
 
 Kvalita prezentace:
-	- 3
+	- 2
 
 Dalsi komentare:
-Zajimave a stale nove. Sam jsem novacek a slo o opravdu dobre strukturovany uvod - postupne predstavovani konceptu a jak do sebe zapadaji, az pote detaily.
-Skoda technickych problemu, ale to nejde ovlivnit
+Zajimave a pro me osobne stale nove. Jsem novacek a slo o opravdu dobre strukturovany uvod - postupne predstavovani konceptu a jak do sebe zapadaji, az pote detaily.
+Skoda technickych problemu, ale to samozrejme nejde ovlivnit. Nejake dalsi vyhrady asi nemam.
 
 ---------
 Referat 5
@@ -79,17 +83,17 @@ Autor(i): Samuel Mintal
 Nastroj(e): Duplicacy
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 5
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 3
 
 Dalsi komentare:
-Oceneuji na konci shrnuti vyhod a nevyhod - jinak jsem celou dobu premyslel, zejmena se zvolenym prikladem, jaky je nejaky rozhodujici faktor proc zvolit Duplicacy proti Githubu a private repository.
-Napada me potencialne problem s file size a muset u Githubu resit jeho verzi pro velke soubory.
+Oceneuji na konci shrnuti vyhod a nevyhod - jinak jsem celou dobu premyslel, zejmena se zvolenym prikladem, jaky je nejaky rozhodujici faktor proc zvolit Duplicacy proti Githubu+private repository.
+Napada me potencialne problem s file size a muset u Githubu resit jeho verzi pro velke soubory, zaroven takhle nejde backupovat cely system... i tak ale na spoustu aplikaci uz jsou dostacujici a existujici reseni.
 
 ---------
-Referat 5
+Referat 6
 ---------
 
 Autor(i): Samuel Mintal
@@ -100,7 +104,7 @@ Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 3
 
 Dalsi komentare:
 Pro me osobne nezajimavy nastroj, proto se zdrzuji hodnoceni.
