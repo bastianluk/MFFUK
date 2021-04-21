@@ -5,7 +5,7 @@ Lukas Bastian
 Referat 1
 ---------
 
-Autor(i):
+Autor(i): Rene Gabesam
 
 Nastroj(e): Gerrit
 
@@ -16,7 +16,7 @@ Kvalita prezentace:
 	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
 
 Dalsi komentare:
-
+Ocenuji uvod i s terminologii a popisem filozofie. Mozna rozdily proti nastavenemu code review v githubu?
 
 ---------
 Referat 2
