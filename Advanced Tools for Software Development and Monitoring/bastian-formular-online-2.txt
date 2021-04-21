@@ -22,7 +22,7 @@ Ocenuji uvod i s terminologii a popisem filozofie. Mozna rozdily proti nastavene
 Referat 2
 ---------
 
-Autor(i):
+Autor(i): Matej Hrbacek
 
 Nastroj(e): JIRA
 
