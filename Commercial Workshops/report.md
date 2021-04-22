@@ -28,5 +28,5 @@ Opinion: Best
 
 Téma: Jak se buduje globální tech startup z Prahy
 
-Opinion: Roztrizete Mews
+Opinion: Skvely overview, jaky je life cycle start upu.
 
