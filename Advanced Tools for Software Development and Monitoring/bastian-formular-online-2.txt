@@ -19,6 +19,7 @@ Dalsi komentare:
 Ocenuji uvod i s terminologii a popisem filozofie. Mozna bych se pri prezentaci nebal popsat rozdily proti nejak nastavenemu code review procesu za uziti veci v githubu, respektive vic ukazat, v cem to pomuze.
 Protoze jsem v zamestnani v tymu, ktery ma na starosti mimo jine nastavovani podobnych procesu, tak pro me byla prezentace zajimava - bohuzel v Gerritu vidim problem presne v tom, ze se snazi nastavit jeden zpusob.
 Mozna slo jen o prezentovanou formu a nekde se veci daji donastavit a vic modifikovat - navic tim, ze jde o software, tak odpada nuceni vyvojaru ke cteni guidelines a jejich dodrzovani.
+Zaroven je tam evidentne vazba na commit=unit of work. Osobne jsem radsi za pull request=unit of work, protoze commity z jedne feature branch se daji squashnout (spojit) do jednoho a zaroven pote nemusi vyvojar zbytecne resit nejake pripadne trable s gitem.
 To ovsem ma vetsi flexibilitu a tu osobne v toolech casto hledame - protoze i procesy se casto meni a co se stane, kdyz budu z takove platformy potrebovat odejit? Daji se potom historicka data nekam znovu nahrat?
 To jsou dotazy, ktere ve mne prezentace na konci nechala.
 
