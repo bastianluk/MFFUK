@@ -10,13 +10,19 @@ Autor(i): Rene Gabesam
 Nastroj(e): Gerrit
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 2
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 2
 
 Dalsi komentare:
-Ocenuji uvod i s terminologii a popisem filozofie. Mozna rozdily proti nastavenemu code review v githubu?
+Ocenuji uvod i s terminologii a popisem filozofie. Mozna bych se pri prezentaci nebal popsat rozdily proti nejak nastavenemu code review procesu za uziti veci v githubu, respektive vic ukazat, v cem to pomuze.
+Protoze jsem v zamestnani v tymu, ktery ma na starosti mimo jine nastavovani podobnych procesu, tak pro me byla prezentace zajimava - bohuzel v Gerritu vidim problem presne v tom, ze se snazi nastavit jeden zpusob.
+Mozna slo jen o prezentovanou formu a nekde se veci daji donastavit a vic modifikovat - navic tim, ze jde o software, tak odpada nuceni vyvojaru ke cteni guidelines a jejich dodrzovani.
+To ovsem ma vetsi flexibilitu a tu osobne v toolech casto hledame - protoze i procesy se casto meni a co se stane, kdyz budu z takove platformy potrebovat odejit? Daji se potom historicka data nekam znovu nahrat?
+To jsou dotazy, ktere ve mne prezentace na konci nechala.
+
+Opravdu jenom detail - nevim, nakolik jsou public nektere veci, ktere byly videt na "index page" Gerritu - jestli tam neni mensi leak nejakych private projektu apod. :)
 
 ---------
 Referat 2
@@ -30,7 +36,10 @@ Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 4
 
 Dalsi komentare:
-
+Do prezentace bych pravdepodobne zaradil i mensi uvod k agile developmentu, protoze s nim je JIRA (mozna az moc) spojena.
+To je mozna taky duvod, proc se mi JIRA jako nastroj moc nelibi a zvolil bych jiny nastroj na issue tracking/project managment.
+Cast prezentace byla spis o bitbucketu, nez o JIRA toolu.
+Abych nezustal jen u negativ - ocenil jsem minimalne uzivatelskou znalost nastroje, tim padem rychlost orientacce v nem.

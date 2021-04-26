@@ -29,10 +29,11 @@ Autor(i): Sofya Sherstneva
 Nastroj(e): Mockito
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 5
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 3
 
 Dalsi komentare:
-Hlavni vec, ktera mi stala v hlave bylo "proc vubec mockovat". To vetsinou ukazuje spis na spatny design, pokud potrebuji mockovat veci k jejich testovani.
+Hlavni vec, ktera mi stala v hlave bylo "proc vubec mockovat". To vetsinou ukazuje spis na spatny design, pokud potrebuji mockovat veci k jejich testovani. Problem treba rychlosti startu nejake vetsi aplikace to ale resi dobre.
+Autorka z jejiho projevu evidentne s Mockitem uz pracovala a celkove se mi libila forma prezentace.
