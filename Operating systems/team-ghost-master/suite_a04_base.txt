@@ -1,0 +1,16 @@
+kernel thread/preempt
+kernel mutex/basic1
+kernel mutex/basic2
+kernel mutex/bad_unlock
+kernel mutex/bad_destroy
+kernel mutex/try1
+kernel mutex/try2
+kernel mutex/try_busy
+kernel heap/threads
+kernel sem/basic
+kernel sem/lock
+kernel sem/bad_destroy
+kernel sem/try
+kernel sem/try_busy
+kernel sem/prodcons
+kernel sem/prodcons_double

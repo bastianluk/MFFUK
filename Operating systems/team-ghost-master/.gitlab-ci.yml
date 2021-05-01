@@ -1,0 +1,45 @@
+image: mffd3s/nswi004-mips32:latest
+
+#cstyle:
+#  script:
+#    - find . -not -path "./tools/*" -name '*.[ch]' | while read fname; do clang-format --style=file "$fname" | diff -u "$fname" - || exit 1; done
+
+a01-base:
+  script:
+    - ./tools/tester.py suite --verbose suite_a01_base.txt
+
+a01-extended:
+  script:
+    - ./tools/tester.py suite --verbose suite_a01_extended.txt
+
+a02-base:
+  script:
+    - ./tools/tester.py suite --verbose suite_a02_base.txt
+
+a02-extended:
+  script:
+    - ./tools/tester.py suite --verbose suite_a02_extended.txt
+
+a02-fuzzy:
+  script:
+    - ./tools/tester.py suite --verbose suite_a02_fuzzy.txt
+
+a03-base:
+  script:
+    - ./tools/tester.py suite --verbose suite_a03_base.txt
+
+a04-base:
+  script:
+    - ./tools/tester.py suite --verbose suite_a04_base.txt
+
+a04-fuzzy:
+  script:
+    - ./tools/tester.py suite --verbose suite_a04_fuzzy.txt
+
+a05-base:
+  script:
+    - ./tools/tester.py suite --verbose suite_a05_base.txt
+
+a05-extended:
+  script:
+    - ./tools/tester.py suite --verbose suite_a05_extended.txt

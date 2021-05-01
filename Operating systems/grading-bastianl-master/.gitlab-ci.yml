@@ -1,0 +1,8 @@
+image: python:3.8
+
+last-quiz-answered:
+  before_script:
+    - python --version
+    - pip install pyyaml
+  script:
+    - ./tools/check_last_quiz.sh

@@ -1,0 +1,4 @@
+kernel basic/dump_function
+kernel basic/stack_pointer
+kernel printk/funcpointer
+kernel printk/list

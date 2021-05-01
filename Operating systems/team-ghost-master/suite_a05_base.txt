@@ -1,0 +1,17 @@
+kernel adt/bitmap1
+kernel adt/bitmap2
+kernel adt/bitmap3
+kernel frame/basic
+kernel frame/exhaust1:m1024
+kernel frame/exhaust1:m4096
+kernel frame/exhaust2:m1024
+kernel frame/exhaust2:m4096
+kernel frame/stress:m1024
+kernel frame/stress:m4096
+kernel thread/kill
+kernel thread/selfkill
+kernel as/basic
+kernel as/fault
+kernel as/shared
+kernel as/large:m4096
+kernel as/asids

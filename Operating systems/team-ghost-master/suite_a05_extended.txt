@@ -1,0 +1,2 @@
+kernel as/asids:DTEST_AS_COUNT=260:m4096
+kernel as/asids:DTEST_AS_COUNT=900:m16384
