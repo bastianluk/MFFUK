@@ -7,7 +7,7 @@ Referat 1
 
 Autor(i):
 
-Nastroj(e):
+Nastroj(e):  Xamarin Test Cloud
 
 Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
@@ -24,7 +24,7 @@ Referat 2
 
 Autor(i):
 
-Nastroj(e):
+Nastroj(e): AutoMapper
 
 Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
@@ -41,7 +41,41 @@ Referat 3
 
 Autor(i):
 
-Nastroj(e):
+Nastroj(e): Gauge
+
+Obsah referatu:
+	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+
+Kvalita prezentace:
+	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+
+Dalsi komentare:
+
+
+---------
+Referat 4
+---------
+
+Autor(i):
+
+Nastroj(e): Sentry
+
+Obsah referatu:
+	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+
+Kvalita prezentace:
+	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+
+Dalsi komentare:
+
+
+---------
+Referat 5
+---------
+
+Autor(i):
+
+Nastroj(e): LINQPad
 
 Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
