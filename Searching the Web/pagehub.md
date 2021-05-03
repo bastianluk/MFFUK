@@ -1,9 +1,9 @@
-# Vyhledávání na webu
+# Searching the Web
 
 ## Přednáška
 
-- Name [web]()
+- prof. RNDr. Tomáš Skopal, Ph.D. [web]()
 
 ## Cvičení
 
-- Name [web]()
+- prof. RNDr. Tomáš Skopal, Ph.D. [web]()

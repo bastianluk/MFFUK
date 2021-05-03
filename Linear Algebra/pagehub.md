@@ -1,17 +1,17 @@
-# Lineární algebra I  
-## Přednáška  
+# Linear Algebra I
+## Přednáška
 
-- Pavel Valtr [web](https://kam.mff.cuni.cz/~valtr/)  
+- doc. RNDr. Pavel Valtr, Dr. [web](https://kam.mff.cuni.cz/~valtr/)
 
-## Cvičení  
+## Cvičení
 
-- Pavel Dvořák [web](https://iuuk.mff.cuni.cz/~koblich/)  
-  
-# Lineární algebra II  
-## Přednáška  
+- Mgr. Pavel Dvořák [web](https://iuuk.mff.cuni.cz/~koblich/)
 
-- Pavel Hubáček [web](https://iuuk.mff.cuni.cz/~hubacek/)  
+# Linear Algebra II
+## Přednáška
 
-## Cvičení  
+- Mgr. Pavel Hubáček, Ph.D. [web](https://iuuk.mff.cuni.cz/~hubacek/)
 
-- Pavel Hubáček [web](https://iuuk.mff.cuni.cz/~hubacek/)  
+## Cvičení
+
+- Mgr. Pavel Hubáček, Ph.D. [web](https://iuuk.mff.cuni.cz/~hubacek/)

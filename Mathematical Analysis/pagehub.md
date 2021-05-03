@@ -1,17 +1,17 @@
-# Matematická analýza pro informatiky I  
-## Přednáška  
+# Mathematical Analysis I
+## Přednáška
 
-- Tereza Klimošová [web](https://iuuk.mff.cuni.cz/~tereza/)  
+- Mgr. Tereza Klimošová, Ph.D [web](https://iuuk.mff.cuni.cz/~tereza/)
 
-## Cvičení  
+## Cvičení
 
-- Markéta Lopatková [web](http://ufal.mff.cuni.cz/marketa-lopatkova)  
+- doc. RNDr. Markéta Lopatková, Ph.D. [web](http://ufal.mff.cuni.cz/marketa-lopatkova)
 
-# Matematická analýza pro informatiky II  
-## Přednáška  
+# Mathematical Analysis II
+## Přednáška
 
-- Tereza Klimošová [web](https://iuuk.mff.cuni.cz/~tereza/)  
+- Mgr. Tereza Klimošová, Ph.D [web](https://iuuk.mff.cuni.cz/~tereza/)
 
-## Cvičení  
+## Cvičení
 
-- Markéta Lopatková [web](http://ufal.mff.cuni.cz/marketa-lopatkova)  
+- doc. RNDr. Markéta Lopatková, Ph.D. [web](http://ufal.mff.cuni.cz/marketa-lopatkova)
