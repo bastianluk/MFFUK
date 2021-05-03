@@ -13,10 +13,11 @@ Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 2
 
 Dalsi komentare:
-Cpp, ne pro me.
+Prezentace stejna nebo lepsi proti prvnimu pokusu u "maleho" referatu, bohuzel slo o pro me dost nezajimavy topic, proto nehodnotim obsah referatu - koncepcne me to zaujalo, ale minimalne aplikace na Cpp pro me neni relatable.
+Obecne u testovani programu nejen pri komercni aplikaci (kdyz nejde o "mission critical veci") je, ze radsi clovek ma o feature navic, nez o test navic. Mozna by me zajimalo vetsi spojeni s test driven developmentem.
 
 ---------
 Referat 2
@@ -27,13 +28,13 @@ Autor(i): Filip Horky
 Nastroj(e): GraphQL + Strapi
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 3
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 3
 
 Dalsi komentare:
-Asi nejlepsi, spojeni BE a FE
+Libila se mi jak pripravenost prezentace a zejmena dema, tak obsah - s GraphQL jsem mel uz mensi zkusenosti, ale v podobe nugetpackage pri praci na jednom projektu - asi by me zajimala nejaka vetsi motivace za psanim vlastniho CMS.
 
 ---------
 Referat 3
@@ -47,7 +48,8 @@ Obsah referatu:
 	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 4
 
 Dalsi komentare:
-Bohuzel neco k linuxu - od toho se snazim drzet ruce dal. Zajimava zejmena cast o slozeni package a security.
+Pro me "bohuzel" neco k linuxu - cenim mozna zdanlive nudnou cast o slozeni package, jistych "podpisech" a obecne security, kdyz jde o packages.
+Prezentace misty pusobila roztrzite, ale to pravdepodobne protoze autor chtel najednou predat moc veci - rozhodne z lepsich problemu, ktere jde mit.

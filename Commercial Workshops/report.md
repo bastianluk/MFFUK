@@ -17,3 +17,16 @@ Opinion: Skvělá forma prezentace - víc lidí, každý o své oblasti, respekt
 Téma: Od 700 Mbit/s k 70 Tbit/s za 7 let
 
 Opinion: zvazoval jsem preskocit, nastesti jsem tak neudelal - clovek dobre vedel, o cem mluvi a mel skvelou prezentaci
+
+## 	Jan Široký a Jiří Helmich (Mews)
+
+Téma: Changing hospitality industry from Prague
+
+Opinion: Best
+
+## 	Jan Čurn (Apify)
+
+Téma: Jak se buduje globální tech startup z Prahy
+
+Opinion: Skvely overview, jaky je life cycle start upu.
+

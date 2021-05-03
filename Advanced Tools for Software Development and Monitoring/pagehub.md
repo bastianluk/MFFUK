@@ -1,4 +1,4 @@
-# Vyhledávání na webu
+# Advanced Tools for Software Development and Monitoring
 
 ## Přednáška
 
@@ -7,3 +7,9 @@
 ## Cvičení
 
 - Name [web]()
+
+
+## Info/Notes
+
+Login: nswi126
+Password: t***s
