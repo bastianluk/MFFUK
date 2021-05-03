@@ -1,4 +1,4 @@
-# Advanced Tools for Software Development and Monitoring
+# Introduction to Recommender systems
 
 ## Přednáška
 

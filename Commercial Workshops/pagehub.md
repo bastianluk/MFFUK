@@ -1,9 +1,5 @@
-# Vyhledávání na webu
+# Commercial Workshops
 
 ## Přednáška
 
-- Name [web]()
-
-## Cvičení
-
-- Name [web]()
+- doc. RNDr. Pavel Parízek, Ph.D. [web]()

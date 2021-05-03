@@ -1,18 +1,18 @@
-# Algoritmy a datové struktury I  
-## Přednáška  
+# Algorithms and Data Structures I
+## Přednáška
 
-- Martin Mareš [web](https://mj.ucw.cz/)  
+- Mgr. Martin Mareš, Ph.D. [web](https://mj.ucw.cz/)
 
-## Cvičení  
+## Cvičení
 
-- Jakub Pekárek [web](https://iuuk.mff.cuni.cz/~pekarej/)  
+- Mgr. Jakub Pekárek [web](https://iuuk.mff.cuni.cz/~pekarej/)
 
 
-# Algoritmy a datové struktury II  
-## Přednáška  
+# Algorithms and Data Structures II
+## Přednáška
 
-- Martin Mareš [web](https://mj.ucw.cz/)  
+- Mgr. Martin Mareš, Ph.D. [web](https://mj.ucw.cz/)
 
-## Cvičení  
+## Cvičení
 
-- Jakub Pekárek [web](https://iuuk.mff.cuni.cz/~pekarej/)  
+- Mgr. Jakub Pekárek [web](https://iuuk.mff.cuni.cz/~pekarej/)

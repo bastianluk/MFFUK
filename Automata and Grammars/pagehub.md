@@ -1,8 +1,8 @@
-# Automaty a gramatiky  
-## Přednáška  
+# Automaty a gramatiky
+## Přednáška
 
-- Mgr. Marta Vomlelová PhD. [web](http://ktiml.ms.mff.cuni.cz/~marta/)
+- Mgr. Marta Vomlelová, Ph.D. [web](http://ktiml.ms.mff.cuni.cz/~marta/)
 
 ## Cvičení
 
-- Vladan Majerech [web](http://kti.mff.cuni.cz/~maj/)
+- Mgr. Vladan Majerech, Dr. [web](http://kti.mff.cuni.cz/~maj/)
