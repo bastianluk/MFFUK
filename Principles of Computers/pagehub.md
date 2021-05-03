@@ -1,4 +1,4 @@
-# Principy počítačů  
-## Přednáška  
+# Principles of Computers
+## Přednáška
 
-- Pavel Ježek [web](https://d3s.mff.cuni.cz/legacy/~jezek/)  
+- Mgr. Pavel Ježek, Ph.D. [web](https://d3s.mff.cuni.cz/legacy/~jezek/)
