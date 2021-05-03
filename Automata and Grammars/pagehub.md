@@ -1,4 +1,4 @@
-# Automaty a gramatiky
+# Automata and Grammars
 ## Přednáška
 
 - Mgr. Marta Vomlelová, Ph.D. [web](http://ktiml.ms.mff.cuni.cz/~marta/)

@@ -1,8 +1,8 @@
-# Databázové systémy   
-## Přednáška  
+# 	Database Systems
+## Přednáška
 
-- RNDr. Michal Kopecký, Ph.D. [web](https://www.ms.mff.cuni.cz/~kopecky/)  
+- RNDr. Michal Kopecký, Ph.D. [web](https://www.ms.mff.cuni.cz/~kopecky/)
 
-## Cvičení  
+## Cvičení
 
-- RNDr. Michal Kopecký, Ph.D. [web](https://www.ms.mff.cuni.cz/~kopecky/)  
+- RNDr. Michal Kopecký, Ph.D. [web](https://www.ms.mff.cuni.cz/~kopecky/)

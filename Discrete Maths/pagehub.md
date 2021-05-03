@@ -1,8 +1,8 @@
-# Diskrétní matematika   
-## Přednáška  
+# Discrete Mathematics
+## Přednáška
 
-- Jan Kynčl [web](https://kam.mff.cuni.cz/~kyncl/)  
+- Jan Kynčl [web](https://kam.mff.cuni.cz/~kyncl/)
 
-## Cvičení  
+## Cvičení
 
-- Peter Korcsok [web](https://iuuk.mff.cuni.cz/~korcsok/)  
+- Peter Korcsok [web](https://iuuk.mff.cuni.cz/~korcsok/)

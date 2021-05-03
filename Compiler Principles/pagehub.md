@@ -1,8 +1,8 @@
-﻿# Principy překladačů  
-## Přednáška  
+﻿# Compiler Principles
+## Přednáška
 
-- Name TBD
+- RNDr. Jakub Yaghob, Ph.D. [web]()
 
-## Cvičení  
+## Cvičení
 
-- Name TBD
+- RNDr. Jakub Yaghob, Ph.D. [web]()

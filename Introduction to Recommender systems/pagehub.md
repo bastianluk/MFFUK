@@ -1,10 +1,9 @@
-# Introduction to Recommender systems
+# Introduction to Recommender Systems
 
 ## Přednáška
 
-- doc. RNDr. Pavel Parízek, Ph.D. [web]()
+- Mgr. Ladislav Peška, Ph.D. [web](https://www.ksi.mff.cuni.cz/~peska/vyuka/nswi166/2020_slides/)
 
-## Info/Notes
+## Cvičení
 
-Login: nswi126
-Password: t***s
+- Mgr. Ladislav Peška, Ph.D. [web](https://www.ksi.mff.cuni.cz/~peska/vyuka/nswi166/2020_labs/)

@@ -1,9 +1,8 @@
-﻿# Organizace a zpracování dat I  
-## Přednáška  
+﻿# Data Organisation and Processing I
+## Přednáška
 
-- Name TBD  
+- Mgr. Petr Škoda, Ph.D. [web]()
 
-## Cvičení  
+## Cvičení
 
-- Name TBD  
-
+- Mgr. Petr Škoda, Ph.D. [web]()
