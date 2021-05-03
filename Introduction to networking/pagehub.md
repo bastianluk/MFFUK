@@ -1,5 +1,5 @@
 # Introduction to networking
 
-## Přednáška
+## Lecture
 
 - RNDr. Libor Forst [web](https://www.ms.mff.cuni.cz/~forst/)

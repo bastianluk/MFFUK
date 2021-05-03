@@ -1,8 +1,8 @@
 # Introduction to UNIX
-## Přednáška
+## Lecture
 
 - RNDr. Libor Forst [web](https://www.ms.mff.cuni.cz/~forst/)
 
-## Cvičení
+## Class
 
 - Ing. Vojtěch Aschenbrenner [web](http://asch.cz/)

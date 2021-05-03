@@ -1,5 +1,5 @@
 # Commercial Workshops
 
-## Přednáška
+## Lecture
 
 - doc. RNDr. Pavel Parízek, Ph.D. [web]()

@@ -1,8 +1,8 @@
 # Automata and Grammars
-## Přednáška
+## Lecture
 
 - Mgr. Marta Vomlelová, Ph.D. [web](http://ktiml.ms.mff.cuni.cz/~marta/)
 
-## Cvičení
+## Class
 
 - Mgr. Vladan Majerech, Dr. [web](http://kti.mff.cuni.cz/~maj/)

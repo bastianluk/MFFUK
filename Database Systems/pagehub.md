@@ -1,8 +1,8 @@
 # 	Database Systems
-## Přednáška
+## Lecture
 
 - RNDr. Michal Kopecký, Ph.D. [web](https://www.ms.mff.cuni.cz/~kopecky/)
 
-## Cvičení
+## Class
 
 - RNDr. Michal Kopecký, Ph.D. [web](https://www.ms.mff.cuni.cz/~kopecky/)

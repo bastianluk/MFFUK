@@ -1,9 +1,9 @@
 # Web Applications Programming
 
-## Přednáška
+## Lecture
 
 - RNDr. Martin Kruliš, Ph.D. [web](https://webik.ms.mff.cuni.cz/)
 
-## Cvičení
+## Class
 
 - Mgr. Petr Škoda, Ph.D. [web](https://webik.ms.mff.cuni.cz/)

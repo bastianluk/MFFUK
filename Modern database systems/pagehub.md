@@ -1,9 +1,9 @@
 # Modern Database Systems
 
-## Přednáška
+## Lecture
 
 - doc. RNDr. Irena Holubová, Ph.D. [web](https://www.ksi.mff.cuni.cz/~holubova/NDBI040/)
 
-## Cvičení
+## Class
 
 - Ing. Pavel Čontoš [web](https://www.ksi.mff.cuni.cz/~contos/NDBI040/)

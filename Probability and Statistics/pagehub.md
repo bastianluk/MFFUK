@@ -1,9 +1,9 @@
 # Probability and Statistics
-## Přednáška
+## Lecture
 
 - doc. RNDr. Daniel Hlubinka, Ph.D. [web](http://www.karlin.mff.cuni.cz/~hlubinka/)
 
-## Cvičení
+## Class
 
 - Xeniya Yermolenko [web](https://www.mff.cuni.cz/cs/fakulta/organizacni-struktura/lide?hdl=9596)
 > Nemá vlastní web

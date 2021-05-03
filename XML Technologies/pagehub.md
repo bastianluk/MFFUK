@@ -1,9 +1,9 @@
 # XML Technologies
 
-## Přednáška
+## Lecture
 
 - RNDr. Martin Svoboda, Ph.D. [web](https://www.ksi.mff.cuni.cz/~svoboda/courses/192-NPRG036/)
 
-## Cvičení
+## Class
 
 - RNDr. Martin Svoboda, Ph.D. [web](https://www.ksi.mff.cuni.cz/~svoboda/courses/192-NPRG036/)

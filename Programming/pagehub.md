@@ -1,17 +1,17 @@
 # Programming I
-## Přednáška
+## Lecture
 
 - RNDr. Tomáš Holan, Ph.D. [web](https://ksvi.mff.cuni.cz/~holan/)
 
-## Cvičení
+## Class
 
 - RNDr. Rudolf Kryl [web](https://ksvi.mff.cuni.cz/~kryl/)
 
 # Programming II
-## Přednáška
+## Lecture
 
 - RNDr. Tomáš Holan, Ph.D. [web](https://ksvi.mff.cuni.cz/~holan/)
 
-## Cvičení
+## Class
 
 - RNDr. Tomáš Holan, Ph.D. [web](https://ksvi.mff.cuni.cz/~holan/)

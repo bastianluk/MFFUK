@@ -1,8 +1,8 @@
 ﻿# Compiler Principles
-## Přednáška
+## Lecture
 
 - RNDr. Jakub Yaghob, Ph.D. [web]()
 
-## Cvičení
+## Class
 
 - RNDr. Jakub Yaghob, Ph.D. [web]()

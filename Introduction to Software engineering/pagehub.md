@@ -1,9 +1,9 @@
 # 	Introduction to Software Engineering
 
-## Přednáška
+## Lecture
 
 - doc. Mgr. Martin Nečaský, Ph.D. [web]()
 
-## Cvičení
+## Class
 
 - RNDr. Jakub Klímek, Ph.D. [web]()

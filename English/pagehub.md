@@ -1,3 +1,3 @@
 # English Language
 
-## Cvičení dobrovolné
+## Class dobrovolné

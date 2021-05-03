@@ -1,8 +1,8 @@
 ﻿# Data Organisation and Processing I
-## Přednáška
+## Lecture
 
 - Mgr. Petr Škoda, Ph.D. [web]()
 
-## Cvičení
+## Class
 
 - Mgr. Petr Škoda, Ph.D. [web]()

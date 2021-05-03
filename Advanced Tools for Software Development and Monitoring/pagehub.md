@@ -1,6 +1,6 @@
 # Advanced Tools for Software Development and Monitoring
 
-## Přednáška
+## Lecture
 
 - doc. RNDr. Pavel Parízek, Ph.D. [web]()
 
