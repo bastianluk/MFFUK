@@ -5,7 +5,17 @@ Most of them are in Czech (especially from earlier years, but later on notes are
 
 ## Lists of courses taken
 
-### \[Current\] Winter Semester 2020/2021
+### \[Current\] Summer Semester 2020/2021
+
+- Advanced Tools for Software Development and Monitoring
+- Commercial Workshops
+- Searching the Web
+
+Projects:
+- Software project
+- Bachelor's thesis
+
+### Winter Semester 2020/2021
 
 - Introduction to Recommender Systems
 - Modern database principles
@@ -20,6 +30,8 @@ Most of them are in Czech (especially from earlier years, but later on notes are
 - Linear Optimalization
 - Non-procedural (functional) programming
 - XML Technologies
+
+Projects:
 - Software project
 
 ### Winter Semester 2019/2020
