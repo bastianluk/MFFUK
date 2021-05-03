@@ -1,9 +1,9 @@
-﻿# Výroková a predikátová logika  
-## Přednáška  
+﻿# Propositional and Predicate Logic
+## Přednáška
 
-- Name TBD  
+- doc. Mgr. Petr Gregor, Ph.D. [web](http://ktiml.mff.cuni.cz/~gregor/logika/)
 
-## Cvičení  
+## Cvičení
 
-- Name TBD  
+- Mgr. Marta Vomlelová, Ph.D. [web](http://ktiml.mff.cuni.cz/~marta/logika.html)
 
