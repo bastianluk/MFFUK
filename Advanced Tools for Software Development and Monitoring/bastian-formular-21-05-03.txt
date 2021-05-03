@@ -7,30 +7,15 @@ Referat 1
 
 Autor(i):
 
-Nastroj(e): callgrind
+Nastroj(e): Callgrind & KCachegrind
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 5
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 2
 
 Dalsi komentare:
-
-
----------
-Referat 2
----------
-
-Autor(i):
-
-Nastroj(e): KCachegrind
-
-Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
-
-Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
-
-Dalsi komentare:
-
+Rozhodně oceňuji zmínku výhod a nevýhod, zároveň se mi i moc líbila cesta nástrojem a tím pádem i zvolený způsob prezentace.
+Bohužel pro mě takovýto nástroj zatím nemá moc užití a proto horší známka za obsah/zajímavost. Další neduh ovšem byl, že mělo jít o krátkou prezentaci, aspoň podle webu - jen to tak moc nevypadalo.
+I tak ale byla zajímavá část o užití nástroje na debugging a schopnost odpovědět na dotazy ovšem byla v mých očích zatím bezkonkurenční.
