@@ -13,11 +13,11 @@ Obsah referatu:
 	- 1
 
 Kvalita prezentace:
-	- 2
+	- 3
 
 Dalsi komentare:
-Struktura +
-Roztrzitost, casovy press -
+Libila se mi struktura referatu a zaroven i nastoj jako takovy. Pokud se nekdy dostanu k praci na hrach, tak je dobre dopredu znat nastroje, co resi common problemy.
+Samotna prezentace bohuzel pusobila dost roztrzite a celkove byla asi pod casovym pressem a autor se temer nevesel do casoveho limitu.
 
 ---------
 Referat 2
@@ -34,4 +34,5 @@ Kvalita prezentace:
 	- 2
 
 Dalsi komentare:
-Tlacil cas, jinak paradni prezentace, urcite me to zajimalo.
+Nastroj a vubec zpusob distribuce jednoho kodu na co nejvice platform jako koncept me hodne zajimal - do budoucna bych se rad podilel na projektech, ktere neceho takoveho vyuziji.
+Libila se mi jak struktura, tak projev autora, ktery asi zatim byl nejlepsi. Je skoda, ze na konci tlacil autora cas, proto strhnuty bod.

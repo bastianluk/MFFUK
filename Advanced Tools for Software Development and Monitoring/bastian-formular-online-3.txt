@@ -10,36 +10,40 @@ Autor(i):
 Nastroj(e):  Xamarin Test Cloud
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 4
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 3
 
 Dalsi komentare:
-
+Prezentace zajimava, protoze bych si rad rozsiril obzory smerem k Xamarinu a multiplatform source code, bohuzel zajimavosti ubira domena "testing".
+Libila se mi struktura, kde nejdriv autor ukazal console, az pote retezeni v kodu - nejdrive jsem tedy premyslel, jestli se to doopravdy musi takhle pouzivat.
+Prezentace byla pripravena a ocenil jsem zejmena "strihy" na zkraceni casu, ale i tak byla prezentace prilis dlouha.
 
 ---------
 Referat 2
 ---------
 
-Autor(i):
+Autor(i): Peter Lakatos
 
 Nastroj(e): AutoMapper
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 3
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 4
 
 Dalsi komentare:
-
+Nastroj pouzivame v zamestnani a jeho nastavovani neni uplne primocare - nevim, jestli autor nastroj nepredstavil az moc idilicky.
+Doufam, ze uz jenom cast o ukazovani execution planu byla dost velkym varovanim. Zaroven za presne tuto cast jsem vdecny, protoze se mi bude do budoucna hodit.
+Bohuzel v prezentaci bylo nekolik tichych chvili v prubehu psani kodu, ktere ji dost prerusovali.
 
 ---------
 Referat 3
 ---------
 
-Autor(i):
+Autor(i): Peter Lakatos
 
 Nastroj(e): Gauge
 
@@ -50,38 +54,42 @@ Kvalita prezentace:
 	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
 
 Dalsi komentare:
-
+Bohuzel opet pro me spis nezajimavy produkt, proto nehodnotim.
 
 ---------
 Referat 4
 ---------
 
-Autor(i):
+Autor(i): Michal Pulpan
 
 Nastroj(e): Sentry
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 1
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 2
 
 Dalsi komentare:
-
+Uzivame v zamestnani, dobry popis celeho nastroje, vcetne usecases - mozna bych ocenil nejakym zpusobem propojeni ukazka-slides.
+Prislo mi to zbytecne oddelene/bez nejake graficke ukazky - i kdyby jenom staticky obrazek, ne nutne preklikavat mezi sentry a textem.
+Prijemny projev u prezentace, uziti strihu a editace rozhodne cenim.
 
 ---------
 Referat 5
 ---------
 
-Autor(i):
+Autor(i): Jan Kleprlik
 
 Nastroj(e): LINQPad
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 1
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 1
 
 Dalsi komentare:
-
+Nastroj jsem parkrat pouzival a jeho uzitecnost je nepopsatelna.
+Autor s nim evidentne uz pracoval a jako ochutnavka sily tohoto nastroje mi prisly zvolene priklady adekvatni.
+Zaroven je pro me opet projev autora asi nejlepsi, co jsem zatim v predmetu slysel.
