@@ -33,14 +33,15 @@ Repositories
    - [ ] rebuilt built-in task - how to
    - [ ] change the frameworks internals
      - [x] remove file inputs
-     - [ ] remove the plotting used for iterative mode
+     - [x] remove the plotting used for iterative mode
+     - [ ] replace the plotting - connected to interactive mode
    - [ ] prepare i/o on both sides
      - [x] output by ivis
        - [ ] improve the output - loop through the database to query all data
      - [x] input to framework
      - [ ] output by framework
      - [ ] save output in ivis
- - [ ] iterative mode!!!
+ - [ ] interactive mode!!!
    - [ ] will be done in graph, will edit job to re-produce new output
  - [ ] graphing component
    - [ ] combine existing components to produce what is in the specs
