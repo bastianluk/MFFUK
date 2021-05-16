@@ -5,8 +5,10 @@
 Repositories
  - [ivis-core](https://github.com/smartarch/ivis-core)
    - [fork](https://github.com/bastianluk/ivis-core)
+     - [compare to base](https://github.com/smartarch/ivis-core/compare/master...bastianluk:devel)
  - [anomaly detection framework](https://bitbucket.org/rakibulmdalam/time-series-anomaly-detection-framework/src/master/)
    - [re-upload](https://github.com/bastianluk/Time-series-Anomaly-Detection-Framework)
+     - I thought this would be needed, turns out it might not be.
 
 ## Content ideas
 
