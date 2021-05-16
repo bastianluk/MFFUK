@@ -27,16 +27,17 @@ Repositories
  - [x] add base task with its parameters
    - [ ] refine it with actual checkboxes?
  - [ ] connect the framework
-   - [ ] add base package
+   - [x] add base package
      - [x] add files, make it part of the build
-     - [ ] add dependencies to the task build
-       - [ ] imports missing!!!
+     - [x] add dependencies to the task build
+   - [ ] rebuilt built-in task - how to
    - [ ] change the frameworks internals
      - [x] remove file inputs
      - [ ] remove the plotting used for iterative mode
    - [ ] prepare i/o on both sides
      - [x] output by ivis
-     - [ ] input to framework
+       - [ ] improve the output - loop through the database to query all data
+     - [x] input to framework
      - [ ] output by framework
      - [ ] save output in ivis
  - [ ] iterative mode!!!
