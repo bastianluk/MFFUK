@@ -8,7 +8,7 @@ Repositories
  - [anomaly detection framework](https://bitbucket.org/rakibulmdalam/time-series-anomaly-detection-framework/src/master/)
    - [re-upload](https://github.com/bastianluk/Time-series-Anomaly-Detection-Framework)
 
-## Content
+## Content ideas
 
 ### Theoretical part
  - anomaly detection theory
@@ -30,7 +30,7 @@ Repositories
    - [x] add base package
      - [x] add files, make it part of the build
      - [x] add dependencies to the task build
-   - [ ] rebuilt built-in task - how to
+   - [ ] WIP: rebuilt built-in task - how to
    - [ ] change the frameworks internals
      - [x] remove file inputs
      - [x] remove the plotting used for iterative mode
@@ -45,3 +45,7 @@ Repositories
    - [ ] will be done in graph, will edit job to re-produce new output
  - [ ] graphing component
    - [ ] combine existing components to produce what is in the specs
+     - [ ] how to already in code in other components
+     - [ ] WIP: add base
+     - [ ] add elements
+     - [ ] add logic
