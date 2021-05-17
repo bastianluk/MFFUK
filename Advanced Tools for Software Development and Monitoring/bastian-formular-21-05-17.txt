@@ -29,19 +29,23 @@ Autor(i): Tomas Husak
 Nastroj(e): AskTheCode
 
 Obsah referatu:
-	- 3
+	- 2
 
 Kvalita prezentace:
 	- 2
 
 Dalsi komentare:
-Ocenil jsem, ze skutecne slo o kratkou prezentaci, i kdyz zrovna u nastroje pro C# bych na tento nastroj chtel slyset dlouhou. :(
-
+Ocenil jsem, ze skutecne slo o kratkou prezentaci (dodrzeni formy), i kdyz zrovna u nastroje pro C# bych na tento nastroj chtel slyset dlouhou. :(
+Libila se mi forma prezentace.
 
 Pomohlo by mi to?​
- - Pravdepodobne by uz limitace s cykly
+ - Pravdepodobne by uz limitace s cykly byla problematicka - zaroven v dost produkcnich aplikacich by melo byt dostatecne logovani a dostatecne robustni databaze,
+   aby se clovek dostal k tomu, kdo naposledy delal nejaky update entity, odkud kam sel, kdyz cestou potkal nejakou NRE apod. Urcite idea dobra, ale podle me se v dostatecne velkem poctu pripadu
+   clovek dostane k tomu, jak a proc se chyba stala.
 Pokud ano, chtěl bych do toho přidat nějakou funkcionalitu?​
+ -
 Pokud ne, co by to mělo umět, aby to začalo být pro mně užitečný?
+ - Zejmena cykly - je vetsinou lepsi delat veci in batches, ne per item, takze uz jenom update s nejakym invariant checkem by byl pro nastroj problem - a prave invariant check by casto objevoval chyby.
 
 
 ---------
@@ -53,7 +57,7 @@ Autor(i): Vasek Sraier
 Nastroj(e): pyenv + Poetry
 
 Obsah referatu:
-	- 2
+	- 3
 
 Kvalita prezentace:
 	- 2
