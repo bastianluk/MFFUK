@@ -5,49 +5,59 @@ Lukas Bastian
 Referat 1
 ---------
 
-Autor(i):
+Autor(i): Jiri Resler
 
 Nastroj(e): Evernote
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 3
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 3
 
 Dalsi komentare:
-
+Pouzivam alternativu v podobe Notion pro nejake vetsi dokumenty a po prezentaci zmineny Google Keep na kratsi poznamky.
+V historii byli Notion i Evernote ve free verzi hodne omezene a jsem rad, ze formou teto prezentace jsem se dozvedel, jak se to zmenilo.
+Nevim, nakolik je dobry napad jakykoliv z techto nastroju pouzivat na project managment - to bych radeji prenechal dedikovanym nastrojum, ale urcite je dobre, ze byla zminena tato moznost.
 
 ---------
 Referat 2
 ---------
 
-Autor(i):
+Autor(i): Tomas Husak
 
 Nastroj(e): AskTheCode
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 3
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 2
 
 Dalsi komentare:
+Ocenil jsem, ze skutecne slo o kratkou prezentaci, i kdyz zrovna u nastroje pro C# bych na tento nastroj chtel slyset dlouhou. :(
+
+
+Pomohlo by mi to?​
+ - Pravdepodobne by uz limitace s cykly
+Pokud ano, chtěl bych do toho přidat nějakou funkcionalitu?​
+Pokud ne, co by to mělo umět, aby to začalo být pro mně užitečný?
 
 
 ---------
 Referat 3
 ---------
 
-Autor(i):
+Autor(i): Vasek Sraier
 
 Nastroj(e): pyenv + Poetry
 
 Obsah referatu:
-	- mozna odpoved od 1 do 10 (1 - uplne nove / velmi zajimave, 10 - vse jiz znam / neuzitecne)
+	- 2
 
 Kvalita prezentace:
-	- mozna odpoved od 1 do 10 (1 - excelentni, 5 - prumer, 10 - slabe)
+	- 2
 
 Dalsi komentare:
-
+Dalsi package manazer a zvazoval jsem nehodnotit, ale protoze slo spis o nastroj, ktery se snazi zlepsit experience pri praci v pythonu, tak me zaujal.
+Libila se mi forma prezentace, stejne jako predchozi autori byl dodrzen format/delka.
