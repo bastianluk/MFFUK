@@ -8,7 +8,8 @@
      - problem with built-in rebuild
      - http://ivis:8080/settings/jobs
    - [ ] task run
-     - http://ivis:8080/settings/tasks/13/develop
+     - http://ivis:8080/settings/tasks/15/develop
+     - newly merged develop
    - [ ] ADF package
      - location
        - https://github.com/bastianluk/ivis-core/tree/devel/server/lib/tasks/python
