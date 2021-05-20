@@ -43,7 +43,7 @@ Pomohlo by mi to?​
    aby se clovek dostal k tomu, kdo naposledy delal nejaky update entity, odkud kam sel, kdyz cestou potkal nejakou NRE apod. Urcite idea dobra, ale podle me se v dostatecne velkem poctu pripadu
    clovek dostane k tomu, jak a proc se chyba stala.
 Pokud ano, chtěl bych do toho přidat nějakou funkcionalitu?​
- -
+ - ...
 Pokud ne, co by to mělo umět, aby to začalo být pro mně užitečný?
  - Zejmena cykly - je vetsinou lepsi delat veci in batches, ne per item, takze uz jenom update s nejakym invariant checkem by byl pro nastroj problem - a prave invariant check by casto objevoval chyby.
 

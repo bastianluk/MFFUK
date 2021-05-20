@@ -44,5 +44,7 @@
 
 ## TODO Next
 
- - [ ] pointA
- - [ ] pointB
+ - [ ] Message group
+   - [ ] analitics tab
+ - [ ] Visuals
+ - [ ] Job re-build
