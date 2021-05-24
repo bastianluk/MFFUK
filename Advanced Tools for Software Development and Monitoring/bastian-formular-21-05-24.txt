@@ -1,0 +1,41 @@
+Lukas Bastian
+
+
+---------
+Referat 1
+---------
+
+Autor(i): Jiri Mayer
+
+Nastroj(e): Helm
+
+Obsah referatu:
+	- 2
+
+Kvalita prezentace:
+	- 2
+
+Dalsi komentare:
+Bohuzel prezentace delsi, nez mela byt, ale zaroven moc cenim, ze autor ma hodne co rict o nastroji, ktery ukazoval. I tak ale za ignorovani formatu musim neco strhnout.
+Kdyz jde o kubernetes, tak jsem rozhodne novacek, ale protoze se snazim si timto smerem rozsirit obzory, tak rozhodne cenim prezentaci tohoto nastroje.
+Je videt nadseni z toho, ze autor nasel nastroj, ktery evidentne resi problem, ktery mel, ale zaroven jeste nenasel veci, ktere ho potencialne budou stvat - to sam priznal,
+ze zatim nema dostatecnou zkusenost.
+
+---------
+Referat 2
+---------
+
+Autor(i): Sofya Sherstneva
+
+Nastroj(e): apiary
+
+Obsah referatu:
+	- 2
+
+Kvalita prezentace:
+	- 3
+
+Dalsi komentare:
+Nastroj me zajimal, protoze hledame do zamestnani podobny nastroj. Evidentne autorka mela uplne jine pozadavky od apiary, nez bych mel ja.
+Me by zajimala API definition a pripadne jeji generovani, autorka sla spis ze strany testovani a mockovani API - z toho pohledu asi byla prezentace dostatecna.
+Ocenil jsem i zminku o tom, jak se to da napojit do Java/C# codebase.
