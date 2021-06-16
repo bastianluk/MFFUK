@@ -26,45 +26,36 @@ Repositories
   - the task
   - the graphing component
 
-## Progress
-
-- [x] add base task with its parameters
-  - [ ] refine it with actual checkboxes?
-- [ ] connect the framework
-  - [x] add base package
-    - [x] add files, make it part of the build
-    - [x] add dependencies to the task build
-  - [ ] WIP: rebuilt built-in task - how to
-  - [ ] change the frameworks internals
-    - [x] remove file inputs
-    - [x] remove the plotting used for iterative mode
-    - [ ] replace the plotting - connected to interactive mode
-  - [ ] prepare i/o on both sides
-    - [x] output by ivis
-      - [ ] improve the output - loop through the database to query all data
-    - [x] input to framework
-    - [ ] output by framework
-    - [ ] save output in ivis
-- [ ] interactive mode!!!
-  - [ ] will be done in graph, will edit job to re-produce new output
-- [ ] graphing component
-  - [ ] combine existing components to produce what is in the specs
-    - [ ] how to already in code in other components
-    - [ ] WIP: add base
-    - [ ] add elements
-    - [ ] add logic
-
 ## Dev notes
 
-Anomalies need to support:
+- [ ] interactive mode!!!
+  - [ ] will be done in graph, will edit job to re-produce new output
+  - [ ] remove the plotting used for iterative mode
+    - [ ] replace the plotting - connected to interactive mode
+- [ ] WIP: rebuilt built-in task - how to
+
+### Anomalies need to support
 
 - creation (endpoint)
   - of a job
+    - [x] add base package
+      - [x] add files, make it part of the build
+      - [x] add dependencies to the task build
   - connected signal set
+    - [ ] solve inserts
 - removal (endpoint)
   - of the job
   - connected signal set
+    - [ ] cascades
 - list (endpoint)
   - link to the job edit
   - link to the signal set
   - link to the anomaly overview (endpoint)
+    - [ ] graphing component
+      - [ ] combine existing components to produce what is in the specs
+        - [x] add elements
+        - [ ] add logic
+- job
+  - [ ] task package
+  - [ ] input loop for fetch
+  - [ ] output saved to db
