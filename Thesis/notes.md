@@ -47,15 +47,19 @@ Repositories
   - of the job
   - connected signal set
     - [ ] cascades
-- list (endpoint)
-  - link to the job edit
-  - link to the signal set
-  - link to the anomaly overview (endpoint)
-    - [ ] graphing component
-      - [ ] combine existing components to produce what is in the specs
-        - [x] add elements
-        - [ ] add logic
+- [x] list (endpoint)
+  - [x] link to the job edit
+  - [x] link to the signal set
+  - [x] link to the anomaly overview (endpoint)
+- [ ] graphing component
+  - [ ] combine existing components to produce what is in the specs
+    - [x] add elements
+    - [ ] add logic
+  - [ ] add related tooltips on hover
+    - [ ] add custom versions of scatter plot?
 - job
-  - [ ] task package
+  - [x] task package
   - [ ] input loop for fetch
-  - [ ] output saved to db
+  - [x] output saved to db
+    - [ ] save full output
+    - [ ] save using bulk
