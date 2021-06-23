@@ -36,30 +36,34 @@ Repositories
 
 ### Anomalies need to support
 
-- creation (endpoint)
+- [x] creation (endpoint)
   - of a job
     - [x] add base package
       - [x] add files, make it part of the build
       - [x] add dependencies to the task build
   - connected signal set
-    - [ ] solve inserts
-- removal (endpoint)
+    - [x] solve inserts
+- [ ] **removal (endpoint)**
   - of the job
   - connected signal set
     - [ ] cascades
 - [x] list (endpoint)
   - [x] link to the job edit
+  - [ ] **allow edit**
   - [x] link to the signal set
   - [x] link to the anomaly overview (endpoint)
-- [ ] graphing component
-  - [ ] combine existing components to produce what is in the specs
-    - [x] add elements
-    - [ ] add logic
-  - [ ] add related tooltips on hover
-    - [ ] add custom versions of scatter plot?
+  - [ ] better icons
+  - [ ] graphing component
+    - [ ] combine existing components to produce what is in the specs
+      - [x] add elements
+      - [ ] add logic
+    - [ ] add related tooltips on hover
+      - [ ] add custom versions of scatter plot?
 - job
   - [x] task package
   - [ ] input loop for fetch
-  - [x] output saved to db
+  - [ ] output saved to db
+    - [x] signal set created
+    - [ ] **save signals/records**
     - [ ] save full output
     - [ ] save using bulk
