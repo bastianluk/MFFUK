@@ -28,11 +28,11 @@ Repositories
 
 ## Dev notes
 
-- [ ] interactive mode!!!
+- [ ] **interactive mode!!!**
+  - [ ] use set metadata to pass between runs
   - [ ] will be done in graph, will edit job to re-produce new output
   - [ ] remove the plotting used for iterative mode
     - [ ] replace the plotting - connected to interactive mode
-- [ ] WIP: rebuilt built-in task - how to
 
 ### Anomalies need to support
 
@@ -43,17 +43,18 @@ Repositories
       - [x] add dependencies to the task build
   - connected signal set
     - [x] solve inserts
-- [ ] **removal (endpoint)**
+- [x] removal (endpoint)
   - of the job
   - connected signal set
-    - [ ] cascades
+    - [x] cascades
 - [x] list (endpoint)
   - [x] link to the job edit
-  - [ ] **allow edit**
+  - [x] allow edit
+    - [x] solve seasonality edit issues
   - [x] link to the signal set
   - [x] link to the anomaly overview (endpoint)
   - [ ] better icons
-  - [ ] graphing component
+  - [ ] **graphing component**
     - [ ] combine existing components to produce what is in the specs
       - [x] add elements
       - [ ] add logic
@@ -64,6 +65,6 @@ Repositories
   - [ ] input loop for fetch
   - [ ] output saved to db
     - [x] signal set created
-    - [ ] **save signals/records**
-    - [ ] save full output
+    - [x] save signals/records
+    - [ ] **save full output**
     - [ ] save using bulk
