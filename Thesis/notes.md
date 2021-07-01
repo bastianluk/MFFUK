@@ -31,7 +31,7 @@ Repositories
 - [ ] **interactive mode!!!**
   - [ ] use set metadata to pass between runs
   - [ ] will be done in graph, will edit job to re-produce new output
-  - [ ] remove the plotting used for iterative mode
+  - [ ] remove the plotting used for iterative mode in the task
     - [ ] replace the plotting - connected to interactive mode
 
 ### Anomalies need to support
