@@ -63,8 +63,8 @@ Repositories
 - job
   - [x] task package
   - [ ] input loop for fetch
-  - [ ] output saved to db
+  - [ ] **output saved to db**
     - [x] signal set created
     - [x] save signals/records
-    - [ ] **save full output**
+    - [x] **get full output**
     - [ ] save using bulk
