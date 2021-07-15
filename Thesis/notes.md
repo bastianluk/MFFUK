@@ -54,17 +54,16 @@ Repositories
   - [x] link to the signal set
   - [x] link to the anomaly overview (endpoint)
   - [ ] better icons
-  - [ ] **graphing component**
-    - [ ] combine existing components to produce what is in the specs
+  - [x] graphing component
+    - [x] combine existing components to produce what is in the specs
       - [x] add elements
-      - [ ] add logic
-    - [ ] add related tooltips on hover
-      - [ ] add custom versions of scatter plot?
+      - [x] add logic
+    - [x] add related tooltips on hover
 - job
   - [x] task package
-  - [ ] input loop for fetch
-  - [ ] **output saved to db**
+  - [x] output saved to db
     - [x] signal set created
     - [x] save signals/records
-    - [x] **get full output**
-    - [ ] save using bulk
+    - [x] get full output
+  - [ ] input loop for fetch
+  - [ ] save using bulk
